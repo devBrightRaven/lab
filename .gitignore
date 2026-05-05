@@ -1,0 +1,27 @@
+# OS metadata
+.DS_Store
+Thumbs.db
+
+# Editor / IDE
+.vscode/
+.idea/
+*.swp
+
+# AI agent config (private — never commit per global policy)
+CLAUDE.md
+.claude/
+.mcp.json
+AGENTS.md
+.codex/
+.gemini/
+.copilot/
+.cursorrules
+.cursor/
+
+# Playwright session artifacts (screenshots, console logs, page snapshots)
+.playwright-mcp/
+
+# Node (defensive)
+node_modules/
+*.log
+*.tmp

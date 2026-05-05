@@ -1,0 +1,1094 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Accessibility Audit Report — thinking-routing-atlas-v2.html (single-page interactive a11y/AEO atlas)</title>
+<style>
+  :root {
+    --bg: #1a1a2e;
+    --surface: #16213e;
+    --surface-2: #0f3460;
+    --text: #e8e8e8;
+    --text-muted: #a0a0b0;
+    --border: #2a2a4a;
+    --accent: #4fc3f7;
+    --pass: #0cce6b;
+    --warn: #ffa400;
+    --fail: #ff4e42;
+    --tip: #4fc3f7;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    padding: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  h1 { font-size: 1.8rem; margin-bottom: 0.5rem; }
+  h2 { font-size: 1.3rem; margin: 2rem 0 1rem; border-bottom: 1px solid var(--border); padding-bottom: 0.5rem; }
+  h3 { font-size: 1.1rem; margin: 1.5rem 0 0.5rem; }
+  .meta { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 2rem; }
+  .meta span { margin-right: 1.5rem; }
+
+  /* Score Ring */
+  .score-ring-container {
+    display: flex;
+    gap: 2rem;
+    flex-wrap: wrap;
+    margin: 1.5rem 0;
+  }
+  .score-ring {
+    text-align: center;
+    min-width: 120px;
+  }
+  .score-ring svg { width: 100px; height: 100px; }
+  .score-ring .ring-bg { fill: none; stroke: var(--border); stroke-width: 8; }
+  .score-ring .ring-fg { fill: none; stroke-width: 8; stroke-linecap: round;
+    transform: rotate(-90deg); transform-origin: 50% 50%;
+    transition: stroke-dashoffset 1s ease; }
+  .score-ring .ring-text { font-size: 22px; font-weight: 700; fill: var(--text); }
+  .score-ring .ring-label { font-size: 0.8rem; color: var(--text-muted); margin-top: 0.3rem; }
+  .score-ring .ring-prev { font-size: 0.75rem; color: var(--text-muted); }
+
+  /* Summary Table */
+  .summary-table { width: 100%; border-collapse: collapse; margin: 1rem 0; }
+  .summary-table th { text-align: left; padding: 0.6rem; border-bottom: 2px solid var(--border);
+    color: var(--text-muted); font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.05em; }
+  .summary-table td { padding: 0.6rem; border-bottom: 1px solid var(--border); }
+  .summary-table .num { text-align: center; font-variant-numeric: tabular-nums; }
+  .summary-table .pass { color: var(--pass); }
+  .summary-table .fail { color: var(--fail); }
+  .category-row { cursor: pointer; }
+  .category-row:hover { background: var(--surface-2); }
+
+  .score-bar { height: 20px; background: var(--surface); border-radius: 10px; position: relative; overflow: hidden; min-width: 100px; }
+  .score-fill { height: 100%; border-radius: 10px; transition: width 0.8s ease; }
+  .score-text { position: absolute; right: 8px; top: 0; line-height: 20px; font-size: 0.75rem; font-weight: 600; }
+  .prev-score { font-size: 0.7rem; color: var(--text-muted); margin-top: 2px; }
+
+  .delta { font-size: 0.75rem; margin-left: 4px; }
+  .delta.positive { color: var(--pass); }
+  .delta.negative { color: var(--fail); }
+  .delta.neutral { color: var(--text-muted); }
+
+  /* Findings */
+  .finding { background: var(--surface); border-radius: 8px; margin: 0.8rem 0; padding: 1rem;
+    border-left: 4px solid var(--border); }
+  .finding.critical { border-left-color: var(--fail); }
+  .finding.warning { border-left-color: var(--warn); }
+  .finding.tip { border-left-color: var(--tip); }
+  .finding-header { display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap; }
+  .severity-icon { font-size: 1.1rem; }
+  .wcag-tag, .level-tag { font-size: 0.75rem; padding: 2px 6px; border-radius: 4px;
+    background: var(--surface-2); color: var(--accent); }
+  .finding-body { margin-top: 0.8rem; font-size: 0.9rem; }
+  .finding-body p { margin: 0.3rem 0; }
+  .fix { background: rgba(12,206,107,0.1); padding: 0.5rem; border-radius: 4px; margin-top: 0.5rem; }
+  .legal { background: rgba(255,78,66,0.1); padding: 0.5rem; border-radius: 4px; margin-top: 0.5rem; }
+
+  .code-compare { display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; margin-top: 0.5rem; }
+  .code-label { font-size: 0.75rem; color: var(--text-muted); margin-bottom: 0.2rem; text-transform: uppercase; }
+  .code-before pre, .code-after pre { background: var(--bg); padding: 0.5rem; border-radius: 4px;
+    overflow-x: auto; font-size: 0.8rem; }
+  .code-before pre { border: 1px solid rgba(255,78,66,0.3); }
+  .code-after pre { border: 1px solid rgba(12,206,107,0.3); }
+
+  /* Legal Risk */
+  .risk-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1rem; margin: 1rem 0; }
+  .risk-card { background: var(--surface); padding: 1rem; border-radius: 8px; }
+  .risk-header { display: flex; justify-content: space-between; align-items: center; }
+  .risk-badge { color: white; padding: 2px 8px; border-radius: 4px; font-size: 0.75rem; font-weight: 600; }
+  .deadline { color: var(--warn); font-weight: 600; }
+  .risk-score { font-variant-numeric: tabular-nums; }
+  .overall-risk { text-align: center; padding: 0.8rem; border-radius: 8px; color: white;
+    font-size: 1.1rem; font-weight: 700; }
+  .risk-summary { margin-top: 1rem; }
+
+  /* Tabs */
+  .tabs { display: flex; gap: 0; border-bottom: 2px solid var(--border); margin: 2rem 0 1rem; }
+  .tab { padding: 0.6rem 1.2rem; cursor: pointer; color: var(--text-muted);
+    border-bottom: 2px solid transparent; margin-bottom: -2px; transition: all 0.2s; }
+  .tab:hover { color: var(--text); }
+  .tab.active { color: var(--accent); border-bottom-color: var(--accent); }
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
+
+  /* Remediation */
+  .priority-section { margin: 1rem 0; }
+  .priority-tag { display: inline-block; padding: 2px 8px; border-radius: 4px;
+    font-size: 0.75rem; font-weight: 600; color: white; }
+  .priority-tag.p0 { background: var(--fail); }
+  .priority-tag.p1 { background: var(--warn); }
+  .priority-tag.p2 { background: var(--tip); }
+  .remediation-item { display: flex; gap: 0.5rem; align-items: baseline; padding: 0.3rem 0; }
+  .effort-tag { font-size: 0.75rem; color: var(--text-muted); }
+
+  .empty { color: var(--text-muted); font-style: italic; }
+
+  /* Category detail sections */
+  .category-detail { display: none; margin: 1rem 0 2rem; padding: 1rem;
+    background: var(--surface); border-radius: 8px; }
+  .category-detail.open { display: block; }
+
+  /* Print */
+  @media print {
+    body { background: white; color: #333; }
+    .score-ring .ring-text { fill: #333; }
+    .finding { break-inside: avoid; }
+  }
+
+  /* Comparison banner */
+  .comparison-banner {
+    background: var(--surface-2);
+    border: 1px solid var(--accent);
+    border-radius: 8px;
+    padding: 1rem;
+    margin: 1rem 0;
+    display: flex;
+    justify-content: space-around;
+    text-align: center;
+  }
+  .comparison-stat { }
+  .comparison-stat .value { font-size: 1.5rem; font-weight: 700; }
+  .comparison-stat .label { font-size: 0.8rem; color: var(--text-muted); }
+</style>
+</head>
+<body>
+
+<h1>Accessibility Audit Report</h1>
+<div class="meta">
+  <span>Date: 2026-05-05</span>
+  <span>Scope: thinking-routing-atlas-v2.html (single-page interactive a11y/AEO atlas)</span>
+  <span>Standard: WCAG 2.2 AA</span>
+  <span>Auditor: Claude Code (a11y-audit)</span>
+</div>
+
+
+
+<!-- Score Rings -->
+<div class="score-ring-container">
+  
+    <div class="score-ring">
+      <svg viewBox="0 0 100 100">
+        <circle class="ring-bg" cx="50" cy="50" r="40"/>
+        <circle class="ring-fg" cx="50" cy="50" r="40"
+          stroke="#ffa400"
+          stroke-dasharray="251.32741228718345"
+          stroke-dashoffset="75.39822368615505"/>
+        <text class="ring-text" x="50" y="55" text-anchor="middle">70</text>
+      </svg>
+      <div class="ring-label">Overall</div>
+      
+    </div>
+  
+    <div class="score-ring">
+      <svg viewBox="0 0 100 100">
+        <circle class="ring-bg" cx="50" cy="50" r="40"/>
+        <circle class="ring-fg" cx="50" cy="50" r="40"
+          stroke="#ffa400"
+          stroke-dasharray="251.32741228718345"
+          stroke-dashoffset="100.53096491487338"/>
+        <text class="ring-text" x="50" y="55" text-anchor="middle">60</text>
+      </svg>
+      <div class="ring-label">Color & Contrast</div>
+      
+    </div>
+    <div class="score-ring">
+      <svg viewBox="0 0 100 100">
+        <circle class="ring-bg" cx="50" cy="50" r="40"/>
+        <circle class="ring-fg" cx="50" cy="50" r="40"
+          stroke="#ff4e42"
+          stroke-dasharray="251.32741228718345"
+          stroke-dashoffset="175.92918860102841"/>
+        <text class="ring-text" x="50" y="55" text-anchor="middle">30</text>
+      </svg>
+      <div class="ring-label">Keyboard Navigation</div>
+      
+    </div>
+    <div class="score-ring">
+      <svg viewBox="0 0 100 100">
+        <circle class="ring-bg" cx="50" cy="50" r="40"/>
+        <circle class="ring-fg" cx="50" cy="50" r="40"
+          stroke="#ffa400"
+          stroke-dasharray="251.32741228718345"
+          stroke-dashoffset="75.39822368615505"/>
+        <text class="ring-text" x="50" y="55" text-anchor="middle">70</text>
+      </svg>
+      <div class="ring-label">Screen Reader</div>
+      
+    </div>
+    <div class="score-ring">
+      <svg viewBox="0 0 100 100">
+        <circle class="ring-bg" cx="50" cy="50" r="40"/>
+        <circle class="ring-fg" cx="50" cy="50" r="40"
+          stroke="#0cce6b"
+          stroke-dasharray="251.32741228718345"
+          stroke-dashoffset="0"/>
+        <text class="ring-text" x="50" y="55" text-anchor="middle">100</text>
+      </svg>
+      <div class="ring-label">Forms</div>
+      
+    </div>
+    <div class="score-ring">
+      <svg viewBox="0 0 100 100">
+        <circle class="ring-bg" cx="50" cy="50" r="40"/>
+        <circle class="ring-fg" cx="50" cy="50" r="40"
+          stroke="#ffa400"
+          stroke-dasharray="251.32741228718345"
+          stroke-dashoffset="113.09733552923254"/>
+        <text class="ring-text" x="50" y="55" text-anchor="middle">55</text>
+      </svg>
+      <div class="ring-label">Responsive & Reflow</div>
+      
+    </div>
+    <div class="score-ring">
+      <svg viewBox="0 0 100 100">
+        <circle class="ring-bg" cx="50" cy="50" r="40"/>
+        <circle class="ring-fg" cx="50" cy="50" r="40"
+          stroke="#ffa400"
+          stroke-dasharray="251.32741228718345"
+          stroke-dashoffset="30.159289474462014"/>
+        <text class="ring-text" x="50" y="55" text-anchor="middle">88</text>
+      </svg>
+      <div class="ring-label">Touch & Target</div>
+      
+    </div>
+    <div class="score-ring">
+      <svg viewBox="0 0 100 100">
+        <circle class="ring-bg" cx="50" cy="50" r="40"/>
+        <circle class="ring-fg" cx="50" cy="50" r="40"
+          stroke="#ffa400"
+          stroke-dasharray="251.32741228718345"
+          stroke-dashoffset="45.238934211693035"/>
+        <text class="ring-text" x="50" y="55" text-anchor="middle">82</text>
+      </svg>
+      <div class="ring-label">Cognitive</div>
+      
+    </div>
+    <div class="score-ring">
+      <svg viewBox="0 0 100 100">
+        <circle class="ring-bg" cx="50" cy="50" r="40"/>
+        <circle class="ring-fg" cx="50" cy="50" r="40"
+          stroke="#0cce6b"
+          stroke-dasharray="251.32741228718345"
+          stroke-dashoffset="20.106192982974665"/>
+        <text class="ring-text" x="50" y="55" text-anchor="middle">92</text>
+      </svg>
+      <div class="ring-label">Motion</div>
+      
+    </div>
+    <div class="score-ring">
+      <svg viewBox="0 0 100 100">
+        <circle class="ring-bg" cx="50" cy="50" r="40"/>
+        <circle class="ring-fg" cx="50" cy="50" r="40"
+          stroke="#0cce6b"
+          stroke-dasharray="251.32741228718345"
+          stroke-dashoffset="0"/>
+        <text class="ring-text" x="50" y="55" text-anchor="middle">100</text>
+      </svg>
+      <div class="ring-label">Media</div>
+      
+    </div>
+    <div class="score-ring">
+      <svg viewBox="0 0 100 100">
+        <circle class="ring-bg" cx="50" cy="50" r="40"/>
+        <circle class="ring-fg" cx="50" cy="50" r="40"
+          stroke="#ffa400"
+          stroke-dasharray="251.32741228718345"
+          stroke-dashoffset="113.09733552923254"/>
+        <text class="ring-text" x="50" y="55" text-anchor="middle">55</text>
+      </svg>
+      <div class="ring-label">Agent Operability & AEO</div>
+      
+    </div>
+</div>
+
+<!-- Verdict -->
+<div style="text-align:center;margin:1.5rem 0">
+  <span style="font-size:1.3rem;font-weight:700;color:#ffa400">
+    NEEDS WORK
+  </span>
+  <span style="color:var(--text-muted);margin-left:0.5rem">
+    12 issues found
+    (4 critical, 5 warnings, 3 tips)
+  </span>
+</div>
+
+<!-- Tabs -->
+<div class="tabs">
+  <div class="tab active" onclick="switchTab('overview')">Overview</div>
+  <div class="tab" onclick="switchTab('findings')">Findings</div>
+  <div class="tab" onclick="switchTab('legal')">Legal Risk</div>
+  <div class="tab" onclick="switchTab('remediation')">Remediation</div>
+</div>
+
+<!-- Overview Tab -->
+<div id="tab-overview" class="tab-content active">
+  <h2>Category Summary</h2>
+  <table class="summary-table">
+    <thead>
+      <tr>
+        <th>Category</th>
+        <th class="num">Pass</th>
+        <th class="num">Fail</th>
+        <th class="num">Review</th>
+        <th>Coverage</th>
+      </tr>
+    </thead>
+    <tbody>
+      
+      <tr class="category-row" data-category="contrast">
+        <td class="cat-name">Color & Contrast</td>
+        <td class="num pass">6 </td>
+        <td class="num fail">3 </td>
+        <td class="num review">0</td>
+        <td>
+          <div class="score-bar">
+            <div class="score-fill" style="width:60%;background:#ffa400"></div>
+            <span class="score-text">60%</span>
+          </div>
+          
+        </td>
+      </tr>
+      <tr class="category-row" data-category="keyboard">
+        <td class="cat-name">Keyboard Navigation</td>
+        <td class="num pass">4 </td>
+        <td class="num fail">4 </td>
+        <td class="num review">0</td>
+        <td>
+          <div class="score-bar">
+            <div class="score-fill" style="width:30%;background:#ff4e42"></div>
+            <span class="score-text">30%</span>
+          </div>
+          
+        </td>
+      </tr>
+      <tr class="category-row" data-category="screenreader">
+        <td class="cat-name">Screen Reader</td>
+        <td class="num pass">7 </td>
+        <td class="num fail">2 </td>
+        <td class="num review">0</td>
+        <td>
+          <div class="score-bar">
+            <div class="score-fill" style="width:70%;background:#ffa400"></div>
+            <span class="score-text">70%</span>
+          </div>
+          
+        </td>
+      </tr>
+      <tr class="category-row" data-category="forms">
+        <td class="cat-name">Forms</td>
+        <td class="num pass">0 </td>
+        <td class="num fail">0 </td>
+        <td class="num review">0</td>
+        <td>
+          <div class="score-bar">
+            <div class="score-fill" style="width:100%;background:#0cce6b"></div>
+            <span class="score-text">100%</span>
+          </div>
+          
+        </td>
+      </tr>
+      <tr class="category-row" data-category="responsive">
+        <td class="cat-name">Responsive & Reflow</td>
+        <td class="num pass">5 </td>
+        <td class="num fail">2 </td>
+        <td class="num review">0</td>
+        <td>
+          <div class="score-bar">
+            <div class="score-fill" style="width:55%;background:#ffa400"></div>
+            <span class="score-text">55%</span>
+          </div>
+          
+        </td>
+      </tr>
+      <tr class="category-row" data-category="touch">
+        <td class="cat-name">Touch & Target</td>
+        <td class="num pass">4 </td>
+        <td class="num fail">0 </td>
+        <td class="num review">0</td>
+        <td>
+          <div class="score-bar">
+            <div class="score-fill" style="width:88%;background:#ffa400"></div>
+            <span class="score-text">88%</span>
+          </div>
+          
+        </td>
+      </tr>
+      <tr class="category-row" data-category="cognitive">
+        <td class="cat-name">Cognitive</td>
+        <td class="num pass">5 </td>
+        <td class="num fail">0 </td>
+        <td class="num review">0</td>
+        <td>
+          <div class="score-bar">
+            <div class="score-fill" style="width:82%;background:#ffa400"></div>
+            <span class="score-text">82%</span>
+          </div>
+          
+        </td>
+      </tr>
+      <tr class="category-row" data-category="motion">
+        <td class="cat-name">Motion</td>
+        <td class="num pass">4 </td>
+        <td class="num fail">0 </td>
+        <td class="num review">0</td>
+        <td>
+          <div class="score-bar">
+            <div class="score-fill" style="width:92%;background:#0cce6b"></div>
+            <span class="score-text">92%</span>
+          </div>
+          
+        </td>
+      </tr>
+      <tr class="category-row" data-category="media">
+        <td class="cat-name">Media</td>
+        <td class="num pass">0 </td>
+        <td class="num fail">0 </td>
+        <td class="num review">0</td>
+        <td>
+          <div class="score-bar">
+            <div class="score-fill" style="width:100%;background:#0cce6b"></div>
+            <span class="score-text">100%</span>
+          </div>
+          
+        </td>
+      </tr>
+      <tr class="category-row" data-category="agent">
+        <td class="cat-name">Agent Operability & AEO</td>
+        <td class="num pass">4 </td>
+        <td class="num fail">4 </td>
+        <td class="num review">0</td>
+        <td>
+          <div class="score-bar">
+            <div class="score-fill" style="width:55%;background:#ffa400"></div>
+            <span class="score-text">55%</span>
+          </div>
+          
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  
+    <div class="category-detail" id="detail-contrast">
+      <h3>Color & Contrast</h3>
+      
+      <div class="finding warning">
+        <div class="finding-header">
+          <span class="severity-icon">&#9888;</span>
+          <strong>--ink-faint (#8A8578) fails AA: 3.44:1 contrast on paper background</strong>
+          <span class="wcag-tag">1.4.3</span>
+          <span class="level-tag">AA</span>
+        </div>
+        <div class="finding-body">
+          <p><strong>Affected users:</strong> Low-vision users, elderly users, users in bright daylight</p>
+          <p><strong>Location:</strong> <code>:root --ink-faint var, used in .filter-label, .shortlist-info, .card-meta-row, .card-cta, .head-right, .anti-list, footnote text, ~30+ usages</code></p>
+          <p>axe-core flagged 66 nodes; ink-faint is the primary culprit. Used widely for small labels (10-11px). Ratio is 3.44:1 vs 4.5:1 AA minimum.</p>
+          <div class="fix"><strong>Fix:</strong> Darken --ink-faint from #8A8578 to #6B6655 (raises contrast to 5.4:1, still keeps muted feel).</div>
+          <div class="legal"><strong>Legal:</strong> WCAG 1.4.3 is the most-litigated criterion (~80% of US ADA web cases cite it).</div>
+          <details><summary>Before / After</summary><div class="code-compare"><div class="code-before"><div class="code-label">Before</div><pre><code>--ink-faint: #8A8578;</code></pre></div><div class="code-after"><div class="code-label">After</div><pre><code>--ink-faint: #6B6655;  /* 5.4:1 on --paper, passes AA */</code></pre></div></div></details>
+        </div>
+      </div>
+      <div class="finding warning">
+        <div class="finding-header">
+          <span class="severity-icon">&#9888;</span>
+          <strong>--cat-1 (#B85C3D) fails AA when used as small text: 4.23:1</strong>
+          <span class="wcag-tag">1.4.3</span>
+          <span class="level-tag">AA</span>
+        </div>
+        <div class="finding-body">
+          <p><strong>Affected users:</strong> Low-vision users</p>
+          <p><strong>Location:</strong> <code>.cat-num for cat 1, .matrix-table .ref, .combo-load, .anti-list bullets</code></p>
+          <p>Need 4.5:1 for normal text. Currently 4.23. Borderline but fails.</p>
+          <div class="fix"><strong>Fix:</strong> Darken to #A04F33 (raises to ~4.8:1) or limit usage to ≥18pt large text where 3:1 is acceptable.</div>
+          
+          <details><summary>Before / After</summary><div class="code-compare"><div class="code-before"><div class="code-label">Before</div><pre><code>--cat-1: #B85C3D;</code></pre></div><div class="code-after"><div class="code-label">After</div><pre><code>--cat-1: #A04F33;  /* 4.8:1 on --paper */</code></pre></div></div></details>
+        </div>
+      </div>
+      <div class="finding critical">
+        <div class="finding-header">
+          <span class="severity-icon">&#x1F534;</span>
+          <strong>--cat-2 (#C19A3D) catastrophically fails AA: 2.47:1 on paper</strong>
+          <span class="wcag-tag">1.4.3</span>
+          <span class="level-tag">AA</span>
+        </div>
+        <div class="finding-body">
+          <p><strong>Affected users:</strong> Low-vision users</p>
+          <p><strong>Location:</strong> <code>.cat-num for cat-2 (Curriculum 課程型), border-color usages</code></p>
+          <p>Used as text color for category 2 number labels. 2.47:1 ratio. Light ochre on cream is one of the worst common combinations.</p>
+          <div class="fix"><strong>Fix:</strong> Darken cat-2 to #8A6E1F (≈4.7:1 on paper). Will shift the gold toward dark mustard but still distinct from other cats. OR keep for borders only (3:1 is acceptable for non-text UI components) and use a darker variant for text.</div>
+          
+          <details><summary>Before / After</summary><div class="code-compare"><div class="code-before"><div class="code-label">Before</div><pre><code>--cat-2: #C19A3D;</code></pre></div><div class="code-after"><div class="code-label">After</div><pre><code>--cat-2: #8A6E1F;  /* darker ochre, 4.7:1 */
+--cat-2-border: #C19A3D;  /* keep light for borders/accents */</code></pre></div></div></details>
+        </div>
+      </div>
+    </div>
+  
+    <div class="category-detail" id="detail-keyboard">
+      <h3>Keyboard Navigation</h3>
+      
+      <div class="finding critical">
+        <div class="finding-header">
+          <span class="severity-icon">&#x1F534;</span>
+          <strong>23 paradigm cards are mouse-only (div with click handler, no keyboard support)</strong>
+          <span class="wcag-tag">2.1.1</span>
+          <span class="level-tag">A</span>
+        </div>
+        <div class="finding-body">
+          <p><strong>Affected users:</strong> Keyboard-only users, screen reader users, motor-impaired users using switch devices</p>
+          <p><strong>Location:</strong> <code>.card elements (23 nodes); buildCard() in script</code></p>
+          <p>Cards are <div> elements with click handlers but no role, tabindex, or key event listener. Tab cannot reach them, Enter/Space cannot activate. The primary atlas browsing interaction is unreachable without a mouse.</p>
+          <div class="fix"><strong>Fix:</strong> Make cards proper <button> elements (preferred) OR add role="button", tabindex="0", and a keydown handler for Enter/Space. Native buttons inherit focus, keyboard activation, and screen reader semantics for free.</div>
+          <div class="legal"><strong>Legal:</strong> WCAG 2.1.1 is a Level A requirement. In US ADA Title III lawsuits 2023-2025, keyboard inoperability is one of the top-3 cited violations.</div>
+          <details><summary>Before / After</summary><div class="code-compare"><div class="code-before"><div class="code-label">Before</div><pre><code>card.addEventListener('click', () =&gt; openDetail(p.id));
+// card has no tabindex, no role, no keydown</code></pre></div><div class="code-after"><div class="code-label">After</div><pre><code>// Option A (preferred): use a &lt;button&gt;
+const card = document.createElement('button');
+card.type = 'button';
+card.className = 'card';
+// ... rest unchanged
+
+// Option B: make div behave like button
+card.tabIndex = 0;
+card.setAttribute('role', 'button');
+card.addEventListener('click', () =&gt; openDetail(p.id));
+card.addEventListener('keydown', (e) =&gt; {
+  if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openDetail(p.id); }
+});</code></pre></div></div></details>
+        </div>
+      </div>
+      <div class="finding critical">
+        <div class="finding-header">
+          <span class="severity-icon">&#x1F534;</span>
+          <strong>3 preset combo cards have click handler but no keyboard support</strong>
+          <span class="wcag-tag">2.1.1</span>
+          <span class="level-tag">A</span>
+        </div>
+        <div class="finding-body">
+          <p><strong>Affected users:</strong> Keyboard-only users</p>
+          <p><strong>Location:</strong> <code>.combo elements (3 nodes); renderPresets() in script</code></p>
+          <p>The recommended combo cards (一鍵載入) cannot be activated without a mouse. Same pattern as f1.</p>
+          <div class="fix"><strong>Fix:</strong> Same as f1 — convert to <button> or add tabindex/role/keydown.</div>
+          <div class="legal"><strong>Legal:</strong> Level A violation. Same risk profile as f1.</div>
+          <details><summary>Before / After</summary><div class="code-compare"><div class="code-before"><div class="code-label">Before</div><pre><code>div.addEventListener('click', () =&gt; loadCombo(preset.paradigms));</code></pre></div><div class="code-after"><div class="code-label">After</div><pre><code>const div = document.createElement('button');
+div.type = 'button';
+div.className = 'combo';
+div.addEventListener('click', () =&gt; loadCombo(preset.paradigms));</code></pre></div></div></details>
+        </div>
+      </div>
+      <div class="finding critical">
+        <div class="finding-header">
+          <span class="severity-icon">&#x1F534;</span>
+          <strong>Synergy items in detail panel are clickable but not keyboard-reachable</strong>
+          <span class="wcag-tag">2.1.1</span>
+          <span class="level-tag">A</span>
+        </div>
+        <div class="finding-body">
+          <p><strong>Affected users:</strong> Keyboard-only users</p>
+          <p><strong>Location:</strong> <code>.synergy-item (li elements with click handler)</code></p>
+          <p>The synergy list inside detail panel lets you jump to another paradigm. Mouse-only.</p>
+          <div class="fix"><strong>Fix:</strong> Convert to <button> or add tabindex/role/keydown. Since synergies are inside lists, keep <li> wrapper but use a <button> inside.</div>
+          <div class="legal"><strong>Legal:</strong> Level A.</div>
+          <details><summary>Before / After</summary><div class="code-compare"><div class="code-before"><div class="code-label">Before</div><pre><code>li.addEventListener('click', () =&gt; openDetail(s.with));</code></pre></div><div class="code-after"><div class="code-label">After</div><pre><code>// Wrap inner content in a button:
+const btn = document.createElement('button');
+btn.type = 'button';
+btn.className = 'synergy-link';
+btn.append(head, why);
+btn.addEventListener('click', () =&gt; openDetail(s.with));
+li.appendChild(btn);</code></pre></div></div></details>
+        </div>
+      </div>
+      <div class="finding critical">
+        <div class="finding-header">
+          <span class="severity-icon">&#x1F534;</span>
+          <strong>Workbench suggestion items have click handler but no keyboard support</strong>
+          <span class="wcag-tag">2.1.1</span>
+          <span class="level-tag">A</span>
+        </div>
+        <div class="finding-body">
+          <p><strong>Affected users:</strong> Keyboard-only users</p>
+          <p><strong>Location:</strong> <code>.wb-suggestion (div with click)</code></p>
+          <p>Same div-as-button anti-pattern. Suggestions are also draggable but drag is mouse-only too.</p>
+          <div class="fix"><strong>Fix:</strong> Convert to <button> or add tabindex/role/keydown handler.</div>
+          <div class="legal"><strong>Legal:</strong> Level A.</div>
+          
+        </div>
+      </div>
+    </div>
+  
+    <div class="category-detail" id="detail-screenreader">
+      <h3>Screen Reader</h3>
+      
+      <div class="finding warning">
+        <div class="finding-header">
+          <span class="severity-icon">&#9888;</span>
+          <strong>Heading hierarchy skips levels (h1 → h3 in workbench)</strong>
+          <span class="wcag-tag">1.3.1</span>
+          <span class="level-tag">A</span>
+        </div>
+        <div class="finding-body">
+          <p><strong>Affected users:</strong> Screen reader users who navigate by headings</p>
+          <p><strong>Location:</strong> <code>Workbench section h3 elements directly under document with h1 only</code></p>
+          <p>Workbench h3 (你的組合 / 適合用在 / 建議補上) appear after the page h1 with no h2 in between (until the categories). Heading navigation (rotor) becomes confusing.</p>
+          <div class="fix"><strong>Fix:</strong> Either add a wrapping section with an h2 (e.g., 'Your Combo Workbench') or change the workbench h3 elements to h2.</div>
+          
+          <details><summary>Before / After</summary><div class="code-compare"><div class="code-before"><div class="code-label">Before</div><pre><code>&lt;section class=&quot;workbench&quot;&gt; ... &lt;h3&gt;你的組合&lt;/h3&gt; ... &lt;/section&gt;</code></pre></div><div class="code-after"><div class="code-label">After</div><pre><code>&lt;section class=&quot;workbench&quot; aria-labelledby=&quot;wb-h&quot;&gt; &lt;h2 id=&quot;wb-h&quot; class=&quot;sr-only&quot;&gt;Combo Workbench&lt;/h2&gt; ... &lt;h3&gt;你的組合&lt;/h3&gt; ... &lt;/section&gt;</code></pre></div></div></details>
+        </div>
+      </div>
+      <div class="finding tip">
+        <div class="finding-header">
+          <span class="severity-icon">&#x1F4A1;</span>
+          <strong><aside> elements are nested inside <section>, not at top level</strong>
+          <span class="wcag-tag">best-practice</span>
+          <span class="level-tag">Best Practice</span>
+        </div>
+        <div class="finding-body">
+          <p><strong>Affected users:</strong> Screen reader users using landmark navigation</p>
+          <p><strong>Location:</strong> <code>6 .cat-meta <aside> elements, each inside <section class="category"></code></p>
+          <p>Per ARIA spec, aside is a complementary landmark and should be top-level. axe flagged this as best-practice violation.</p>
+          <div class="fix"><strong>Fix:</strong> Change <aside class="cat-meta"> to <div> since it's not actually complementary content — it's the heading area of its section. Or restructure so aside is at top level.</div>
+          
+          
+        </div>
+      </div>
+      <div class="finding tip">
+        <div class="finding-header">
+          <span class="severity-icon">&#x1F4A1;</span>
+          <strong>No skip link to main content; long page (23 cards) requires extensive Tab navigation</strong>
+          <span class="wcag-tag">2.4.1</span>
+          <span class="level-tag">A</span>
+        </div>
+        <div class="finding-body">
+          <p><strong>Affected users:</strong> Keyboard users, screen reader users</p>
+          <p><strong>Location:</strong> <code><body> top</code></p>
+          <p>After fixing keyboard support on cards, this becomes important — without a skip link, users tab through control-bar (7+ stops) before reaching main content.</p>
+          <div class="fix"><strong>Fix:</strong> Add a visually hidden skip link as first focusable element.</div>
+          
+          
+        </div>
+      </div>
+    </div>
+  
+    <div class="category-detail" id="detail-forms">
+      <h3>Forms</h3>
+      <p class="empty">No findings in this category.</p>
+    </div>
+  
+    <div class="category-detail" id="detail-responsive">
+      <h3>Responsive & Reflow</h3>
+      
+      <div class="finding warning">
+        <div class="finding-header">
+          <span class="severity-icon">&#9888;</span>
+          <strong>Page overflows horizontally at 320px viewport (WCAG 1.4.10 Reflow)</strong>
+          <span class="wcag-tag">1.4.10</span>
+          <span class="level-tag">AA</span>
+        </div>
+        <div class="finding-body">
+          <p><strong>Affected users:</strong> Mobile users, zoom users (zoom equivalent of 400% on 1280px desktop)</p>
+          <p><strong>Location:</strong> <code>main { max-width: 1640px; padding: 0 64px } and .cards { grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)) }</code></p>
+          <p>scrollWidth=487px on innerWidth=320px → 167px horizontal overflow. The card grid's minmax(320px, 1fr) forces 320px minimum cards, plus padding pushes total beyond viewport.</p>
+          <div class="fix"><strong>Fix:</strong> Use minmax(min(320px, 100%), 1fr) so cards shrink below 320px when needed. Reduce padding to 16px on narrow viewports.</div>
+          
+          <details><summary>Before / After</summary><div class="code-compare"><div class="code-before"><div class="code-label">Before</div><pre><code>.cards { grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); }</code></pre></div><div class="code-after"><div class="code-label">After</div><pre><code>.cards { grid-template-columns: repeat(auto-fill, minmax(min(320px, 100%), 1fr)); }
+@media (max-width: 480px) {
+  header.atlas-head, .control-bar, .workbench, main { padding-left: 16px; padding-right: 16px; }
+}</code></pre></div></div></details>
+        </div>
+      </div>
+    </div>
+  
+    <div class="category-detail" id="detail-touch">
+      <h3>Touch & Target</h3>
+      <p class="empty">No findings in this category.</p>
+    </div>
+  
+    <div class="category-detail" id="detail-cognitive">
+      <h3>Cognitive</h3>
+      <p class="empty">No findings in this category.</p>
+    </div>
+  
+    <div class="category-detail" id="detail-motion">
+      <h3>Motion</h3>
+      <p class="empty">No findings in this category.</p>
+    </div>
+  
+    <div class="category-detail" id="detail-media">
+      <h3>Media</h3>
+      <p class="empty">No findings in this category.</p>
+    </div>
+  
+    <div class="category-detail" id="detail-agent">
+      <h3>Agent Operability & AEO</h3>
+      
+      <div class="finding tip">
+        <div class="finding-header">
+          <span class="severity-icon">&#x1F4A1;</span>
+          <strong>No structured data (Schema.org JSON-LD), no Open Graph, no canonical URL</strong>
+          <span class="wcag-tag">best-practice (AEO)</span>
+          <span class="level-tag">Best Practice</span>
+        </div>
+        <div class="finding-body">
+          <p><strong>Affected users:</strong> AI agents, search engines, social media unfurl previews</p>
+          <p><strong>Location:</strong> <code><head></code></p>
+          <p>If shared as a personal brand artifact, the lack of metadata means LLM crawlers / search engines can't index it well. No og:title, no canonical, no JSON-LD.</p>
+          <div class="fix"><strong>Fix:</strong> Add basic Open Graph tags + a JSON-LD WebSite/CreativeWork block.</div>
+          
+          
+        </div>
+      </div>
+    </div>
+  
+</div>
+
+<!-- Findings Tab -->
+<div id="tab-findings" class="tab-content">
+  <h2>Critical Findings</h2>
+  
+      <div class="finding critical">
+        <div class="finding-header">
+          <span class="severity-icon">&#x1F534;</span>
+          <strong>23 paradigm cards are mouse-only (div with click handler, no keyboard support)</strong>
+          <span class="wcag-tag">2.1.1</span>
+          <span class="level-tag">A</span>
+        </div>
+        <div class="finding-body">
+          <p><strong>Affected users:</strong> Keyboard-only users, screen reader users, motor-impaired users using switch devices</p>
+          <p><strong>Location:</strong> <code>.card elements (23 nodes); buildCard() in script</code></p>
+          <p>Cards are <div> elements with click handlers but no role, tabindex, or key event listener. Tab cannot reach them, Enter/Space cannot activate. The primary atlas browsing interaction is unreachable without a mouse.</p>
+          <div class="fix"><strong>Fix:</strong> Make cards proper <button> elements (preferred) OR add role="button", tabindex="0", and a keydown handler for Enter/Space. Native buttons inherit focus, keyboard activation, and screen reader semantics for free.</div>
+          <div class="legal"><strong>Legal:</strong> WCAG 2.1.1 is a Level A requirement. In US ADA Title III lawsuits 2023-2025, keyboard inoperability is one of the top-3 cited violations.</div>
+          <details><summary>Before / After</summary><div class="code-compare"><div class="code-before"><div class="code-label">Before</div><pre><code>card.addEventListener('click', () =&gt; openDetail(p.id));
+// card has no tabindex, no role, no keydown</code></pre></div><div class="code-after"><div class="code-label">After</div><pre><code>// Option A (preferred): use a &lt;button&gt;
+const card = document.createElement('button');
+card.type = 'button';
+card.className = 'card';
+// ... rest unchanged
+
+// Option B: make div behave like button
+card.tabIndex = 0;
+card.setAttribute('role', 'button');
+card.addEventListener('click', () =&gt; openDetail(p.id));
+card.addEventListener('keydown', (e) =&gt; {
+  if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openDetail(p.id); }
+});</code></pre></div></div></details>
+        </div>
+      </div>
+      <div class="finding critical">
+        <div class="finding-header">
+          <span class="severity-icon">&#x1F534;</span>
+          <strong>3 preset combo cards have click handler but no keyboard support</strong>
+          <span class="wcag-tag">2.1.1</span>
+          <span class="level-tag">A</span>
+        </div>
+        <div class="finding-body">
+          <p><strong>Affected users:</strong> Keyboard-only users</p>
+          <p><strong>Location:</strong> <code>.combo elements (3 nodes); renderPresets() in script</code></p>
+          <p>The recommended combo cards (一鍵載入) cannot be activated without a mouse. Same pattern as f1.</p>
+          <div class="fix"><strong>Fix:</strong> Same as f1 — convert to <button> or add tabindex/role/keydown.</div>
+          <div class="legal"><strong>Legal:</strong> Level A violation. Same risk profile as f1.</div>
+          <details><summary>Before / After</summary><div class="code-compare"><div class="code-before"><div class="code-label">Before</div><pre><code>div.addEventListener('click', () =&gt; loadCombo(preset.paradigms));</code></pre></div><div class="code-after"><div class="code-label">After</div><pre><code>const div = document.createElement('button');
+div.type = 'button';
+div.className = 'combo';
+div.addEventListener('click', () =&gt; loadCombo(preset.paradigms));</code></pre></div></div></details>
+        </div>
+      </div>
+      <div class="finding critical">
+        <div class="finding-header">
+          <span class="severity-icon">&#x1F534;</span>
+          <strong>Synergy items in detail panel are clickable but not keyboard-reachable</strong>
+          <span class="wcag-tag">2.1.1</span>
+          <span class="level-tag">A</span>
+        </div>
+        <div class="finding-body">
+          <p><strong>Affected users:</strong> Keyboard-only users</p>
+          <p><strong>Location:</strong> <code>.synergy-item (li elements with click handler)</code></p>
+          <p>The synergy list inside detail panel lets you jump to another paradigm. Mouse-only.</p>
+          <div class="fix"><strong>Fix:</strong> Convert to <button> or add tabindex/role/keydown. Since synergies are inside lists, keep <li> wrapper but use a <button> inside.</div>
+          <div class="legal"><strong>Legal:</strong> Level A.</div>
+          <details><summary>Before / After</summary><div class="code-compare"><div class="code-before"><div class="code-label">Before</div><pre><code>li.addEventListener('click', () =&gt; openDetail(s.with));</code></pre></div><div class="code-after"><div class="code-label">After</div><pre><code>// Wrap inner content in a button:
+const btn = document.createElement('button');
+btn.type = 'button';
+btn.className = 'synergy-link';
+btn.append(head, why);
+btn.addEventListener('click', () =&gt; openDetail(s.with));
+li.appendChild(btn);</code></pre></div></div></details>
+        </div>
+      </div>
+      <div class="finding critical">
+        <div class="finding-header">
+          <span class="severity-icon">&#x1F534;</span>
+          <strong>Workbench suggestion items have click handler but no keyboard support</strong>
+          <span class="wcag-tag">2.1.1</span>
+          <span class="level-tag">A</span>
+        </div>
+        <div class="finding-body">
+          <p><strong>Affected users:</strong> Keyboard-only users</p>
+          <p><strong>Location:</strong> <code>.wb-suggestion (div with click)</code></p>
+          <p>Same div-as-button anti-pattern. Suggestions are also draggable but drag is mouse-only too.</p>
+          <div class="fix"><strong>Fix:</strong> Convert to <button> or add tabindex/role/keydown handler.</div>
+          <div class="legal"><strong>Legal:</strong> Level A.</div>
+          
+        </div>
+      </div>
+      <div class="finding critical">
+        <div class="finding-header">
+          <span class="severity-icon">&#x1F534;</span>
+          <strong>--cat-2 (#C19A3D) catastrophically fails AA: 2.47:1 on paper</strong>
+          <span class="wcag-tag">1.4.3</span>
+          <span class="level-tag">AA</span>
+        </div>
+        <div class="finding-body">
+          <p><strong>Affected users:</strong> Low-vision users</p>
+          <p><strong>Location:</strong> <code>.cat-num for cat-2 (Curriculum 課程型), border-color usages</code></p>
+          <p>Used as text color for category 2 number labels. 2.47:1 ratio. Light ochre on cream is one of the worst common combinations.</p>
+          <div class="fix"><strong>Fix:</strong> Darken cat-2 to #8A6E1F (≈4.7:1 on paper). Will shift the gold toward dark mustard but still distinct from other cats. OR keep for borders only (3:1 is acceptable for non-text UI components) and use a darker variant for text.</div>
+          
+          <details><summary>Before / After</summary><div class="code-compare"><div class="code-before"><div class="code-label">Before</div><pre><code>--cat-2: #C19A3D;</code></pre></div><div class="code-after"><div class="code-label">After</div><pre><code>--cat-2: #8A6E1F;  /* darker ochre, 4.7:1 */
+--cat-2-border: #C19A3D;  /* keep light for borders/accents */</code></pre></div></div></details>
+        </div>
+      </div>
+
+  <h2>Warnings</h2>
+  
+      <div class="finding warning">
+        <div class="finding-header">
+          <span class="severity-icon">&#9888;</span>
+          <strong>--ink-faint (#8A8578) fails AA: 3.44:1 contrast on paper background</strong>
+          <span class="wcag-tag">1.4.3</span>
+          <span class="level-tag">AA</span>
+        </div>
+        <div class="finding-body">
+          <p><strong>Affected users:</strong> Low-vision users, elderly users, users in bright daylight</p>
+          <p><strong>Location:</strong> <code>:root --ink-faint var, used in .filter-label, .shortlist-info, .card-meta-row, .card-cta, .head-right, .anti-list, footnote text, ~30+ usages</code></p>
+          <p>axe-core flagged 66 nodes; ink-faint is the primary culprit. Used widely for small labels (10-11px). Ratio is 3.44:1 vs 4.5:1 AA minimum.</p>
+          <div class="fix"><strong>Fix:</strong> Darken --ink-faint from #8A8578 to #6B6655 (raises contrast to 5.4:1, still keeps muted feel).</div>
+          <div class="legal"><strong>Legal:</strong> WCAG 1.4.3 is the most-litigated criterion (~80% of US ADA web cases cite it).</div>
+          <details><summary>Before / After</summary><div class="code-compare"><div class="code-before"><div class="code-label">Before</div><pre><code>--ink-faint: #8A8578;</code></pre></div><div class="code-after"><div class="code-label">After</div><pre><code>--ink-faint: #6B6655;  /* 5.4:1 on --paper, passes AA */</code></pre></div></div></details>
+        </div>
+      </div>
+      <div class="finding warning">
+        <div class="finding-header">
+          <span class="severity-icon">&#9888;</span>
+          <strong>--cat-1 (#B85C3D) fails AA when used as small text: 4.23:1</strong>
+          <span class="wcag-tag">1.4.3</span>
+          <span class="level-tag">AA</span>
+        </div>
+        <div class="finding-body">
+          <p><strong>Affected users:</strong> Low-vision users</p>
+          <p><strong>Location:</strong> <code>.cat-num for cat 1, .matrix-table .ref, .combo-load, .anti-list bullets</code></p>
+          <p>Need 4.5:1 for normal text. Currently 4.23. Borderline but fails.</p>
+          <div class="fix"><strong>Fix:</strong> Darken to #A04F33 (raises to ~4.8:1) or limit usage to ≥18pt large text where 3:1 is acceptable.</div>
+          
+          <details><summary>Before / After</summary><div class="code-compare"><div class="code-before"><div class="code-label">Before</div><pre><code>--cat-1: #B85C3D;</code></pre></div><div class="code-after"><div class="code-label">After</div><pre><code>--cat-1: #A04F33;  /* 4.8:1 on --paper */</code></pre></div></div></details>
+        </div>
+      </div>
+      <div class="finding warning">
+        <div class="finding-header">
+          <span class="severity-icon">&#9888;</span>
+          <strong>Page overflows horizontally at 320px viewport (WCAG 1.4.10 Reflow)</strong>
+          <span class="wcag-tag">1.4.10</span>
+          <span class="level-tag">AA</span>
+        </div>
+        <div class="finding-body">
+          <p><strong>Affected users:</strong> Mobile users, zoom users (zoom equivalent of 400% on 1280px desktop)</p>
+          <p><strong>Location:</strong> <code>main { max-width: 1640px; padding: 0 64px } and .cards { grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)) }</code></p>
+          <p>scrollWidth=487px on innerWidth=320px → 167px horizontal overflow. The card grid's minmax(320px, 1fr) forces 320px minimum cards, plus padding pushes total beyond viewport.</p>
+          <div class="fix"><strong>Fix:</strong> Use minmax(min(320px, 100%), 1fr) so cards shrink below 320px when needed. Reduce padding to 16px on narrow viewports.</div>
+          
+          <details><summary>Before / After</summary><div class="code-compare"><div class="code-before"><div class="code-label">Before</div><pre><code>.cards { grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); }</code></pre></div><div class="code-after"><div class="code-label">After</div><pre><code>.cards { grid-template-columns: repeat(auto-fill, minmax(min(320px, 100%), 1fr)); }
+@media (max-width: 480px) {
+  header.atlas-head, .control-bar, .workbench, main { padding-left: 16px; padding-right: 16px; }
+}</code></pre></div></div></details>
+        </div>
+      </div>
+      <div class="finding warning">
+        <div class="finding-header">
+          <span class="severity-icon">&#9888;</span>
+          <strong>Heading hierarchy skips levels (h1 → h3 in workbench)</strong>
+          <span class="wcag-tag">1.3.1</span>
+          <span class="level-tag">A</span>
+        </div>
+        <div class="finding-body">
+          <p><strong>Affected users:</strong> Screen reader users who navigate by headings</p>
+          <p><strong>Location:</strong> <code>Workbench section h3 elements directly under document with h1 only</code></p>
+          <p>Workbench h3 (你的組合 / 適合用在 / 建議補上) appear after the page h1 with no h2 in between (until the categories). Heading navigation (rotor) becomes confusing.</p>
+          <div class="fix"><strong>Fix:</strong> Either add a wrapping section with an h2 (e.g., 'Your Combo Workbench') or change the workbench h3 elements to h2.</div>
+          
+          <details><summary>Before / After</summary><div class="code-compare"><div class="code-before"><div class="code-label">Before</div><pre><code>&lt;section class=&quot;workbench&quot;&gt; ... &lt;h3&gt;你的組合&lt;/h3&gt; ... &lt;/section&gt;</code></pre></div><div class="code-after"><div class="code-label">After</div><pre><code>&lt;section class=&quot;workbench&quot; aria-labelledby=&quot;wb-h&quot;&gt; &lt;h2 id=&quot;wb-h&quot; class=&quot;sr-only&quot;&gt;Combo Workbench&lt;/h2&gt; ... &lt;h3&gt;你的組合&lt;/h3&gt; ... &lt;/section&gt;</code></pre></div></div></details>
+        </div>
+      </div>
+
+  <h2>Tips &amp; Best Practices</h2>
+  
+      <div class="finding tip">
+        <div class="finding-header">
+          <span class="severity-icon">&#x1F4A1;</span>
+          <strong><aside> elements are nested inside <section>, not at top level</strong>
+          <span class="wcag-tag">best-practice</span>
+          <span class="level-tag">Best Practice</span>
+        </div>
+        <div class="finding-body">
+          <p><strong>Affected users:</strong> Screen reader users using landmark navigation</p>
+          <p><strong>Location:</strong> <code>6 .cat-meta <aside> elements, each inside <section class="category"></code></p>
+          <p>Per ARIA spec, aside is a complementary landmark and should be top-level. axe flagged this as best-practice violation.</p>
+          <div class="fix"><strong>Fix:</strong> Change <aside class="cat-meta"> to <div> since it's not actually complementary content — it's the heading area of its section. Or restructure so aside is at top level.</div>
+          
+          
+        </div>
+      </div>
+      <div class="finding tip">
+        <div class="finding-header">
+          <span class="severity-icon">&#x1F4A1;</span>
+          <strong>No skip link to main content; long page (23 cards) requires extensive Tab navigation</strong>
+          <span class="wcag-tag">2.4.1</span>
+          <span class="level-tag">A</span>
+        </div>
+        <div class="finding-body">
+          <p><strong>Affected users:</strong> Keyboard users, screen reader users</p>
+          <p><strong>Location:</strong> <code><body> top</code></p>
+          <p>After fixing keyboard support on cards, this becomes important — without a skip link, users tab through control-bar (7+ stops) before reaching main content.</p>
+          <div class="fix"><strong>Fix:</strong> Add a visually hidden skip link as first focusable element.</div>
+          
+          
+        </div>
+      </div>
+      <div class="finding tip">
+        <div class="finding-header">
+          <span class="severity-icon">&#x1F4A1;</span>
+          <strong>No structured data (Schema.org JSON-LD), no Open Graph, no canonical URL</strong>
+          <span class="wcag-tag">best-practice (AEO)</span>
+          <span class="level-tag">Best Practice</span>
+        </div>
+        <div class="finding-body">
+          <p><strong>Affected users:</strong> AI agents, search engines, social media unfurl previews</p>
+          <p><strong>Location:</strong> <code><head></code></p>
+          <p>If shared as a personal brand artifact, the lack of metadata means LLM crawlers / search engines can't index it well. No og:title, no canonical, no JSON-LD.</p>
+          <div class="fix"><strong>Fix:</strong> Add basic Open Graph tags + a JSON-LD WebSite/CreativeWork block.</div>
+          
+          
+        </div>
+      </div>
+</div>
+
+<!-- Legal Tab -->
+<div id="tab-legal" class="tab-content">
+  
+    <div class="legal-risk-panel">
+      <h3>Legal Risk Assessment</h3>
+      <div class="risk-grid">
+        
+          <div class="risk-card" style="border-left:4px solid #ff4e42">
+            <div class="risk-header">
+              <strong>US ADA Title III</strong>
+              <span class="risk-badge" style="background:#ff4e42">HIGH</span>
+            </div>
+            <p>Americans with Disabilities Act &mdash; 4 critical Level A violations (keyboard inoperability across primary content), 3 Level AA violations (contrast, reflow). 8,000+ web a11y lawsuits filed annually 2023-2025. Most cite WCAG 1.4.3 + 2.1.1, both flagged here.</p>
+            
+            <p class="risk-score">Exposure Score: <strong>7/10</strong></p>
+          </div>
+          <div class="risk-card" style="border-left:4px solid #ffa400">
+            <div class="risk-header">
+              <strong>Japan JIS X 8341-3:2016</strong>
+              <span class="risk-badge" style="background:#ffa400">MEDIUM</span>
+            </div>
+            <p>Japanese Industrial Standard for Web Accessibility &mdash; Same WCAG mapping as ADA. Japan emphasizes voluntary compliance for private sites; mandatory for government. Lower litigation risk but reputational risk for organizations engaging APAC public sector.</p>
+            
+            <p class="risk-score">Exposure Score: <strong>4/10</strong></p>
+          </div>
+          <div class="risk-card" style="border-left:4px solid #ffa400">
+            <div class="risk-header">
+              <strong>Taiwan 無障礙網頁規範 2.0</strong>
+              <span class="risk-badge" style="background:#ffa400">MEDIUM</span>
+            </div>
+            <p>Web Accessibility Guidelines (Taiwan) &mdash; Based on WCAG 2.0 AA. Same violations apply. Mandatory for government and quasi-public organizations including some NGO classifications.</p>
+            
+            <p class="risk-score">Exposure Score: <strong>4/10</strong></p>
+          </div>
+      </div>
+      <div class="risk-summary">
+        <div class="overall-risk" style="background:#ff4e42">
+          Overall Risk: HIGH (7/10)
+        </div>
+      </div>
+    </div>
+</div>
+
+<!-- Remediation Tab -->
+<div id="tab-remediation" class="tab-content">
+  <h2>Remediation Priority</h2>
+  
+      <div class="priority-section">
+        <h3><span class="priority-tag p0">P0</span> P0 -- Must Fix (Level A)</h3>
+        
+          <div class="remediation-item">
+            <span>&#8226; Add keyboard support to cards / combos / synergies / suggestions (4 patterns) &mdash; 2.1.1</span>
+            <span class="effort-tag">~30 min</span>
+          </div>
+        
+          <div class="remediation-item">
+            <span>&#8226; Darken --ink-faint, --cat-1, --cat-2 to pass 4.5:1 AA &mdash; 1.4.3</span>
+            <span class="effort-tag">~10 min</span>
+          </div>
+        
+      </div>
+      <div class="priority-section">
+        <h3><span class="priority-tag p1">P1</span> P1 -- Should Fix (Level AA)</h3>
+        
+          <div class="remediation-item">
+            <span>&#8226; Fix 320px reflow with minmax(min(320px,100%),1fr) + tighter padding &mdash; 1.4.10</span>
+            <span class="effort-tag">~10 min</span>
+          </div>
+        
+          <div class="remediation-item">
+            <span>&#8226; Restructure heading hierarchy (h1 → h2 → h3, no skips) &mdash; 1.3.1</span>
+            <span class="effort-tag">~10 min</span>
+          </div>
+        
+      </div>
+      <div class="priority-section">
+        <h3><span class="priority-tag p2">P2</span> P2 -- Nice to Fix (Best Practices)</h3>
+        
+          <div class="remediation-item">
+            <span>&#8226; Replace aside with div for cat-meta blocks &mdash; best-practice</span>
+            <span class="effort-tag">~5 min</span>
+          </div>
+        
+          <div class="remediation-item">
+            <span>&#8226; Add skip link &mdash; 2.4.1</span>
+            <span class="effort-tag">~5 min</span>
+          </div>
+        
+          <div class="remediation-item">
+            <span>&#8226; Add Open Graph + JSON-LD if planning to share publicly &mdash; AEO</span>
+            <span class="effort-tag">~15 min</span>
+          </div>
+        
+      </div>
+
+  <h2>Testing Recommendations</h2>
+  <ul><li>After fixes, re-run axe-core to confirm 0 violations on color-contrast / region / landmark</li><li>Test keyboard-only flow: Tab through atlas, Enter to open detail, Tab in panel, Esc to close</li><li>Test with screen reader (NVDA on Windows / VoiceOver on Mac): browse by headings, by landmarks</li><li>Real-device test at 320px (iPhone SE) and 768px (iPad portrait)</li><li>If publishing: run beacon:inspect again to confirm score >= 85 for shareable artifact</li></ul>
+</div>
+
+<script>
+function switchTab(name) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+  document.querySelector(`.tab[onclick*="${name}"]`).classList.add('active');
+  document.getElementById('tab-' + name).classList.add('active');
+}
+document.querySelectorAll('.category-row').forEach(row => {
+  row.addEventListener('click', () => {
+    const id = row.dataset.category;
+    const detail = document.getElementById('detail-' + id);
+    if (detail) detail.classList.toggle('open');
+  });
+});
+</script>
+
+</body>
+</html>

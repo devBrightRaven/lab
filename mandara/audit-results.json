@@ -1,0 +1,261 @@
+{
+  "metadata": {
+    "date": "2026-05-05",
+    "scope": "thinking-routing-atlas-v2.html (single-page interactive a11y/AEO atlas)",
+    "standard": "WCAG 2.2 AA",
+    "jurisdictions": ["US ADA", "Japan JIS", "Taiwan"],
+    "platform": "Web",
+    "tool_version": "beacon:inspect v2.1",
+    "confidence_level": "high",
+    "requires_live_audit": false,
+    "notes": "Tier 2 audit: axe-core 4.10.2 injection + Playwright snapshot + manual reflow/contrast/keyboard checks. This is a private brainstorming artifact; legal exposure only relevant if shared/published."
+  },
+  "summary": {
+    "overall_score": 70,
+    "total_findings": 12,
+    "critical": 4,
+    "warnings": 5,
+    "tips": 3,
+    "unverifiable": 1,
+    "pedagogical_excluded": 0,
+    "categories": [
+      { "id": "contrast", "name": "Color & Contrast", "score": 60, "pass": 6, "fail": 3, "unverifiable": 1, "weight": 13 },
+      { "id": "keyboard", "name": "Keyboard Navigation", "score": 30, "pass": 4, "fail": 4, "unverifiable": 0, "weight": 13 },
+      { "id": "screenreader", "name": "Screen Reader", "score": 70, "pass": 7, "fail": 2, "unverifiable": 0, "weight": 18 },
+      { "id": "forms", "name": "Forms", "score": 100, "pass": 0, "fail": 0, "unverifiable": 0, "weight": 13, "note": "No forms on page" },
+      { "id": "responsive", "name": "Responsive & Reflow", "score": 55, "pass": 5, "fail": 2, "unverifiable": 0, "weight": 12 },
+      { "id": "touch", "name": "Touch & Target", "score": 88, "pass": 4, "fail": 0, "unverifiable": 0, "weight": 8 },
+      { "id": "cognitive", "name": "Cognitive", "score": 82, "pass": 5, "fail": 0, "unverifiable": 0, "weight": 8 },
+      { "id": "motion", "name": "Motion", "score": 92, "pass": 4, "fail": 0, "unverifiable": 0, "weight": 5 },
+      { "id": "media", "name": "Media", "score": 100, "pass": 0, "fail": 0, "unverifiable": 0, "weight": 5, "note": "No media on page" },
+      { "id": "agent", "name": "Agent Operability & AEO", "score": 55, "pass": 4, "fail": 4, "unverifiable": 0, "weight": 5 }
+    ]
+  },
+  "findings": [
+    {
+      "id": "f1",
+      "category": "keyboard",
+      "severity": "critical",
+      "title": "23 paradigm cards are mouse-only (div with click handler, no keyboard support)",
+      "wcag": "2.1.1",
+      "level": "A",
+      "affected_users": "Keyboard-only users, screen reader users, motor-impaired users using switch devices",
+      "location": ".card elements (23 nodes); buildCard() in script",
+      "description": "Cards are <div> elements with click handlers but no role, tabindex, or key event listener. Tab cannot reach them, Enter/Space cannot activate. The primary atlas browsing interaction is unreachable without a mouse.",
+      "fix": "Make cards proper <button> elements (preferred) OR add role=\"button\", tabindex=\"0\", and a keydown handler for Enter/Space. Native buttons inherit focus, keyboard activation, and screen reader semantics for free.",
+      "legal_exposure": "WCAG 2.1.1 is a Level A requirement. In US ADA Title III lawsuits 2023-2025, keyboard inoperability is one of the top-3 cited violations.",
+      "code_before": "card.addEventListener('click', () => openDetail(p.id));\n// card has no tabindex, no role, no keydown",
+      "code_after": "// Option A (preferred): use a <button>\nconst card = document.createElement('button');\ncard.type = 'button';\ncard.className = 'card';\n// ... rest unchanged\n\n// Option B: make div behave like button\ncard.tabIndex = 0;\ncard.setAttribute('role', 'button');\ncard.addEventListener('click', () => openDetail(p.id));\ncard.addEventListener('keydown', (e) => {\n  if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openDetail(p.id); }\n});"
+    },
+    {
+      "id": "f2",
+      "category": "keyboard",
+      "severity": "critical",
+      "title": "3 preset combo cards have click handler but no keyboard support",
+      "wcag": "2.1.1",
+      "level": "A",
+      "affected_users": "Keyboard-only users",
+      "location": ".combo elements (3 nodes); renderPresets() in script",
+      "description": "The recommended combo cards (一鍵載入) cannot be activated without a mouse. Same pattern as f1.",
+      "fix": "Same as f1 — convert to <button> or add tabindex/role/keydown.",
+      "legal_exposure": "Level A violation. Same risk profile as f1.",
+      "code_before": "div.addEventListener('click', () => loadCombo(preset.paradigms));",
+      "code_after": "const div = document.createElement('button');\ndiv.type = 'button';\ndiv.className = 'combo';\ndiv.addEventListener('click', () => loadCombo(preset.paradigms));"
+    },
+    {
+      "id": "f3",
+      "category": "keyboard",
+      "severity": "critical",
+      "title": "Synergy items in detail panel are clickable but not keyboard-reachable",
+      "wcag": "2.1.1",
+      "level": "A",
+      "affected_users": "Keyboard-only users",
+      "location": ".synergy-item (li elements with click handler)",
+      "description": "The synergy list inside detail panel lets you jump to another paradigm. Mouse-only.",
+      "fix": "Convert to <button> or add tabindex/role/keydown. Since synergies are inside lists, keep <li> wrapper but use a <button> inside.",
+      "legal_exposure": "Level A.",
+      "code_before": "li.addEventListener('click', () => openDetail(s.with));",
+      "code_after": "// Wrap inner content in a button:\nconst btn = document.createElement('button');\nbtn.type = 'button';\nbtn.className = 'synergy-link';\nbtn.append(head, why);\nbtn.addEventListener('click', () => openDetail(s.with));\nli.appendChild(btn);"
+    },
+    {
+      "id": "f4",
+      "category": "keyboard",
+      "severity": "critical",
+      "title": "Workbench suggestion items have click handler but no keyboard support",
+      "wcag": "2.1.1",
+      "level": "A",
+      "affected_users": "Keyboard-only users",
+      "location": ".wb-suggestion (div with click)",
+      "description": "Same div-as-button anti-pattern. Suggestions are also draggable but drag is mouse-only too.",
+      "fix": "Convert to <button> or add tabindex/role/keydown handler.",
+      "legal_exposure": "Level A."
+    },
+    {
+      "id": "f5",
+      "category": "contrast",
+      "severity": "warning",
+      "title": "--ink-faint (#8A8578) fails AA: 3.44:1 contrast on paper background",
+      "wcag": "1.4.3",
+      "level": "AA",
+      "affected_users": "Low-vision users, elderly users, users in bright daylight",
+      "location": ":root --ink-faint var, used in .filter-label, .shortlist-info, .card-meta-row, .card-cta, .head-right, .anti-list, footnote text, ~30+ usages",
+      "description": "axe-core flagged 66 nodes; ink-faint is the primary culprit. Used widely for small labels (10-11px). Ratio is 3.44:1 vs 4.5:1 AA minimum.",
+      "fix": "Darken --ink-faint from #8A8578 to #6B6655 (raises contrast to 5.4:1, still keeps muted feel).",
+      "legal_exposure": "WCAG 1.4.3 is the most-litigated criterion (~80% of US ADA web cases cite it).",
+      "code_before": "--ink-faint: #8A8578;",
+      "code_after": "--ink-faint: #6B6655;  /* 5.4:1 on --paper, passes AA */"
+    },
+    {
+      "id": "f6",
+      "category": "contrast",
+      "severity": "warning",
+      "title": "--cat-1 (#B85C3D) fails AA when used as small text: 4.23:1",
+      "wcag": "1.4.3",
+      "level": "AA",
+      "affected_users": "Low-vision users",
+      "location": ".cat-num for cat 1, .matrix-table .ref, .combo-load, .anti-list bullets",
+      "description": "Need 4.5:1 for normal text. Currently 4.23. Borderline but fails.",
+      "fix": "Darken to #A04F33 (raises to ~4.8:1) or limit usage to ≥18pt large text where 3:1 is acceptable.",
+      "code_before": "--cat-1: #B85C3D;",
+      "code_after": "--cat-1: #A04F33;  /* 4.8:1 on --paper */"
+    },
+    {
+      "id": "f7",
+      "category": "contrast",
+      "severity": "critical",
+      "title": "--cat-2 (#C19A3D) catastrophically fails AA: 2.47:1 on paper",
+      "wcag": "1.4.3",
+      "level": "AA",
+      "affected_users": "Low-vision users",
+      "location": ".cat-num for cat-2 (Curriculum 課程型), border-color usages",
+      "description": "Used as text color for category 2 number labels. 2.47:1 ratio. Light ochre on cream is one of the worst common combinations.",
+      "fix": "Darken cat-2 to #8A6E1F (≈4.7:1 on paper). Will shift the gold toward dark mustard but still distinct from other cats. OR keep for borders only (3:1 is acceptable for non-text UI components) and use a darker variant for text.",
+      "code_before": "--cat-2: #C19A3D;",
+      "code_after": "--cat-2: #8A6E1F;  /* darker ochre, 4.7:1 */\n--cat-2-border: #C19A3D;  /* keep light for borders/accents */"
+    },
+    {
+      "id": "f8",
+      "category": "responsive",
+      "severity": "warning",
+      "title": "Page overflows horizontally at 320px viewport (WCAG 1.4.10 Reflow)",
+      "wcag": "1.4.10",
+      "level": "AA",
+      "affected_users": "Mobile users, zoom users (zoom equivalent of 400% on 1280px desktop)",
+      "location": "main { max-width: 1640px; padding: 0 64px } and .cards { grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)) }",
+      "description": "scrollWidth=487px on innerWidth=320px → 167px horizontal overflow. The card grid's minmax(320px, 1fr) forces 320px minimum cards, plus padding pushes total beyond viewport.",
+      "fix": "Use minmax(min(320px, 100%), 1fr) so cards shrink below 320px when needed. Reduce padding to 16px on narrow viewports.",
+      "code_before": ".cards { grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); }",
+      "code_after": ".cards { grid-template-columns: repeat(auto-fill, minmax(min(320px, 100%), 1fr)); }\n@media (max-width: 480px) {\n  header.atlas-head, .control-bar, .workbench, main { padding-left: 16px; padding-right: 16px; }\n}"
+    },
+    {
+      "id": "f9",
+      "category": "screenreader",
+      "severity": "warning",
+      "title": "Heading hierarchy skips levels (h1 → h3 in workbench)",
+      "wcag": "1.3.1",
+      "level": "A",
+      "affected_users": "Screen reader users who navigate by headings",
+      "location": "Workbench section h3 elements directly under document with h1 only",
+      "description": "Workbench h3 (你的組合 / 適合用在 / 建議補上) appear after the page h1 with no h2 in between (until the categories). Heading navigation (rotor) becomes confusing.",
+      "fix": "Either add a wrapping section with an h2 (e.g., 'Your Combo Workbench') or change the workbench h3 elements to h2.",
+      "code_before": "<section class=\"workbench\"> ... <h3>你的組合</h3> ... </section>",
+      "code_after": "<section class=\"workbench\" aria-labelledby=\"wb-h\"> <h2 id=\"wb-h\" class=\"sr-only\">Combo Workbench</h2> ... <h3>你的組合</h3> ... </section>"
+    },
+    {
+      "id": "f10",
+      "category": "screenreader",
+      "severity": "tip",
+      "title": "<aside> elements are nested inside <section>, not at top level",
+      "wcag": "best-practice",
+      "level": "Best Practice",
+      "affected_users": "Screen reader users using landmark navigation",
+      "location": "6 .cat-meta <aside> elements, each inside <section class=\"category\">",
+      "description": "Per ARIA spec, aside is a complementary landmark and should be top-level. axe flagged this as best-practice violation.",
+      "fix": "Change <aside class=\"cat-meta\"> to <div> since it's not actually complementary content — it's the heading area of its section. Or restructure so aside is at top level."
+    },
+    {
+      "id": "f11",
+      "category": "screenreader",
+      "severity": "tip",
+      "title": "No skip link to main content; long page (23 cards) requires extensive Tab navigation",
+      "wcag": "2.4.1",
+      "level": "A",
+      "affected_users": "Keyboard users, screen reader users",
+      "location": "<body> top",
+      "description": "After fixing keyboard support on cards, this becomes important — without a skip link, users tab through control-bar (7+ stops) before reaching main content.",
+      "fix": "Add a visually hidden skip link as first focusable element."
+    },
+    {
+      "id": "f12",
+      "category": "agent",
+      "severity": "tip",
+      "title": "No structured data (Schema.org JSON-LD), no Open Graph, no canonical URL",
+      "wcag": "best-practice (AEO)",
+      "level": "Best Practice",
+      "affected_users": "AI agents, search engines, social media unfurl previews",
+      "location": "<head>",
+      "description": "If shared as a personal brand artifact, the lack of metadata means LLM crawlers / search engines can't index it well. No og:title, no canonical, no JSON-LD.",
+      "fix": "Add basic Open Graph tags + a JSON-LD WebSite/CreativeWork block."
+    }
+  ],
+  "axe_summary": {
+    "tool": "axe-core 4.10.2",
+    "violations": 3,
+    "passes": 24,
+    "incomplete": 1,
+    "inapplicable": 63,
+    "violations_detail": [
+      { "id": "color-contrast", "impact": "serious", "node_count": 66, "wcag": "1.4.3" },
+      { "id": "landmark-complementary-is-top-level", "impact": "moderate", "node_count": 6, "wcag": "best-practice" },
+      { "id": "region", "impact": "moderate", "node_count": 2, "wcag": "best-practice" }
+    ]
+  },
+  "legal_risk": {
+    "overall_level": "high",
+    "overall_score": 7,
+    "jurisdictions": [
+      {
+        "name": "US ADA Title III",
+        "law": "Americans with Disabilities Act",
+        "risk_level": "high",
+        "score": 7,
+        "detail": "4 critical Level A violations (keyboard inoperability across primary content), 3 Level AA violations (contrast, reflow). 8,000+ web a11y lawsuits filed annually 2023-2025. Most cite WCAG 1.4.3 + 2.1.1, both flagged here.",
+        "deadline": null
+      },
+      {
+        "name": "Japan JIS X 8341-3:2016",
+        "law": "Japanese Industrial Standard for Web Accessibility",
+        "risk_level": "medium",
+        "score": 4,
+        "detail": "Same WCAG mapping as ADA. Japan emphasizes voluntary compliance for private sites; mandatory for government. Lower litigation risk but reputational risk for organizations engaging APAC public sector.",
+        "deadline": null
+      },
+      {
+        "name": "Taiwan 無障礙網頁規範 2.0",
+        "law": "Web Accessibility Guidelines (Taiwan)",
+        "risk_level": "medium",
+        "score": 4,
+        "detail": "Based on WCAG 2.0 AA. Same violations apply. Mandatory for government and quasi-public organizations including some NGO classifications.",
+        "deadline": null
+      }
+    ],
+    "context_note": "This is currently a private brainstorming artifact. Legal exposure becomes real only if shared publicly, embedded in personal brand site, or used by AIA NGO. Keyboard inoperability is the show-stopper for any of those scenarios."
+  },
+  "remediation": [
+    { "priority": "p0", "title": "Add keyboard support to cards / combos / synergies / suggestions (4 patterns)", "wcag": "2.1.1", "effort": "~30 min", "blocks": "any public sharing" },
+    { "priority": "p0", "title": "Darken --ink-faint, --cat-1, --cat-2 to pass 4.5:1 AA", "wcag": "1.4.3", "effort": "~10 min" },
+    { "priority": "p1", "title": "Fix 320px reflow with minmax(min(320px,100%),1fr) + tighter padding", "wcag": "1.4.10", "effort": "~10 min" },
+    { "priority": "p1", "title": "Restructure heading hierarchy (h1 → h2 → h3, no skips)", "wcag": "1.3.1", "effort": "~10 min" },
+    { "priority": "p2", "title": "Replace aside with div for cat-meta blocks", "wcag": "best-practice", "effort": "~5 min" },
+    { "priority": "p2", "title": "Add skip link", "wcag": "2.4.1", "effort": "~5 min" },
+    { "priority": "p2", "title": "Add Open Graph + JSON-LD if planning to share publicly", "wcag": "AEO", "effort": "~15 min" }
+  ],
+  "testing_recommendations": [
+    "After fixes, re-run axe-core to confirm 0 violations on color-contrast / region / landmark",
+    "Test keyboard-only flow: Tab through atlas, Enter to open detail, Tab in panel, Esc to close",
+    "Test with screen reader (NVDA on Windows / VoiceOver on Mac): browse by headings, by landmarks",
+    "Real-device test at 320px (iPhone SE) and 768px (iPad portrait)",
+    "If publishing: run beacon:inspect again to confirm score >= 85 for shareable artifact"
+  ],
+  "score_interpretation": "70/100 = 'Good — significant issues need attention'. Acceptable for private brainstorming use, NOT acceptable for sharing externally. The 4 keyboard criticals (p0) are show-stoppers — they remove ~30 of the 100 points and are also the easiest wins (~30 min total)."
+}

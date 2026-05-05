@@ -1,0 +1,2107 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>思維路由地圖 · Thinking Routing Atlas v2</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;0,6..72,600;0,6..72,700;1,6..72,400&family=Noto+Serif+TC:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Source+Sans+3:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --paper: #FAF7F0;
+  --paper-deep: #F2EDDF;
+  --paper-edge: #E8E2D0;
+  --ink: #1A1A1A;
+  --ink-soft: #2E2E2E;
+  --ink-mute: #5C5C5C;
+  --ink-faint: #8A8578;
+  --hairline: #D9D2C2;
+  --hairline-soft: #E5DEC9;
+
+  --cat-1: #B85C3D;
+  --cat-2: #C19A3D;
+  --cat-3: #5C7A4F;
+  --cat-4: #3D5C8C;
+  --cat-5: #4A4A4A;
+  --cat-6: #7A4A6A;
+
+  --serif: 'Newsreader', 'Noto Serif TC', Georgia, serif;
+  --sans: 'Source Sans 3', -apple-system, system-ui, "Segoe UI", "Microsoft JhengHei", sans-serif;
+  --mono: 'JetBrains Mono', "SF Mono", Consolas, Menlo, monospace;
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: 14px;
+  line-height: 1.55;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ========= Header ========= */
+header.atlas-head {
+  border-bottom: 1px solid var(--hairline);
+  padding: 56px 64px 36px 64px;
+  background: linear-gradient(180deg, var(--paper-deep) 0%, var(--paper) 100%);
+}
+.head-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 48px;
+  max-width: 1640px;
+  margin: 0 auto;
+}
+.head-left h1 {
+  font-family: var(--serif);
+  font-weight: 500;
+  font-size: 56px;
+  letter-spacing: -0.02em;
+  margin: 0 0 6px 0;
+  line-height: 1.05;
+}
+.head-left .subtitle-en {
+  font-family: var(--serif);
+  font-style: italic;
+  font-weight: 400;
+  font-size: 22px;
+  color: var(--ink-mute);
+  margin: 0;
+}
+.head-right {
+  text-align: right;
+  color: var(--ink-mute);
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  line-height: 1.8;
+}
+.head-right .stat { display: inline-block; margin-left: 18px; }
+.head-right .stat strong {
+  font-family: var(--serif);
+  font-weight: 600;
+  font-size: 18px;
+  color: var(--ink);
+  margin-right: 4px;
+  letter-spacing: 0;
+}
+.head-blurb {
+  margin: 28px auto 0 auto;
+  font-family: var(--serif);
+  font-size: 17px;
+  line-height: 1.65;
+  color: var(--ink-soft);
+  max-width: 880px;
+}
+.head-blurb em { color: var(--cat-1); font-style: normal; font-weight: 500; }
+
+.junior-note {
+  background: var(--paper-deep);
+  border: 1px dashed var(--hairline);
+  padding: 14px 18px;
+  margin: 0 auto;
+  max-width: 1640px;
+  font-size: 13px;
+  color: var(--ink-mute);
+  line-height: 1.55;
+}
+.junior-note strong {
+  color: var(--ink);
+  font-family: var(--mono);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-right: 8px;
+}
+
+/* ========= Control bar ========= */
+.control-bar {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  background: var(--paper);
+  border-bottom: 1px solid var(--hairline);
+  padding: 14px 64px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 32px;
+}
+.filter-group { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.filter-label {
+  font-family: var(--mono);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--ink-faint);
+  margin-right: 8px;
+}
+.filter-pill {
+  font-family: var(--sans);
+  font-size: 13px;
+  font-weight: 500;
+  padding: 5px 12px;
+  border: 1px solid var(--hairline);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--ink-soft);
+  cursor: pointer;
+  transition: all 0.18s ease;
+}
+.filter-pill:hover { background: var(--paper-deep); border-color: var(--ink-mute); }
+.filter-pill.active { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+
+.workbench-toggle {
+  font-family: var(--mono);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--ink-mute);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 6px 12px;
+  border: 1px solid var(--hairline);
+  border-radius: 4px;
+  transition: all 0.18s ease;
+}
+.workbench-toggle:hover { background: var(--paper-deep); border-color: var(--ink-mute); }
+.workbench-toggle.has-items { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+.workbench-toggle.drop-zone {
+  border-style: dashed;
+  border-color: var(--cat-1);
+  color: var(--cat-1);
+  background: var(--paper-edge);
+  animation: pulse 1.4s ease-in-out infinite;
+}
+.workbench-toggle.drop-active {
+  background: var(--cat-1) !important;
+  color: var(--paper) !important;
+  border-color: var(--cat-1) !important;
+  border-style: solid;
+  animation: none;
+}
+.workbench.drop-zone {
+  outline: 2px dashed var(--cat-1);
+  outline-offset: -8px;
+  background: linear-gradient(180deg, rgba(184,92,61,0.06) 0%, var(--paper-deep) 60%);
+}
+.workbench.drop-active {
+  outline-style: solid;
+  outline-width: 3px;
+  background: linear-gradient(180deg, rgba(184,92,61,0.14) 0%, var(--paper-edge) 70%);
+}
+@keyframes pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(184,92,61,0.35); }
+  50% { box-shadow: 0 0 0 6px rgba(184,92,61,0); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .workbench-toggle.drop-zone { animation: none; }
+}
+.workbench-toggle .count {
+  font-family: var(--serif);
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+/* ========= Combo Workbench ========= */
+.workbench {
+  position: sticky;
+  top: 56px;
+  z-index: 19;
+  background: var(--paper-deep);
+  border-bottom: 1px solid var(--hairline);
+  padding: 22px 64px 24px 64px;
+  display: none;
+}
+.workbench.open { display: block; }
+.workbench-grid {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr 1fr;
+  gap: 36px;
+  max-width: 1640px;
+  margin: 0 auto;
+}
+.wb-section h3 {
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--ink-faint);
+  margin: 0 0 10px 0;
+}
+.wb-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 12px;
+}
+.wb-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  background: var(--ink);
+  color: var(--paper);
+  font-size: 12.5px;
+  border-radius: 4px;
+  font-weight: 500;
+}
+.wb-chip .x {
+  font-family: var(--mono);
+  font-size: 12px;
+  cursor: pointer;
+  opacity: 0.6;
+  margin-left: 2px;
+}
+.wb-chip .x:hover { opacity: 1; }
+.wb-empty {
+  font-family: var(--serif);
+  font-style: italic;
+  color: var(--ink-faint);
+  font-size: 14px;
+}
+.wb-synthesis {
+  font-family: var(--serif);
+  font-size: 14.5px;
+  line-height: 1.6;
+  color: var(--ink-soft);
+}
+.wb-synthesis em { font-style: italic; color: var(--cat-1); }
+.wb-preset-match {
+  margin-top: 10px;
+  padding: 8px 12px;
+  background: var(--paper);
+  border-left: 3px solid var(--cat-3);
+  font-size: 13px;
+  color: var(--ink-soft);
+}
+.wb-preset-match strong { color: var(--cat-3); }
+.wb-context-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  font-size: 13px;
+  color: var(--ink-soft);
+  line-height: 1.6;
+}
+.wb-context-list li {
+  padding: 6px 0;
+  border-bottom: 1px solid var(--hairline-soft);
+}
+.wb-context-list li:last-child { border-bottom: none; }
+.wb-context-list .ctx-tag {
+  display: inline-block;
+  font-family: var(--mono);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--ink-faint);
+  margin-right: 8px;
+}
+.wb-suggestion {
+  padding: 10px 12px;
+  background: var(--paper);
+  border: 1px solid var(--hairline);
+  margin-bottom: 8px;
+  cursor: pointer;
+  transition: all 0.18s ease;
+}
+.wb-suggestion:hover { border-color: var(--ink-mute); background: var(--paper-edge); }
+.wb-suggestion[draggable="true"]:active { cursor: grabbing; }
+.wb-suggestion.dragging { opacity: 0.4; }
+.wb-suggestion-name {
+  font-family: var(--serif);
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--ink);
+  margin-bottom: 2px;
+}
+.wb-suggestion-name .plus {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--cat-1);
+  margin-right: 4px;
+  font-weight: 400;
+}
+.wb-suggestion-reason {
+  font-size: 12px;
+  color: var(--ink-mute);
+  line-height: 1.5;
+}
+.wb-clear {
+  background: none;
+  border: 1px solid var(--hairline);
+  color: var(--ink-mute);
+  font-family: var(--mono);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 4px 10px;
+  cursor: pointer;
+  border-radius: 4px;
+}
+.wb-clear:hover { color: var(--cat-1); border-color: var(--cat-1); }
+
+/* ========= Main ========= */
+main {
+  padding: 0 64px 80px 64px;
+  max-width: 1640px;
+  margin: 0 auto;
+}
+
+.category {
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  gap: 48px;
+  padding: 40px 0;
+  border-bottom: 1px solid var(--hairline-soft);
+}
+.cat-meta { position: sticky; top: 80px; align-self: start; }
+.cat-num {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  color: var(--ink-faint);
+  margin-bottom: 6px;
+}
+.cat-name-zh {
+  font-family: var(--serif);
+  font-size: 30px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  line-height: 1.1;
+  margin: 0;
+}
+.cat-name-en {
+  font-family: var(--serif);
+  font-style: italic;
+  color: var(--ink-mute);
+  font-size: 16px;
+  margin-top: 2px;
+  font-weight: 400;
+}
+.cat-tagline {
+  margin-top: 14px;
+  font-size: 13.5px;
+  color: var(--ink-mute);
+  line-height: 1.55;
+  border-left: 2px solid;
+  padding-left: 12px;
+}
+
+.category[data-cat="1"] .cat-tagline,
+.category[data-cat="1"] .cat-num { color: var(--cat-1); border-color: var(--cat-1); }
+.category[data-cat="2"] .cat-tagline,
+.category[data-cat="2"] .cat-num { color: var(--cat-2); border-color: var(--cat-2); }
+.category[data-cat="3"] .cat-tagline,
+.category[data-cat="3"] .cat-num { color: var(--cat-3); border-color: var(--cat-3); }
+.category[data-cat="4"] .cat-tagline,
+.category[data-cat="4"] .cat-num { color: var(--cat-4); border-color: var(--cat-4); }
+.category[data-cat="5"] .cat-tagline,
+.category[data-cat="5"] .cat-num { color: var(--cat-5); border-color: var(--cat-5); }
+.category[data-cat="6"] .cat-tagline,
+.category[data-cat="6"] .cat-num { color: var(--cat-6); border-color: var(--cat-6); }
+
+.category[data-cat="1"] .cat-tagline,
+.category[data-cat="2"] .cat-tagline,
+.category[data-cat="3"] .cat-tagline,
+.category[data-cat="4"] .cat-tagline,
+.category[data-cat="5"] .cat-tagline,
+.category[data-cat="6"] .cat-tagline { color: var(--ink-mute); }
+
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 18px;
+}
+.card {
+  position: relative;
+  padding: 18px 20px 18px 24px;
+  border: 1px solid var(--hairline);
+  background: var(--paper);
+  cursor: pointer;
+  transition: all 0.18s ease;
+  display: flex;
+  flex-direction: column;
+}
+.card::before {
+  content: "";
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 3px;
+  background: currentColor;
+  opacity: 0.85;
+}
+.card[data-cat="1"] { color: var(--cat-1); }
+.card[data-cat="2"] { color: var(--cat-2); }
+.card[data-cat="3"] { color: var(--cat-3); }
+.card[data-cat="4"] { color: var(--cat-4); }
+.card[data-cat="5"] { color: var(--cat-5); }
+.card[data-cat="6"] { color: var(--cat-6); }
+
+.card:hover { background: var(--paper-deep); border-color: var(--ink-mute); }
+.card[draggable="true"]:active { cursor: grabbing; }
+.card.dragging { opacity: 0.4; }
+.card.in-combo {
+  background: var(--ink);
+  border-color: var(--ink);
+}
+.card.in-combo .card-name,
+.card.in-combo .card-en,
+.card.in-combo .card-philosophy,
+.card.in-combo .card-meta-row,
+.card.in-combo .card-tags { color: var(--paper); }
+.card.in-combo .card-count { color: var(--paper-edge); opacity: 0.7; }
+.card.in-combo::before { background: var(--paper); opacity: 1; }
+.card.in-combo .card-tag { border-color: var(--paper-edge); color: var(--paper-edge); opacity: 0.85; }
+.card.dim { opacity: 0.32; }
+
+.card-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 10px;
+  margin-bottom: 6px;
+}
+.card-name {
+  font-family: var(--serif);
+  font-size: 19px;
+  font-weight: 600;
+  color: var(--ink);
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+}
+.card-count {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--ink-faint);
+  white-space: nowrap;
+}
+.card-en {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 13px;
+  color: var(--ink-mute);
+  margin-bottom: 4px;
+}
+.card-meta-row {
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  margin-bottom: 10px;
+}
+.card-philosophy {
+  font-size: 13px;
+  line-height: 1.55;
+  color: var(--ink-soft);
+  flex-grow: 1;
+  margin-bottom: 12px;
+}
+.card-tags {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.05em;
+  color: var(--ink-mute);
+  text-transform: uppercase;
+}
+.card-tag {
+  padding: 2px 7px;
+  border: 1px solid var(--hairline);
+  border-radius: 2px;
+}
+.card-cta {
+  margin-top: 6px;
+  font-family: var(--mono);
+  font-size: 10.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--ink-faint);
+}
+.card.in-combo .card-cta { color: var(--paper-edge); }
+
+/* ========= Routing matrix & combos (kept from v1) ========= */
+.matrix-section { padding: 56px 0 48px 0; border-bottom: 1px solid var(--hairline-soft); }
+.section-h {
+  font-family: var(--serif);
+  font-weight: 500;
+  font-size: 28px;
+  letter-spacing: -0.01em;
+  margin: 0 0 4px 0;
+}
+.section-h-en {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 15px;
+  color: var(--ink-mute);
+  margin-bottom: 28px;
+}
+.matrix-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.matrix-table th, .matrix-table td {
+  padding: 12px 14px;
+  text-align: left;
+  vertical-align: top;
+  border-bottom: 1px solid var(--hairline-soft);
+}
+.matrix-table th {
+  font-family: var(--mono);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--ink-faint);
+  font-weight: 500;
+  border-bottom: 1px solid var(--hairline);
+}
+.matrix-table .situation {
+  font-family: var(--serif);
+  font-size: 16px;
+  font-weight: 500;
+  width: 22%;
+}
+.matrix-table .primary { font-weight: 500; }
+.matrix-table .primary .ref {
+  color: var(--cat-1);
+  font-family: var(--mono);
+  font-size: 11px;
+  margin-left: 4px;
+}
+.matrix-table .secondary { color: var(--ink-mute); width: 28%; }
+.matrix-table .why { color: var(--ink-soft); font-size: 12.5px; line-height: 1.55; }
+
+.combos { padding: 48px 0 32px 0; }
+.combo-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(420px, 1fr));
+  gap: 28px;
+  margin-top: 12px;
+}
+.combo {
+  border: 1px solid var(--hairline);
+  padding: 24px 26px;
+  background: var(--paper-deep);
+  cursor: pointer;
+  transition: all 0.18s ease;
+}
+.combo:hover { border-color: var(--ink-mute); background: var(--paper-edge); }
+.combo-name {
+  font-family: var(--serif);
+  font-size: 22px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  margin: 0 0 4px 0;
+}
+.combo-context {
+  font-family: var(--mono);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--ink-faint);
+  margin-bottom: 16px;
+}
+.combo-formula {
+  font-family: var(--serif);
+  font-size: 15px;
+  font-style: italic;
+  color: var(--ink-mute);
+  padding: 10px 0;
+  border-top: 1px solid var(--hairline);
+  border-bottom: 1px solid var(--hairline);
+  margin-bottom: 14px;
+}
+.combo-formula .plus { color: var(--cat-1); margin: 0 6px; font-style: normal; font-weight: 500; }
+.combo-rationale {
+  font-size: 13px;
+  color: var(--ink-soft);
+  line-height: 1.6;
+  margin: 0 0 10px 0;
+}
+.combo-load {
+  font-family: var(--mono);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--cat-1);
+  font-weight: 500;
+}
+
+.footnote {
+  margin-top: 64px;
+  padding-top: 24px;
+  border-top: 1px solid var(--hairline);
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 32px;
+  font-size: 12px;
+  color: var(--ink-mute);
+  line-height: 1.55;
+}
+.footnote h4 {
+  font-family: var(--mono);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--ink);
+  font-weight: 500;
+  margin: 0 0 8px 0;
+}
+.footnote p { margin: 0 0 8px 0; }
+.footnote code {
+  background: var(--paper-deep);
+  padding: 1px 5px;
+  border: 1px solid var(--hairline);
+  border-radius: 2px;
+  font-family: var(--mono);
+  font-size: 11px;
+}
+
+/* ========= Detail Panel (right drawer) ========= */
+.detail-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(26, 26, 26, 0.45);
+  z-index: 100;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.22s ease;
+}
+.detail-backdrop.open { opacity: 1; pointer-events: auto; }
+.detail-panel {
+  position: fixed;
+  top: 0; right: 0; bottom: 0;
+  width: 520px;
+  max-width: 100vw;
+  background: var(--paper);
+  z-index: 101;
+  transform: translateX(100%);
+  transition: transform 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow-y: auto;
+  border-left: 1px solid var(--hairline);
+  box-shadow: -8px 0 32px rgba(0, 0, 0, 0.08);
+}
+.detail-panel.open { transform: translateX(0); }
+.detail-head {
+  padding: 32px 36px 24px 36px;
+  border-bottom: 1px solid var(--hairline);
+  position: relative;
+}
+.detail-close {
+  position: absolute;
+  top: 24px;
+  right: 24px;
+  background: none;
+  border: 1px solid var(--hairline);
+  width: 32px;
+  height: 32px;
+  cursor: pointer;
+  font-family: var(--mono);
+  font-size: 14px;
+  color: var(--ink-mute);
+  border-radius: 4px;
+  transition: all 0.18s ease;
+}
+.detail-close:hover { background: var(--paper-deep); border-color: var(--ink-mute); }
+.detail-cat-stripe {
+  width: 32px;
+  height: 4px;
+  margin-bottom: 10px;
+  background: currentColor;
+}
+.detail-cat-label {
+  font-family: var(--mono);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--ink-faint);
+  margin-bottom: 8px;
+}
+.detail-name {
+  font-family: var(--serif);
+  font-weight: 500;
+  font-size: 30px;
+  letter-spacing: -0.01em;
+  line-height: 1.1;
+  margin: 0 0 4px 0;
+  color: var(--ink);
+}
+.detail-name-en {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 16px;
+  color: var(--ink-mute);
+  margin-bottom: 14px;
+}
+.detail-meta {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  color: var(--ink-mute);
+  text-transform: uppercase;
+  display: flex;
+  gap: 16px;
+}
+.detail-meta .dot { color: var(--ink-faint); }
+
+.detail-body { padding: 24px 36px 36px 36px; }
+.detail-section {
+  padding: 20px 0;
+  border-bottom: 1px solid var(--hairline-soft);
+}
+.detail-section:last-child { border-bottom: none; padding-bottom: 0; }
+.detail-section h4 {
+  font-family: var(--mono);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--ink-faint);
+  font-weight: 500;
+  margin: 0 0 12px 0;
+}
+.detail-section .lead {
+  font-family: var(--serif);
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--ink-soft);
+  font-style: italic;
+}
+.detail-howto {
+  font-size: 14px;
+  line-height: 1.65;
+  color: var(--ink-soft);
+}
+.app-block {
+  padding: 12px 0;
+  display: grid;
+  grid-template-columns: 76px 1fr;
+  gap: 14px;
+  align-items: baseline;
+}
+.app-block + .app-block { border-top: 1px solid var(--hairline-soft); }
+.app-context {
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  padding-top: 2px;
+}
+.app-text {
+  font-size: 13.5px;
+  line-height: 1.6;
+  color: var(--ink-soft);
+}
+.synergy-list { list-style: none; padding: 0; margin: 0; }
+.synergy-item {
+  padding: 10px 0;
+  border-bottom: 1px solid var(--hairline-soft);
+  cursor: pointer;
+  transition: all 0.18s ease;
+}
+.synergy-item:last-child { border-bottom: none; }
+.synergy-item:hover { background: var(--paper-deep); padding-left: 8px; }
+.synergy-with {
+  font-family: var(--serif);
+  font-weight: 600;
+  color: var(--ink);
+  margin-right: 4px;
+}
+.synergy-with .arrow {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--cat-1);
+  margin-right: 6px;
+}
+.synergy-why {
+  font-size: 13px;
+  color: var(--ink-mute);
+  line-height: 1.55;
+}
+.anti-list { list-style: none; padding: 0; margin: 0; }
+.anti-list li {
+  padding: 6px 0 6px 18px;
+  position: relative;
+  font-size: 13px;
+  line-height: 1.55;
+  color: var(--ink-mute);
+}
+.anti-list li::before {
+  content: "—";
+  position: absolute;
+  left: 0;
+  color: var(--cat-1);
+  font-family: var(--mono);
+}
+
+.detail-actions {
+  padding: 20px 36px 36px 36px;
+  display: flex;
+  gap: 10px;
+  border-top: 1px solid var(--hairline);
+  background: var(--paper-deep);
+  position: sticky;
+  bottom: 0;
+}
+.btn-primary, .btn-secondary {
+  flex: 1;
+  padding: 12px 16px;
+  font-family: var(--sans);
+  font-weight: 600;
+  font-size: 14px;
+  letter-spacing: 0.01em;
+  cursor: pointer;
+  border-radius: 4px;
+  border: 1px solid var(--ink);
+  transition: all 0.18s ease;
+}
+.btn-primary { background: var(--ink); color: var(--paper); }
+.btn-primary:hover { background: var(--cat-1); border-color: var(--cat-1); }
+.btn-secondary { background: var(--paper); color: var(--ink); }
+.btn-secondary:hover { background: var(--paper-edge); }
+.btn-primary.is-in { background: var(--paper); color: var(--ink); }
+.btn-primary.is-in:hover { background: var(--cat-1); color: var(--paper); border-color: var(--cat-1); }
+
+@media (max-width: 1100px) {
+  header.atlas-head, .control-bar, .workbench, main { padding-left: 32px; padding-right: 32px; }
+  .head-row { flex-direction: column; align-items: flex-start; }
+  .head-right { text-align: left; }
+  .category { grid-template-columns: 1fr; gap: 20px; }
+  .cat-meta { position: static; }
+  .footnote, .workbench-grid { grid-template-columns: 1fr; gap: 24px; }
+  .detail-panel { width: 100vw; }
+}
+</style>
+</head>
+<body>
+
+<header class="atlas-head">
+  <div class="head-row">
+    <div class="head-left">
+      <h1>思維路由地圖</h1>
+      <p class="subtitle-en">Thinking Routing Atlas · v2 · Interactive</p>
+    </div>
+    <div class="head-right">
+      <div>編譯版本 / Edition v2 · 2026-05-04</div>
+      <div>
+        <span class="stat"><strong>23</strong> 框架</span>
+        <span class="stat"><strong>6</strong> 範式</span>
+        <span class="stat"><strong>2</strong> 工作軌道</span>
+      </div>
+    </div>
+  </div>
+  <p class="head-blurb">
+    這是一張可<em>合成</em>的路由圖。點任何卡片看「怎麼用 / 用在哪 / 跟誰搭配」。 加入組合後上方 Workbench 會出現,告訴你這個組合適合什麼情境、可以再加什麼補強。 點下方推薦組合的卡片可一鍵載入。
+  </p>
+</header>
+
+<div class="junior-note">
+  <strong>v2 互動</strong>點卡片打開右側詳情;按「加入組合」累加;頂部 Workbench 看合成解讀與推薦。 內容可挑戰、視覺可調、互動邏輯可改。
+</div>
+
+<section class="control-bar">
+  <div class="filter-group">
+    <span class="filter-label">情境 / Context</span>
+    <button class="filter-pill active" data-filter="all">所有</button>
+    <button class="filter-pill" data-filter="brand">個人品牌</button>
+    <button class="filter-pill" data-filter="ngo">NGO governance</button>
+    <button class="filter-pill" data-filter="cultural">跨文化</button>
+    <button class="filter-pill" data-filter="crisis">危機決策</button>
+    <button class="filter-pill" data-filter="reflective">反思學習</button>
+  </div>
+  <button class="workbench-toggle" id="wb-toggle">
+    <span>combo workbench</span>
+    <span class="count" id="wb-count">0</span>
+  </button>
+</section>
+
+<section class="workbench" id="workbench">
+  <div class="workbench-grid">
+    <div class="wb-section">
+      <h3>你的組合 · Current Combo</h3>
+      <div class="wb-chips" id="wb-chips"></div>
+      <div class="wb-synthesis" id="wb-synthesis"></div>
+      <div id="wb-preset-match"></div>
+      <div style="margin-top: 14px;">
+        <button class="wb-clear" id="wb-clear">clear</button>
+      </div>
+    </div>
+    <div class="wb-section">
+      <h3>適合用在 · Best Fits</h3>
+      <ul class="wb-context-list" id="wb-contexts"></ul>
+    </div>
+    <div class="wb-section">
+      <h3>建議補上 · Suggestions</h3>
+      <div id="wb-suggestions"></div>
+    </div>
+  </div>
+</section>
+
+<main>
+  <section class="category" data-cat="1">
+    <aside class="cat-meta">
+      <div class="cat-num">範式 01 / Cat. I</div>
+      <h2 class="cat-name-zh">Latticework 收集型</h2>
+      <div class="cat-name-en">The Latticework Approach</div>
+      <p class="cat-tagline">多多益善,跨學科連網,case-by-case 召喚。沒有正式結構,廣度優先。</p>
+    </aside>
+    <div class="cards" id="cards-cat1"></div>
+  </section>
+
+  <section class="category" data-cat="2">
+    <aside class="cat-meta">
+      <div class="cat-num">範式 02 / Cat. II</div>
+      <h2 class="cat-name-zh">Curriculum 課程型</h2>
+      <div class="cat-name-en">The Curricular Approach</div>
+      <p class="cat-tagline">精選工具集,有定義 + 應用範例 + 評估標準,反覆練習到內化成思考習慣。</p>
+    </aside>
+    <div class="cards" id="cards-cat2"></div>
+  </section>
+
+  <section class="category" data-cat="3">
+    <aside class="cat-meta">
+      <div class="cat-num">範式 03 / Cat. III</div>
+      <h2 class="cat-name-zh">Cynefin 情境路由型</h2>
+      <div class="cat-name-en">The Sense-Making Approach</div>
+      <p class="cat-tagline">先判斷你在哪個情境,再決定方法論。本身是 router 而不是 toolkit。</p>
+    </aside>
+    <div class="cards" id="cards-cat3"></div>
+  </section>
+
+  <section class="category" data-cat="4">
+    <aside class="cat-meta">
+      <div class="cat-num">範式 04 / Cat. IV</div>
+      <h2 class="cat-name-zh">Loop 迴路型</h2>
+      <div class="cat-name-en">The Cyclic Approach</div>
+      <p class="cat-tagline">不是工具庫,是動作節奏。觀察、定向、決策、行動的迭代循環。</p>
+    </aside>
+    <div class="cards" id="cards-cat4"></div>
+  </section>
+
+  <section class="category" data-cat="5">
+    <aside class="cat-meta">
+      <div class="cat-num">範式 05 / Cat. V</div>
+      <h2 class="cat-name-zh">Anti-Bias 反思型</h2>
+      <div class="cat-name-en">The Reflective Approach</div>
+      <p class="cat-tagline">不給你新觀點,讓你避開現有思考的陷阱。校準判斷力,適合決策後 retrospective。</p>
+    </aside>
+    <div class="cards" id="cards-cat5"></div>
+  </section>
+
+  <section class="category" data-cat="6">
+    <aside class="cat-meta">
+      <div class="cat-num">範式 06 / Cat. VI</div>
+      <h2 class="cat-name-zh">Container/Frame 容器框架型</h2>
+      <div class="cat-name-en">The Structural Approach</div>
+      <p class="cat-tagline">工具的「家」,或角色/論證/影響/世界觀的舞台。提供結構,不直接給內容。</p>
+    </aside>
+    <div class="cards" id="cards-cat6"></div>
+  </section>
+
+  <section class="matrix-section">
+    <h2 class="section-h">路由邏輯</h2>
+    <div class="section-h-en">Routing Logic · 從情境到範式</div>
+    <table class="matrix-table">
+      <thead>
+        <tr>
+          <th>情境 / Situation</th>
+          <th>主軸範式 / Primary</th>
+          <th>輔助範式 / Secondary</th>
+          <th>為何這樣路由 / Rationale</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td class="situation">個人品牌寫作</td><td class="primary">Latticework <span class="ref">[Cat. I]</span></td><td class="secondary">Container/Frame · Reflective</td><td class="why">寫作要的是觀點密度與跨領域啟發。Munger 提供素材庫,Toulmin 提供論證骨架,Kahneman bias 清單提供「這樣寫會誤導讀者嗎」的反思。</td></tr>
+        <tr><td class="situation">NGO governance · 多利害關係人</td><td class="primary">Cynefin <span class="ref">[Cat. III]</span></td><td class="secondary">Curriculum · Anti-Bias</td><td class="why">NGO 治理常落在 Complex 區。先用 Cynefin 判斷區域避免硬套 best practice。Minerva HC 提供實證/系統工具,Tetlock 校準預測。</td></tr>
+        <tr><td class="situation">APAC 跨文化談判</td><td class="primary">Container/Frame <span class="ref">[Cat. VI]</span></td><td class="secondary">Loop · Latticework</td><td class="why">跨文化情境核心是「世界觀差異」。Spiral Dynamics 提供 vMeme 對齊。OODA 處理談判迭代節奏。Cialdini 跨文化失準率高,需搭 Spiral 校準。</td></tr>
+        <tr><td class="situation">危機 · 時間壓力</td><td class="primary">Loop <span class="ref">[Cat. IV]</span></td><td class="secondary">Anti-Bias</td><td class="why">時間壓力下沒空 lookup latticework。OODA / RPD 是專為這種情境設計的「直覺 + 模式辨識」流程。事後用 Stoic / Kahneman 做 retrospective。</td></tr>
+        <tr><td class="situation">創新探索</td><td class="primary">Curriculum <span class="ref">[Cat. II]</span></td><td class="secondary">Loop · Cynefin</td><td class="why">突破要的是有結構的拆解。First Principles 拆問題到根本,TRIZ 40 原理提供可重組的元件,Effectuation 從手邊資源出發。</td></tr>
+        <tr><td class="situation">學習新領域</td><td class="primary">Container/Frame <span class="ref">[Cat. VI]</span></td><td class="secondary">Curriculum · Latticework</td><td class="why">學習的核心是「結構性記憶」。Zettelkasten 提供原子化筆記與自我演化容器,Minerva HC 提供可遷移性練習。</td></tr>
+        <tr><td class="situation">系統性問題</td><td class="primary">Cynefin <span class="ref">[Cat. III]</span></td><td class="secondary">Curriculum · Loop</td><td class="why">「根本改變」是系統話語。Donella Meadows 12 槓桿點是專門用來找介入位置的工具,搭配 Wardley 看演化階段、Theory U 處理深層心智模式轉變。</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section class="combos">
+    <h2 class="section-h">推薦組合 / Preset Routes</h2>
+    <div class="section-h-en">點任一張可一鍵載入到 Workbench</div>
+    <div class="combo-grid" id="combo-grid"></div>
+  </section>
+
+  <div class="footnote">
+    <div>
+      <h4>How to use this v2</h4>
+      <p>(1) 點卡片 → 右側滑出詳情 (含怎麼用 / 用在哪 / 搭配 / 不適用) (2) 在詳情按「加入組合」累加 (3) 頂部 Workbench 顯示合成 + 建議 (4) 點推薦組合可一鍵載入。</p>
+    </div>
+    <div>
+      <h4>What v2 still doesn&#39;t do</h4>
+      <p>(1) 沒有下一層 (Minerva 80 HC / Munger 76 model 沒展開) (2) 沒接 vault 寫入 (3) 沒接 shikigarasu 軸 (4) 建議引擎是 rule-based,沒用 LLM。</p>
+    </div>
+    <div>
+      <h4>Editorial choices</h4>
+      <p>每個框架的「用在哪」都鎖在你兩個工作軌道(個人品牌 + APAC AIA NGO);跨文化 / 危機 / 反思是橫向標籤。 Synergies 是作者主觀觀察,歡迎挑戰。</p>
+    </div>
+  </div>
+</main>
+
+<div class="detail-backdrop" id="detail-backdrop"></div>
+<aside class="detail-panel" id="detail-panel" inert>
+  <div class="detail-head">
+    <button class="detail-close" id="detail-close">×</button>
+    <div class="detail-cat-stripe" id="detail-stripe"></div>
+    <div class="detail-cat-label" id="detail-cat-label"></div>
+    <h2 class="detail-name" id="detail-name"></h2>
+    <div class="detail-name-en" id="detail-name-en"></div>
+    <div class="detail-meta" id="detail-meta"></div>
+  </div>
+  <div class="detail-body" id="detail-body"></div>
+  <div class="detail-actions">
+    <button class="btn-primary" id="detail-add">加入組合</button>
+    <button class="btn-secondary" id="detail-close-btn">關閉</button>
+  </div>
+</aside>
+
+<script>
+const PARADIGMS = [
+  {
+    id: 'munger', cat: 1, name_zh: 'Munger Latticework', name_en: 'Charlie Munger Latticework',
+    founder: 'Charlie Munger', count: '~76-109',
+    philosophy: '從心理學/物理/生物/經濟跨學科收集模型,組成互相交織的「網」。真實問題通常需要 2-3 個模型疊加才看清。',
+    tags: ['brand', 'reflective'],
+    how_to_use: '維護一份個人 mental model 清單(50-100 個),每週新增 1-2 個 + 找 2 個跨領域連結。寫作或決策前翻清單問:「哪 2-3 個模型適用?疊加會看到什麼?」',
+    applications: [
+      { ctx: 'brand', text: '寫作 brainstorm:把熱門話題用至少 2 個學科 lens 重講,自動產生差異化觀點。' },
+      { ctx: 'brand', text: '內容素材庫:每篇文章都該借至少一個 model,避免講常識。' },
+      { ctx: 'reflective', text: '決策後 retro:回頭問「我哪幾個 model 沒套用?如果套用會怎樣?」' },
+    ],
+    synergies: [
+      { with: 'toulmin', why: 'Toulmin 給論證骨架,Munger 給論證素材。先收集再排骨。' },
+      { with: 'zk', why: 'Zettelkasten 是 Munger 模型清單的「家」 — 連結讓模型自己長出新關係。' },
+    ],
+    anti_patterns: ['危機現場無法 lookup,不夠快', '深度知識需要 Curriculum 補,Munger 是廣度,不是深度'],
+  },
+  {
+    id: 'fs', cat: 1, name_zh: 'Farnam Street', name_en: 'Farnam Street Mental Models',
+    founder: 'Shane Parrish', count: '~100+',
+    philosophy: '把 Munger 的散落模型系統化成書,可讀性高。每個模型有定義 + 例子 + 反例。適合當入門目錄。',
+    tags: ['brand', 'reflective'],
+    how_to_use: '當查表用。需要某個 model 時直接到 fs.blog 查;讀完一個模型寫一段「我會怎麼用」筆記到 vault。',
+    applications: [
+      { ctx: 'brand', text: '入門新領域時的目錄:先讀 FS 的 mental models 章節快速建立全景。' },
+      { ctx: 'reflective', text: '教育自己缺的領域:每月固定挑 2-3 個模型深讀。' },
+    ],
+    synergies: [
+      { with: 'munger', why: '本質相同,FS 是 Munger 的教材化版本。先用 FS 入門,再用 Munger latticework 心法精選。' },
+      { with: 'zk', why: '讀完每個模型寫成自己的話 + 連結,就是你的 Munger latticework。' },
+    ],
+    anti_patterns: ['模型太多會 paralysis;先精選 12-20 個常用的', '只讀不練 = 沒用,要寫成自己的話'],
+  },
+  {
+    id: 'decision-book', cat: 1, name_zh: 'The Decision Book', name_en: '50 Models for Strategic Thinking',
+    founder: 'Krogerus & Tschäppeler', count: '50',
+    philosophy: '50 個視覺化決策模型,每個一頁。商管導向、輕量、適合決策現場速查。',
+    tags: ['brand', 'crisis'],
+    how_to_use: '當口袋書。每個模型都有「畫一個 2x2 / 4 區 / 流程」的 template,當下用紙筆畫。',
+    applications: [
+      { ctx: 'brand', text: '寫專欄時當視覺輔助 (Eisenhower / SWOT 變體 / 2x2 matrix)。' },
+      { ctx: 'crisis', text: '決策現場速畫:5 分鐘內把問題視覺化在白板上。' },
+      { ctx: 'ngo', text: '會議引導:用其中的「Black Swan / Personal Performance / Project Portfolio」幫團隊看清局面。' },
+    ],
+    synergies: [
+      { with: 'ooda', why: 'OODA 的 Orient 階段可調用 Decision Book 的視覺模型快速定向。' },
+      { with: 'six-hats', why: '會議引導時兩者搭配 — Six Hats 切角度,Decision Book 提供 visual template。' },
+    ],
+    anti_patterns: ['商管導向強,深度反思類不適合', '50 個太多,只會用其中 5-8 個常用的'],
+  },
+
+  {
+    id: 'minerva', cat: 2, name_zh: 'Minerva HCs', name_en: 'Habits of Mind & Foundational Concepts',
+    founder: 'Minerva University', count: '~80',
+    philosophy: '4 大類 (Empirical/Formal/Multimodal/Complex Systems),每個 HC 有正式定義 + 應用範例 + 評估 rubric。設計目標是內化成思考習慣。',
+    tags: ['brand', 'ngo', 'reflective'],
+    how_to_use: '從 80 個裡精挑 12-15 個對你最相關的當「個人 HC subset」,反覆練習用,定期 self-evaluate。Minerva 教學法:每用一次給自己評 rubric 分數。',
+    applications: [
+      { ctx: 'ngo', text: '#emergentproperties / #networks / #systemmapping 三個 HC 直接拿來分析 NGO 利害關係人系統。' },
+      { ctx: 'ngo', text: '#hypothesisdevelopment / #correlation 設計 NGO 計畫的成效假設,別只憑直覺。' },
+      { ctx: 'brand', text: '#audience / #composition / #rhetoric 寫作三角:對誰說、結構、修辭。每篇用一輪。' },
+      { ctx: 'reflective', text: '每次重大決策後挑 2 個 HC 做 self-evaluation:「我用對了嗎?哪裡可以更好?」' },
+    ],
+    synergies: [
+      { with: 'zk', why: '把每個 HC 變成一張 ZK 卡,連結到應用情境 + 失敗例子,就是真正的內化。' },
+      { with: 'cynefin', why: 'Cynefin 判斷情境後,選對應的 HC。Complex 區用 #emergentproperties;Complicated 用 #expertise / #algorithms。' },
+      { with: 'polya', why: 'Polya 的「回顧」階段 = HC 的 self-evaluation 步驟。' },
+    ],
+    anti_patterns: ['同時練 30 個會稀釋,先精選 12-15', 'HC 是工具不是規則,別當打勾清單'],
+  },
+  {
+    id: 'triz', cat: 2, name_zh: 'TRIZ', name_en: 'Theory of Inventive Problem Solving',
+    founder: 'Genrich Altshuller', count: '40 原理',
+    philosophy: '從 250 萬份專利庫蒸餾出的 40 個發明原理。專利導向但可外推到任何「卡住的設計問題」。',
+    tags: ['ngo', 'brand'],
+    how_to_use: '遇到矛盾時 (X 增加會傷害 Y),查 TRIZ 矛盾矩陣,找對應的原理,試套到你的問題。',
+    applications: [
+      { ctx: 'ngo', text: '組織設計矛盾:如「中央集權 vs 在地自主」(TRIZ #1 Segmentation / #15 Dynamics 適用)。' },
+      { ctx: 'brand', text: '內容形式創新:#1 Segmentation 把長文拆成系列,#13 Inversion 反向寫法。' },
+    ],
+    synergies: [
+      { with: 'first-principles', why: 'First Principles 找根本問題,TRIZ 找前人解過的類似矛盾。先 first-principles 拆,再 TRIZ 找 pattern。' },
+      { with: 'effectuation', why: 'Effectuation 從手邊資源出發,TRIZ 提供把手邊資源重組的 40 種方法。' },
+    ],
+    anti_patterns: ['不適合非技術 / 非設計類的純人際 / 政治問題', '初學者會把 40 原理當魔咒亂套'],
+  },
+  {
+    id: 'polya', cat: 2, name_zh: 'Polya 4-Phase', name_en: 'How to Solve It',
+    founder: 'George Polya', count: '4 步驟',
+    philosophy: '理解問題 / 設計計畫 / 執行 / 回顧。看似簡單,但「回顧」這步絕大多數人跳過,反而是學習效率的關鍵。',
+    tags: ['ngo', 'reflective'],
+    how_to_use: '解任何複雜問題前默念 4 步,結束後**強制做回顧**(寫下 3 件事:有效的、無效的、下次怎麼改)。',
+    applications: [
+      { ctx: 'reflective', text: '任何複雜任務後寫 retrospective,只回答「理解夠不夠 / 計畫對不對 / 執行如何 / 學到什麼」。' },
+      { ctx: 'brand', text: '寫長文流程:理解(讀 source) → 計畫(outline) → 執行(寫) → 回顧(這篇學到什麼)。' },
+      { ctx: 'ngo', text: '專案 post-mortem 模板。' },
+    ],
+    synergies: [
+      { with: 'kahneman', why: '「回顧」階段檢查偏誤 — 我有沒有 confirmation bias?有沒有 sunk cost 影響決策?' },
+      { with: 'minerva', why: '回顧時用 Minerva HC rubric 自評。' },
+    ],
+    anti_patterns: ['通用框架,深度不夠,需要搭其他工具', '「回顧」常被偷懶跳過 — 沒回顧 = Polya 沒用'],
+  },
+  {
+    id: 'first-principles', cat: 2, name_zh: 'First Principles', name_en: 'First Principles Thinking',
+    founder: 'Aristotle / Descartes', count: '1 method',
+    philosophy: '把問題拆到不可再分的根本假設,不靠類比。Musk 火箭、Bezos AWS 都用這條。代價:很費腦力。',
+    tags: ['ngo', 'brand'],
+    how_to_use: '連續問 5 個 why,直到觸到不可再分的物理 / 邏輯 / 數學 / 經濟底層。寫下每層的假設,問哪些是真的、哪些只是慣例。',
+    applications: [
+      { ctx: 'ngo', text: '質疑「為什麼這樣治理?」逐層拆到「我們真正在解什麼問題」。' },
+      { ctx: 'brand', text: '寫深度文時拆掉常識假設;個人品牌定位拆到「我獨特的 1-2 個事實」。' },
+    ],
+    synergies: [
+      { with: 'triz', why: 'first-principles 找根本問題,TRIZ 找解。互補。' },
+      { with: 'wardley', why: '兩者都是「拆到本質」 — Wardley 拆價值鏈,first-principles 拆假設。' },
+    ],
+    anti_patterns: ['費腦力,不適合所有決策。例行決策過度用會卡住', '完全不用類比 = 重新發明輪子'],
+  },
+
+  {
+    id: 'cynefin', cat: 3, name_zh: 'Cynefin Framework', name_en: 'Sense-Making Framework',
+    founder: 'Dave Snowden', count: '4-5 區',
+    philosophy: 'Clear / Complicated / Complex / Chaotic 四區 + Disorder。每區用不同方法論。誤把 Complex 當 Complicated 是組織失敗常見原因。',
+    tags: ['ngo', 'cultural'],
+    how_to_use: '任何議題先問:這在 Clear / Complicated / Complex / Chaotic 哪一區?Clear 用 best practice,Complicated 找專家,Complex 用 probe-sense-respond (小實驗),Chaotic 先穩住再分析。',
+    applications: [
+      { ctx: 'ngo', text: 'NGO 治理議題分類 — 多數爭議落在 Complex 區。先別套 best practice,做小範圍 probe。' },
+      { ctx: 'brand', text: '寫作主題評估:Complex 議題 = 寫作素材寶庫,Clear 議題 = 別人寫過 100 遍。' },
+      { ctx: 'crisis', text: '危機分類:Chaotic 先穩住,別深思;Complex 預期 emergent 不要 over-control。' },
+      { ctx: 'cultural', text: '跨文化情境通常是 Complex (interactions are emergent),別用 Complicated 的「找專家」邏輯。' },
+    ],
+    synergies: [
+      { with: 'wardley', why: '互補。Cynefin 看問題本質,Wardley 看演化階段。Complex × Genesis = 純探索。' },
+      { with: 'minerva', why: 'Cynefin 判定 Complex 後,用 Minerva 的 #emergentproperties / #networks / #systemmapping。' },
+      { with: 'theory-u', why: 'Complex 區的深層改變需要 Theory U 的 presencing。' },
+    ],
+    anti_patterns: ['過度用會變「萬物皆 Complex」,失去差異化能力', '需要訓練,初學者常分錯區'],
+  },
+  {
+    id: 'wardley', cat: 3, name_zh: 'Wardley Mapping', name_en: 'Strategy as Visual Map',
+    founder: 'Simon Wardley', count: 'mapping',
+    philosophy: '把價值鏈畫成「用戶可見性 × 演化階段」的地圖。看到自己跟競爭者在演化光譜哪裡,決定該創新還是該標準化。',
+    tags: ['ngo', 'brand'],
+    how_to_use: '畫一張地圖:Y 軸用戶可見性 (User → Service → Component → Infrastructure),X 軸演化階段 (Genesis → Custom → Product → Commodity)。每個 component 在地圖上有位置。',
+    applications: [
+      { ctx: 'ngo', text: 'NGO 服務鏈位置定位:你在 Genesis 階段該創新,在 Commodity 該外包。誤判階段是組織燒錢主因。' },
+      { ctx: 'brand', text: '個人品牌定位:你的內容領域在哪個演化階段?Genesis 內容溢價高,Commodity 已紅海。' },
+    ],
+    synergies: [
+      { with: 'cynefin', why: '互補。空間 (Wardley) + 問題本質 (Cynefin) = 完整策略觀。' },
+      { with: 'effectuation', why: 'Wardley 看現況,Effectuation 從現況出發找行動。' },
+    ],
+    anti_patterns: ['學習曲線陡,不是隨手畫的', '需要時間蒸餾,適合戰略決策不適合每日決策'],
+  },
+  {
+    id: 'leverage', cat: 3, name_zh: 'Donella Meadows 槓桿點', name_en: '12 Leverage Points',
+    founder: 'Donella Meadows', count: '12',
+    philosophy: '系統介入點按效力排序。最強是「典範轉移」(#2),最弱是「調參數」(#12)。NGO 改革常瞄準弱槓桿,費力不討好。',
+    tags: ['ngo'],
+    how_to_use: '想改變一個系統時,從 12 個槓桿點檢查:你瞄準的是參數 (#12)、回饋 (#5)、目標 (#3)、還是典範 (#2)?越上層越強但越難。',
+    applications: [
+      { ctx: 'ngo', text: '改革 NGO 治理時,別只調流程 (弱槓桿)。問:能不能撼動目標?能不能轉移典範?' },
+      { ctx: 'brand', text: '個人品牌定位:改 platform (參數) / 改題材 (回饋) / 改信念 (目標 / 典範) — 不同強度。' },
+    ],
+    synergies: [
+      { with: 'theory-u', why: '典範轉移 (#2 槓桿點) 配合 Theory U 的 presencing 階段做。' },
+      { with: 'cynefin', why: 'Complex 區的有效介入往往在 #2-#5 高槓桿點。' },
+    ],
+    anti_patterns: ['弱槓桿不是不該動,有時是務實選擇', '高槓桿很難,瞄準錯誤會打擊士氣'],
+  },
+
+  {
+    id: 'ooda', cat: 4, name_zh: 'OODA Loop', name_en: 'Observe, Orient, Decide, Act',
+    founder: 'John Boyd', count: '4 phases',
+    philosophy: '空戰起源,矽谷愛用。Orient 是核心 (mental models 在這發揮)。誰的 OODA 跑得快,誰就掌握主動。',
+    tags: ['crisis', 'brand'],
+    how_to_use: '任何對抗性 / 不確定情境快速循環 OODA。誰能讓對方還在 Observe 你已 Act,就贏。',
+    applications: [
+      { ctx: 'crisis', text: '個人品牌風波應對:OODA 跑快過輿論,搶定義權。' },
+      { ctx: 'ngo', text: '多方談判中讀對方反應再調整,不要 commit 死。' },
+      { ctx: 'brand', text: 'A/B test 內容:發文後快速 OODA,迭代下一篇。' },
+    ],
+    synergies: [
+      { with: 'rpd', why: '熟領域用 RPD 直覺加速 Orient,陌生領域用 OODA 完整流程。' },
+      { with: 'munger', why: 'OODA 的 Orient 階段需要 mental models 庫;Munger 提供。' },
+    ],
+    anti_patterns: ['戰略性決策 (一次性、不可逆) 不適合快循環', '無 mental models 庫的 OODA 只是焦慮的轉圈'],
+  },
+  {
+    id: 'rpd', cat: 4, name_zh: 'Recognition-Primed Decision', name_en: 'RPD Model',
+    founder: 'Gary Klein', count: '1 process',
+    philosophy: '消防員、急診醫師等專家不做「比較選項」,直接 pattern-match 到熟悉場景並執行。對 Kahneman 的反命題:直覺在熟領域是可靠的。',
+    tags: ['crisis'],
+    how_to_use: '在熟領域信任直覺。模式辨識 → 模擬執行 → 若可行就做。不要強行比較選項。',
+    applications: [
+      { ctx: 'crisis', text: '你熟的領域內快速判斷 (NGO 內部問題、寫作風格選擇)。' },
+      { ctx: 'brand', text: '寫作時的「這段話對不對味」直覺判斷 — 信任它,別過度推敲。' },
+    ],
+    synergies: [
+      { with: 'ooda', why: 'RPD 是 OODA 中 Orient 的內核 (對熟領域而言)。' },
+      { with: 'kahneman', why: '對立但互補。Kahneman 警告陷阱,RPD 提供「在熟領域信任直覺」的 license。關鍵是分辨熟 vs 不熟。' },
+    ],
+    anti_patterns: ['陌生領域不該用,直覺會錯', '高 stakes / 不可逆決策仍應 deliberate'],
+  },
+  {
+    id: 'theory-u', cat: 4, name_zh: 'Theory U', name_en: 'U-Process',
+    founder: 'Otto Scharmer (MIT)', count: '5 stages',
+    philosophy: 'Downloading → Seeing → Sensing → Presencing → Crystalizing → Prototyping。社會層次的慢過程。處理「集體心智模式轉變」。',
+    tags: ['ngo', 'reflective'],
+    how_to_use: '需要集體深層改變時 (NGO 改革 / 組織轉型 / 跨利害關係人對話) 安排 deep listening session,從 downloading 沉到 presencing 再上升。',
+    applications: [
+      { ctx: 'ngo', text: '跨利害關係人 deep listening session;集體心智轉變的 NGO 改革。' },
+      { ctx: 'reflective', text: '個人轉型時:downloading (現況) → presencing (重新看自己) → prototyping (行動實驗)。' },
+    ],
+    synergies: [
+      { with: 'leverage', why: 'Theory U 的 presencing 階段對應 Meadows 的典範轉移 (#2 槓桿點)。' },
+      { with: 'cynefin', why: 'Complex 區的深層改變專用工具。' },
+    ],
+    anti_patterns: ['慢、需要安全空間,不適合高壓 / 高政治情境', '不是會議技巧,是哲學實踐 — 抗拒者多'],
+  },
+  {
+    id: 'effectuation', cat: 4, name_zh: 'Effectuation', name_en: 'Effectual Reasoning',
+    founder: 'Saras Sarasvathy', count: '5 principles',
+    philosophy: '創業家的反向邏輯:不從目標倒推,從手邊資源出發,看能變出什麼。bird-in-hand / affordable loss / lemonade / patchwork quilt / pilot-in-the-plane。',
+    tags: ['brand', 'ngo'],
+    how_to_use: '5 原則:(1) 從你有的開始 (技能/網絡/時間) (2) 只投損失可承擔的 (3) 意外當機會不當干擾 (4) 找夥伴一起拼 (5) 控可控的不擔心整體。',
+    applications: [
+      { ctx: 'brand', text: '個人品牌資源盤點:你有什麼專長 / 網絡 / 時間,從這出發,而不是「我要成為 X」倒推。' },
+      { ctx: 'ngo', text: 'NGO 在預算限制下的策略:不問「需要多少錢做這個」,問「有這些錢能做什麼」。' },
+    ],
+    synergies: [
+      { with: 'wardley', why: '兩者都從現況找機會。Wardley 給空間,Effectuation 給行動邏輯。' },
+      { with: 'triz', why: 'Effectuation 找手邊資源,TRIZ 給重組這些資源的 40 種方法。' },
+    ],
+    anti_patterns: ['大型企業 / 有明確 KPI 的場景不適合', '需要彈性,規範性高的組織抗拒'],
+  },
+
+  {
+    id: 'kahneman', cat: 5, name_zh: 'Kahneman System 1/2', name_en: 'Thinking, Fast and Slow',
+    founder: 'Daniel Kahneman', count: '~50 biases',
+    philosophy: '快思 (System 1, 直覺) / 慢想 (System 2, 推理)。50+ 個認知偏誤目錄。最強的是「knowing about biases doesn’t prevent them」這個發現。',
+    tags: ['reflective', 'brand'],
+    how_to_use: '重要決策前過一遍常見偏誤清單 (anchoring, availability, confirmation, sunk cost, narrative fallacy)。光知道不夠,要用清單強制 system 2 介入。',
+    applications: [
+      { ctx: 'brand', text: '寫評論前自問:我的論點是不是 confirmation bias?例子是不是 cherry-picked?' },
+      { ctx: 'reflective', text: '任何決策後 retrospective:我這次掉進哪個偏誤?' },
+      { ctx: 'ngo', text: '治理會議前提醒:小心 anchoring (誰先發言誰定錨) 跟 sunk cost (已投入的錢)。' },
+    ],
+    synergies: [
+      { with: 'tetlock', why: 'Tetlock 提供主動校準 (預測技藝),Kahneman 提供被動避開 (偏誤清單)。' },
+      { with: 'toulmin', why: 'Toulmin 結構,Kahneman 防止 grounds 的偏誤。' },
+      { with: 'rpd', why: '對立但互補:Kahneman 警告直覺,RPD 在熟領域支持直覺。要分辨熟 vs 不熟。' },
+    ],
+    anti_patterns: ['緊急決策時不及做完整 bias check', '「懂偏誤不防偏誤」是 Kahneman 自己最重要的警告'],
+  },
+  {
+    id: 'tetlock', cat: 5, name_zh: 'Superforecasting', name_en: "Tetlock's 10 Commandments",
+    founder: 'Philip Tetlock', count: '10 rules',
+    philosophy: '預測校準訓練。Triage / 拆解問題 / outside view / 漸進式更新 / 警惕信心 / 多視角 (dragonflies)。Tetlock 的 GJP 計畫證明預測能力可訓練。',
+    tags: ['ngo', 'reflective'],
+    how_to_use: '對任何預測 (政策影響、計畫成功率、市場走向) 走 10 戒律。先 triage (這個值得認真預測嗎?),再拆問題,先 outside view 再 inside view。',
+    applications: [
+      { ctx: 'ngo', text: '預測政策影響、財務情境、新計畫成功率 — NGO 治理的判斷力訓練。' },
+      { ctx: 'reflective', text: '自己的判斷力訓練:每月做 5-10 個帶機率的預測,3 個月後檢視校準度。' },
+    ],
+    synergies: [
+      { with: 'kahneman', why: '配合避開偏誤,Tetlock 主動校準,Kahneman 被動防守。' },
+      { with: 'toulmin', why: 'Tetlock 的 qualifier (信心區間) 對應 Toulmin 的 qualifier 元件。' },
+    ],
+    anti_patterns: ['不適合非預測任務 (例如創作、設計選擇)', '需要長期紀律,不是讀完就會'],
+  },
+  {
+    id: 'stoic', cat: 5, name_zh: 'Stoic Premeditation', name_en: 'Premeditatio Malorum',
+    founder: 'Epictetus / Marcus Aurelius', count: '多個練習',
+    philosophy: '控制二分法 (區分能控與不能控) + 預先設想失敗 (premeditatio malorum)。不是悲觀,是預演降低衝擊。',
+    tags: ['reflective', 'crisis'],
+    how_to_use: '行動前花 10 分鐘想最壞情境:會發生什麼?我能做什麼?哪些是不能控的?最壞發生時我準備好情緒嗎?',
+    applications: [
+      { ctx: 'crisis', text: '重大決策前過一遍「最壞會怎樣」,預演讓真的發生時不崩。' },
+      { ctx: 'reflective', text: '日記 / 反思練習:每晚問三件能控的、三件不能控的。' },
+      { ctx: 'brand', text: '個人品牌風波預演:思考被攻擊、誤解、抹黑時你的應對。' },
+    ],
+    synergies: [
+      { with: 'kahneman', why: 'Stoic 訓練情緒韌性,Kahneman 訓練認知校準。雙軌反思。' },
+      { with: 'zhongyong', why: '東西方反思工具的對位。Stoic 控制二分,中庸情境調節。' },
+    ],
+    anti_patterns: ['過度用會變焦慮預演;要與行動結合', '不能當「先想最壞所以不行動」的藉口'],
+  },
+  {
+    id: 'zhongyong', cat: 5, name_zh: '中庸 / 儒家反思', name_en: 'Confucian Reflective Practice',
+    founder: '孔子 / 子思', count: 'contemplative',
+    philosophy: '「過猶不及」是反兩極端的情境調節。日三省 (吾日三省吾身):為人謀而不忠乎?與朋友交而不信乎?傳不習乎?',
+    tags: ['reflective', 'cultural'],
+    how_to_use: '每日睡前三省:今天哪件事過了?哪件事不及?哪件事剛好?寫下「下次怎麼調」。',
+    applications: [
+      { ctx: 'cultural', text: 'APAC 跨文化談判:中庸是 inter-cultural lingua franca,對華文受眾共鳴大過 Stoic。' },
+      { ctx: 'reflective', text: '日記反思語法:「過 / 不及 / 中」三分,比西方 retrospective 更貼東方語感。' },
+      { ctx: 'brand', text: '對華文受眾的論述差異化 — 西方框架太多,中庸有獨特 leverage。' },
+    ],
+    synergies: [
+      { with: 'stoic', why: '反思工具的對位。Stoic 控制二分(能控/不能控),中庸情境調節(過/不及)。組合可同時對東西方受眾。' },
+      { with: 'spiral', why: 'Spiral Dynamics 看 vMeme,中庸提供 BLUE-GREEN 之間的 APAC 中道。' },
+    ],
+    anti_patterns: ['西方受眾不熟,需轉譯', '不能當「不選邊」的藉口 — 中庸不是折衷,是恰到好處'],
+  },
+
+  {
+    id: 'zk', cat: 6, name_zh: 'Zettelkasten', name_en: "Niklas Luhmann's Slip-Box",
+    founder: 'Niklas Luhmann', count: 'atomic + linked',
+    philosophy: '原子化筆記 + 密集連結 + 自我演化。Luhmann 用這套寫了 70 本書。不是 input 多,是讓概念之間自己長出新關係。',
+    tags: ['brand', 'reflective'],
+    how_to_use: '每個概念一張卡 (atomic),用自己的話寫,連到 ≥2 張其他卡。寫作從卡片浮現,不是 outline 出來的。',
+    applications: [
+      { ctx: 'brand', text: '文章創作的素材庫 + concept 演化:從讀到 Munger 模型到自己觀點的長期沉澱。' },
+      { ctx: 'reflective', text: '學習新領域時的長期沉澱;每月發現「咦這張卡跟那張卡可以連」就是內化的證據。' },
+      { ctx: 'ngo', text: '個案 / 教訓的長期累積 — 多年治理經驗變成可檢索的可重組單元。' },
+    ],
+    synergies: [
+      { with: 'minerva', why: '把每個 HC 變一張 ZK 卡;反覆連結強化內化。' },
+      { with: 'munger', why: 'Munger 的模型存在 ZK 裡,連結讓 latticework 真的成形。' },
+      { with: 'fs', why: 'Farnam Street 是輸入,ZK 是消化器官。' },
+    ],
+    anti_patterns: ['學習曲線陡,需要紀律 (3-6 個月才見效)', '短期專案不適合 — overhead 太大'],
+  },
+  {
+    id: 'six-hats', cat: 6, name_zh: 'Six Thinking Hats', name_en: "De Bono's Six Hats",
+    founder: 'Edward de Bono', count: '6 hats',
+    philosophy: '白(事實)/紅(情緒)/黑(批評)/黃(樂觀)/綠(創意)/藍(流程)。團體討論時主持人指定大家輪流戴同一頂帽子,避免角色固化。',
+    tags: ['ngo', 'brand'],
+    how_to_use: '會議前先讓主持人指定一頂帽子 (例如「現在大家戴黑帽 5 分鐘,只講風險」)。輪流過 6 頂。',
+    applications: [
+      { ctx: 'ngo', text: '治理會議避免角色固化 (財務代表永遠唱黑臉、發言人永遠戴黃)。強制輪流。' },
+      { ctx: 'brand', text: '寫作 brainstorm 時自己輪流戴 6 頂,涵蓋全角度。' },
+    ],
+    synergies: [
+      { with: 'minerva', why: '紅帽 (情緒) 配 Minerva 的 #emotion HC;黑帽 (批評) 配 #critique。' },
+      { with: 'decision-book', why: '會議引導時兩者搭配 — Six Hats 切角度,Decision Book 提供 visual template。' },
+    ],
+    anti_patterns: ['組織文化抗拒「玩遊戲」感', '需要熟練主持,不熟會變繁文縟節'],
+  },
+  {
+    id: 'toulmin', cat: 6, name_zh: 'Toulmin Argumentation', name_en: 'Toulmin Model',
+    founder: 'Stephen Toulmin', count: '6 元件',
+    philosophy: 'claim / grounds / warrant / backing / qualifier / rebuttal。論證骨架的標準解剖。寫評論文章 + NGO 倡議文件都該過一次。',
+    tags: ['brand', 'ngo'],
+    how_to_use: '寫完一段論證,逐項檢查 6 元件齊全嗎:主張 (claim)?證據 (grounds)?連結原則 (warrant)?支持 (backing)?限制條件 (qualifier)?反駁回應 (rebuttal)?',
+    applications: [
+      { ctx: 'brand', text: '評論文章自我審稿:任一元件缺,讀者會覺得「論點站不住」。' },
+      { ctx: 'ngo', text: '政策倡議文件結構檢查 — 沒 warrant 的倡議書是空話。' },
+      { ctx: 'reflective', text: '質疑自己論述的 hidden warrant — 我在用什麼隱藏假設?' },
+    ],
+    synergies: [
+      { with: 'kahneman', why: 'Toulmin 結構,Kahneman 防止 grounds 偏誤 (cherry-picked 證據)。' },
+      { with: 'tetlock', why: 'Tetlock 的信心區間 = Toulmin 的 qualifier 元件。' },
+      { with: 'munger', why: 'Toulmin 是論證骨架,Munger 是論證素材。' },
+    ],
+    anti_patterns: ['太短文 (Twitter) 不需要', '敘事 / 抒情類不適用 — 詩不需要 Toulmin'],
+  },
+  {
+    id: 'cialdini', cat: 6, name_zh: 'Cialdini 影響力法則', name_en: 'Influence Principles',
+    founder: 'Robert Cialdini', count: '6-7',
+    philosophy: '互惠 / 承諾一致 / 社會認同 / 喜好 / 權威 / 稀缺 (+ 後加 unity)。說服 leverage,但跨文化失準率高,需搭 Spiral Dynamics。',
+    tags: ['brand', 'cultural'],
+    how_to_use: '寫倡議 / 銷售 / 說服時檢查 6 個 lever 用對了嗎。但**留意倫理**:你是讓對方做對他好的事,還是操控?',
+    applications: [
+      { ctx: 'brand', text: '內容號召 (CTA) 結構:稀缺 (限時) / 社會認同 (其他人都) / 權威 (引用專家)。' },
+      { ctx: 'ngo', text: '募款 / 倡議活動設計:互惠 (給先) + 社會認同 (其他捐款者)。' },
+    ],
+    synergies: [
+      { with: 'spiral', why: '不同 vMeme 對 6 lever 反應強度不同。Power vMeme 對 Authority 高反應,Communitarian vMeme 對 Social Proof 高反應。沒 Spiral 校準就會用錯。' },
+      { with: 'toulmin', why: '說服 = Toulmin 結構 + Cialdini lever。先有論證骨架,再用 lever 推動。' },
+    ],
+    anti_patterns: ['跨文化失準率高,東亞「互惠」邏輯跟西方不同', '倫理踩線時負面後果大 — 操控 vs 說服很細微'],
+  },
+  {
+    id: 'spiral', cat: 6, name_zh: 'Spiral Dynamics', name_en: 'vMeme System',
+    founder: 'Beck & Cowan', count: '8 vMemes',
+    philosophy: '把人類價值觀分成 8 個演化層 (生存→部落→權力→秩序→成就→社群→整合→全觀)。跨文化談判時判斷對方主導 vMeme 比語言翻譯更關鍵。',
+    tags: ['cultural', 'ngo'],
+    how_to_use: '任何跨文化 / 跨世代對話前,試判斷對方的主導 vMeme。對話時用對方的 vMeme 語言 (對 BLUE 講秩序與責任,對 GREEN 講共情與包容)。',
+    applications: [
+      { ctx: 'cultural', text: 'APAC 各國代表的 vMeme 不同 — 日本傾向 BLUE 秩序、矽谷 ORANGE 成就、北歐 GREEN 社群。同一論述對不同 vMeme 效果天差地別。' },
+      { ctx: 'ngo', text: '多代理人決策時識別 conflict 來源 — 是 vMeme 衝突還是利益衝突?前者要對話,後者要談判。' },
+      { ctx: 'brand', text: '寫作對象判斷:你的讀者主要是哪個 vMeme?寫作語言要對齊。' },
+    ],
+    synergies: [
+      { with: 'cialdini', why: '校準 6 lever 在不同 vMeme 的有效度。沒 Spiral 用 Cialdini 會跨文化撞牆。' },
+      { with: 'zhongyong', why: 'Spiral 看 vMeme,中庸提供 BLUE-GREEN 之間的 APAC 中道。' },
+      { with: 'theory-u', why: '集體 vMeme 轉移需要 Theory U 的 presencing。' },
+    ],
+    anti_patterns: ['學派有爭議 (Beck 後期跟 Wilber 整合派分裂)', '不是「對方比較低階」的歧視工具 — vMeme 是回應環境的健康策略'],
+  },
+];
+
+const COMBO_PRESETS = [
+  {
+    id: 'brand-daily',
+    name: '個人品牌 Daily Driver',
+    context: 'For Personal Brand · Writing & Content',
+    paradigms: ['munger', 'toulmin', 'kahneman'],
+    rationale: '寫作前用 Munger 找跨學科啟發,寫完用 Toulmin 檢查論證骨架,最後用 Kahneman bias 清單檢查「是不是過度推論 / cherry-pick」。低工程量,可立即上手。',
+  },
+  {
+    id: 'ngo-decision',
+    name: 'APAC AIA NGO Decision',
+    context: 'For NGO governance · Multi-Stakeholder',
+    paradigms: ['cynefin', 'minerva', 'spiral'],
+    rationale: '用 Cynefin 先判斷議題是 Complicated 還是 Complex (這個判斷錯誤是 NGO 卡關常見原因)。Complex 區用 Minerva 的 #emergentproperties / #networks / #systemmapping。Spiral Dynamics 校準不同國家代表的 vMeme,避免用單一邏輯套所有人。',
+  },
+  {
+    id: 'crisis-retro',
+    name: '高壓決策 + Retrospective',
+    context: 'For Crisis · Decisions Under Time Pressure',
+    paradigms: ['ooda', 'rpd', 'stoic'],
+    rationale: '當下:OODA 維持節奏,RPD 信任專家直覺。事後:Stoic premeditatio malorum 把這次經驗轉成下一次的「模式庫」。',
+  },
+];
+
+const CTX_LABEL = {
+  brand: '個人品牌',
+  ngo: 'NGO',
+  cultural: '跨文化',
+  crisis: '危機',
+  reflective: '反思',
+};
+const CTX_FULL = {
+  brand: '個人品牌寫作 / 內容創作',
+  ngo: 'NGO governance / 多利害關係人決策',
+  cultural: '跨文化談判 / 多國協作',
+  crisis: '危機 / 時間壓力決策',
+  reflective: '反思學習 / Retrospective',
+};
+
+const PARADIGM_BY_ID = Object.fromEntries(PARADIGMS.map(p => [p.id, p]));
+
+// ========= Selection state =========
+const STORAGE_KEY = 'minerva-shortlist-v2';
+let combo;
+try { combo = new Set(JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]')); }
+catch (e) { combo = new Set(); }
+
+function persistCombo() { localStorage.setItem(STORAGE_KEY, JSON.stringify([...combo])); }
+
+function toggleCombo(id) {
+  if (combo.has(id)) combo.delete(id);
+  else combo.add(id);
+  persistCombo();
+  refreshAll();
+}
+
+function clearCombo() {
+  combo.clear();
+  persistCombo();
+  refreshAll();
+}
+
+function loadCombo(ids) {
+  combo = new Set(ids);
+  persistCombo();
+  refreshAll();
+  document.getElementById('workbench').classList.add('open');
+  document.getElementById('wb-toggle').setAttribute('aria-expanded', 'true');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ========= Card rendering =========
+function buildCard(p) {
+  const card = document.createElement('div');
+  card.className = 'card';
+  card.dataset.id = p.id;
+  card.dataset.cat = String(p.cat);
+  card.dataset.tags = p.tags.join(',');
+
+  const head = document.createElement('div');
+  head.className = 'card-head';
+  const nameEl = document.createElement('div');
+  nameEl.className = 'card-name';
+  nameEl.textContent = p.name_zh;
+  const countEl = document.createElement('div');
+  countEl.className = 'card-count';
+  countEl.textContent = p.count;
+  head.append(nameEl, countEl);
+
+  const enEl = document.createElement('div');
+  enEl.className = 'card-en';
+  enEl.textContent = p.name_en;
+
+  const metaRow = document.createElement('div');
+  metaRow.className = 'card-meta-row';
+  metaRow.textContent = p.founder;
+
+  const philEl = document.createElement('div');
+  philEl.className = 'card-philosophy';
+  philEl.textContent = p.philosophy;
+
+  const tagsEl = document.createElement('div');
+  tagsEl.className = 'card-tags';
+  p.tags.forEach(t => {
+    const tag = document.createElement('span');
+    tag.className = 'card-tag';
+    tag.textContent = CTX_LABEL[t] || t;
+    tagsEl.appendChild(tag);
+  });
+
+  const cta = document.createElement('div');
+  cta.className = 'card-cta';
+  cta.textContent = '點開看詳情 →';
+
+  card.append(head, enEl, metaRow, philEl, tagsEl, cta);
+  card.addEventListener('click', () => openDetail(p.id));
+  attachDragSource(card, p.id);
+  return card;
+}
+
+function attachDragSource(el, id) {
+  el.draggable = true;
+  el.addEventListener('dragstart', (e) => {
+    e.dataTransfer.setData('application/x-paradigm-id', id);
+    e.dataTransfer.setData('text/plain', id);
+    e.dataTransfer.effectAllowed = 'copy';
+    el.classList.add('dragging');
+    activateDropZones();
+  });
+  el.addEventListener('dragend', () => {
+    el.classList.remove('dragging');
+    deactivateDropZones();
+  });
+}
+
+let dropZoneCleanup = null;
+function activateDropZones() {
+  const wb = document.getElementById('workbench');
+  const toggle = document.getElementById('wb-toggle');
+  wb.classList.add('open', 'drop-zone');
+  toggle.classList.add('drop-zone');
+}
+function deactivateDropZones() {
+  document.getElementById('workbench').classList.remove('drop-zone', 'drop-active');
+  document.getElementById('wb-toggle').classList.remove('drop-zone', 'drop-active');
+}
+
+function setupDropTargets() {
+  const targets = [
+    document.getElementById('wb-toggle'),
+    document.getElementById('workbench'),
+  ];
+  targets.forEach(t => {
+    t.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      e.dataTransfer.dropEffect = 'copy';
+    });
+    t.addEventListener('dragenter', (e) => {
+      e.preventDefault();
+      t.classList.add('drop-active');
+    });
+    t.addEventListener('dragleave', (e) => {
+      if (!t.contains(e.relatedTarget)) t.classList.remove('drop-active');
+    });
+    t.addEventListener('drop', (e) => {
+      e.preventDefault();
+      t.classList.remove('drop-active');
+      const id = e.dataTransfer.getData('application/x-paradigm-id') || e.dataTransfer.getData('text/plain');
+      if (id && PARADIGM_BY_ID[id] && !combo.has(id)) {
+        combo.add(id);
+        persistCombo();
+        refreshAll();
+        document.getElementById('workbench').classList.add('open');
+      }
+    });
+  });
+}
+
+function renderCards() {
+  for (let cat = 1; cat <= 6; cat++) {
+    const container = document.getElementById('cards-cat' + cat);
+    container.textContent = '';
+    PARADIGMS.filter(p => p.cat === cat).forEach(p => container.appendChild(buildCard(p)));
+  }
+}
+
+function applyCardStates() {
+  document.querySelectorAll('.card').forEach(card => {
+    card.classList.toggle('in-combo', combo.has(card.dataset.id));
+    if (currentFilter === 'all') {
+      card.classList.remove('dim');
+    } else {
+      const tags = card.dataset.tags.split(',');
+      card.classList.toggle('dim', !tags.includes(currentFilter));
+    }
+  });
+}
+
+// ========= Filter =========
+let currentFilter = 'all';
+document.querySelectorAll('.filter-pill').forEach(pill => {
+  pill.addEventListener('click', () => {
+    currentFilter = pill.dataset.filter;
+    document.querySelectorAll('.filter-pill').forEach(p => p.classList.toggle('active', p.dataset.filter === currentFilter));
+    applyCardStates();
+  });
+});
+
+// ========= Detail Panel =========
+let currentDetailId = null;
+function openDetail(id) {
+  currentDetailId = id;
+  const p = PARADIGM_BY_ID[id];
+  if (!p) return;
+
+  const stripe = document.getElementById('detail-stripe');
+  stripe.style.color = `var(--cat-${p.cat})`;
+
+  document.getElementById('detail-cat-label').textContent = `範式 0${p.cat} · ${catName(p.cat)}`;
+  document.getElementById('detail-name').textContent = p.name_zh;
+  document.getElementById('detail-name-en').textContent = p.name_en;
+
+  const meta = document.getElementById('detail-meta');
+  meta.textContent = '';
+  const founder = document.createElement('span');
+  founder.textContent = p.founder;
+  const dot = document.createElement('span');
+  dot.className = 'dot';
+  dot.textContent = '·';
+  const count = document.createElement('span');
+  count.textContent = p.count;
+  meta.append(founder, dot, count);
+
+  const body = document.getElementById('detail-body');
+  body.textContent = '';
+
+  body.appendChild(buildDetailSection('一句哲學 · Philosophy', leadEl(p.philosophy)));
+  body.appendChild(buildDetailSection('怎麼用 · How to Use', howtoEl(p.how_to_use)));
+  body.appendChild(buildDetailSection('用在哪 · Applications', applicationsEl(p.applications)));
+  body.appendChild(buildDetailSection('怎麼搭配 · Synergies', synergiesEl(p.synergies)));
+  body.appendChild(buildDetailSection('何時不用 · Anti-Patterns', antiEl(p.anti_patterns)));
+
+  updateAddBtnState();
+
+  const panel = document.getElementById('detail-panel');
+  panel.inert = false;
+  panel.classList.add('open');
+  document.getElementById('detail-backdrop').classList.add('open');
+}
+
+function catName(n) {
+  return ['', 'Latticework 收集型', 'Curriculum 課程型', 'Cynefin 情境路由型', 'Loop 迴路型', 'Anti-Bias 反思型', 'Container/Frame 容器框架型'][n];
+}
+
+function buildDetailSection(title, contentEl) {
+  const sec = document.createElement('div');
+  sec.className = 'detail-section';
+  const h = document.createElement('h4');
+  h.textContent = title;
+  sec.appendChild(h);
+  sec.appendChild(contentEl);
+  return sec;
+}
+
+function leadEl(text) {
+  const p = document.createElement('p');
+  p.className = 'lead';
+  p.textContent = text;
+  return p;
+}
+
+function howtoEl(text) {
+  const p = document.createElement('p');
+  p.className = 'detail-howto';
+  p.textContent = text;
+  return p;
+}
+
+function applicationsEl(apps) {
+  const wrap = document.createElement('div');
+  apps.forEach(a => {
+    const block = document.createElement('div');
+    block.className = 'app-block';
+    const ctx = document.createElement('div');
+    ctx.className = 'app-context';
+    ctx.textContent = CTX_LABEL[a.ctx] || a.ctx;
+    const txt = document.createElement('div');
+    txt.className = 'app-text';
+    txt.textContent = a.text;
+    block.append(ctx, txt);
+    wrap.appendChild(block);
+  });
+  return wrap;
+}
+
+function synergiesEl(syns) {
+  const ul = document.createElement('ul');
+  ul.className = 'synergy-list';
+  syns.forEach(s => {
+    const target = PARADIGM_BY_ID[s.with];
+    if (!target) return;
+    const li = document.createElement('li');
+    li.className = 'synergy-item';
+    li.addEventListener('click', () => openDetail(s.with));
+    const head = document.createElement('div');
+    head.className = 'synergy-with';
+    const arrow = document.createElement('span');
+    arrow.className = 'arrow';
+    arrow.textContent = '+';
+    const name = document.createElement('span');
+    name.textContent = target.name_zh;
+    head.append(arrow, name);
+    const why = document.createElement('div');
+    why.className = 'synergy-why';
+    why.textContent = s.why;
+    li.append(head, why);
+    ul.appendChild(li);
+  });
+  return ul;
+}
+
+function antiEl(items) {
+  const ul = document.createElement('ul');
+  ul.className = 'anti-list';
+  items.forEach(t => {
+    const li = document.createElement('li');
+    li.textContent = t;
+    ul.appendChild(li);
+  });
+  return ul;
+}
+
+function closeDetail() {
+  const panel = document.getElementById('detail-panel');
+  if (panel.contains(document.activeElement)) document.activeElement.blur();
+  panel.classList.remove('open');
+  panel.inert = true;
+  document.getElementById('detail-backdrop').classList.remove('open');
+  currentDetailId = null;
+}
+
+document.getElementById('detail-close').addEventListener('click', closeDetail);
+document.getElementById('detail-close-btn').addEventListener('click', closeDetail);
+document.getElementById('detail-backdrop').addEventListener('click', closeDetail);
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape' && currentDetailId) closeDetail();
+});
+
+document.getElementById('detail-add').addEventListener('click', () => {
+  if (!currentDetailId) return;
+  toggleCombo(currentDetailId);
+  updateAddBtnState();
+});
+
+function updateAddBtnState() {
+  if (!currentDetailId) return;
+  const btn = document.getElementById('detail-add');
+  const isIn = combo.has(currentDetailId);
+  btn.classList.toggle('is-in', isIn);
+  btn.textContent = isIn ? '從組合移除' : '加入組合';
+}
+
+// ========= Workbench =========
+const wbToggle = document.getElementById('wb-toggle');
+wbToggle.addEventListener('click', () => {
+  const wb = document.getElementById('workbench');
+  wb.classList.toggle('open');
+});
+
+document.getElementById('wb-clear').addEventListener('click', clearCombo);
+
+function renderWorkbench() {
+  const wb = document.getElementById('workbench');
+  const count = combo.size;
+  document.getElementById('wb-count').textContent = String(count);
+  wbToggle.classList.toggle('has-items', count > 0);
+  if (count > 0) wb.classList.add('open');
+
+  const chipsEl = document.getElementById('wb-chips');
+  chipsEl.textContent = '';
+  if (count === 0) {
+    const empty = document.createElement('div');
+    empty.className = 'wb-empty';
+    empty.textContent = '尚未選任何框架。點任一卡片打開詳情,或直接把卡片拖到此處。';
+    chipsEl.appendChild(empty);
+  } else {
+    [...combo].forEach(id => {
+      const p = PARADIGM_BY_ID[id];
+      if (!p) return;
+      const chip = document.createElement('span');
+      chip.className = 'wb-chip';
+      const label = document.createElement('span');
+      label.textContent = p.name_zh;
+      const x = document.createElement('span');
+      x.className = 'x';
+      x.textContent = '×';
+      x.addEventListener('click', (e) => {
+        e.stopPropagation();
+        toggleCombo(id);
+      });
+      chip.append(label, x);
+      chipsEl.appendChild(chip);
+    });
+  }
+
+  // Synthesis
+  const synthEl = document.getElementById('wb-synthesis');
+  synthEl.textContent = '';
+  if (count > 0) {
+    synthEl.appendChild(buildSynthesis());
+  }
+
+  // Preset match
+  const matchEl = document.getElementById('wb-preset-match');
+  matchEl.textContent = '';
+  const matched = matchPreset();
+  if (matched) {
+    const div = document.createElement('div');
+    div.className = 'wb-preset-match';
+    if (matched.complete) {
+      const s = document.createElement('strong');
+      s.textContent = '✓ ';
+      div.appendChild(s);
+      div.appendChild(document.createTextNode(`你的組合就是 ${matched.preset.name}`));
+    } else {
+      const s = document.createElement('strong');
+      s.textContent = '↗ ';
+      div.appendChild(s);
+      const remaining = matched.preset.paradigms.filter(id => !combo.has(id)).map(id => PARADIGM_BY_ID[id].name_zh).join(' / ');
+      div.appendChild(document.createTextNode(`接近 ${matched.preset.name},再加 ${remaining} 就完整。`));
+    }
+    matchEl.appendChild(div);
+  }
+
+  // Contexts
+  const ctxEl = document.getElementById('wb-contexts');
+  ctxEl.textContent = '';
+  if (count === 0) {
+    const li = document.createElement('li');
+    li.style.color = 'var(--ink-faint)';
+    li.style.fontStyle = 'italic';
+    li.textContent = '加入框架後會列出適用情境。';
+    ctxEl.appendChild(li);
+  } else {
+    aggregateContexts().forEach(c => {
+      const li = document.createElement('li');
+      const tag = document.createElement('span');
+      tag.className = 'ctx-tag';
+      tag.textContent = c.label;
+      li.appendChild(tag);
+      li.appendChild(document.createTextNode(c.text));
+      ctxEl.appendChild(li);
+    });
+  }
+
+  // Suggestions
+  const sugEl = document.getElementById('wb-suggestions');
+  sugEl.textContent = '';
+  if (count === 0) {
+    const div = document.createElement('div');
+    div.style.color = 'var(--ink-faint)';
+    div.style.fontStyle = 'italic';
+    div.style.fontSize = '13px';
+    div.textContent = '加入第一個框架後會出現建議。';
+    sugEl.appendChild(div);
+  } else {
+    getSuggestions().forEach(s => {
+      const sg = document.createElement('div');
+      sg.className = 'wb-suggestion';
+      sg.addEventListener('click', () => openDetail(s.id));
+      const name = document.createElement('div');
+      name.className = 'wb-suggestion-name';
+      const plus = document.createElement('span');
+      plus.className = 'plus';
+      plus.textContent = '+';
+      name.appendChild(plus);
+      name.appendChild(document.createTextNode(s.name));
+      const reason = document.createElement('div');
+      reason.className = 'wb-suggestion-reason';
+      reason.textContent = s.reason;
+      sg.append(name, reason);
+      attachDragSource(sg, s.id);
+      sugEl.appendChild(sg);
+    });
+  }
+}
+
+function buildSynthesis() {
+  const ids = [...combo];
+  const cats = new Set(ids.map(id => PARADIGM_BY_ID[id].cat));
+  const span = document.createElement('span');
+  if (ids.length === 1) {
+    const p = PARADIGM_BY_ID[ids[0]];
+    span.textContent = `單一框架。${p.name_zh} 適合 ${p.tags.map(t => CTX_LABEL[t]).join(' / ')} 場景。可加入互補框架擴大覆蓋。`;
+  } else if (ids.length === 2) {
+    const [a, b] = ids.map(id => PARADIGM_BY_ID[id]);
+    if (a.cat === b.cat) {
+      span.textContent = `兩個都來自 ${catName(a.cat)},單一範式深度。可加入其他範式擴大角度,例如 Cynefin 加情境判斷,或 Anti-Bias 加反思校準。`;
+    } else {
+      span.textContent = `跨範式組合 (${catName(a.cat).split(' ')[0]} × ${catName(b.cat).split(' ')[0]})。再加 1-2 個能成完整工作流。`;
+    }
+  } else {
+    if (cats.size >= 4) {
+      span.textContent = `${ids.length} 個框架橫跨 ${cats.size} 個範式。覆蓋廣,但要留意是否真用得上 — 太廣會稀釋執行力。`;
+    } else {
+      span.textContent = `${ids.length} 個框架,${cats.size} 個範式。組合扎實。檢查 routing matrix 看哪個情境最契合。`;
+    }
+  }
+  return span;
+}
+
+function matchPreset() {
+  for (const preset of COMBO_PRESETS) {
+    const presetSet = new Set(preset.paradigms);
+    const overlap = [...combo].filter(id => presetSet.has(id));
+    if (overlap.length === 0) continue;
+    const isSubset = [...combo].every(id => presetSet.has(id));
+    if (isSubset && combo.size === preset.paradigms.length) {
+      return { preset, complete: true };
+    }
+    if (isSubset && combo.size < preset.paradigms.length) {
+      return { preset, complete: false };
+    }
+  }
+  return null;
+}
+
+function aggregateContexts() {
+  const counts = { brand: 0, ngo: 0, cultural: 0, crisis: 0, reflective: 0 };
+  combo.forEach(id => {
+    const p = PARADIGM_BY_ID[id];
+    p.tags.forEach(t => { if (counts[t] !== undefined) counts[t]++; });
+    p.applications.forEach(a => { if (counts[a.ctx] !== undefined) counts[a.ctx] += 0.5; });
+  });
+  return Object.entries(counts)
+    .filter(([k, v]) => v > 0)
+    .sort((a, b) => b[1] - a[1])
+    .map(([k]) => ({ label: CTX_LABEL[k], text: CTX_FULL[k] }));
+}
+
+function getSuggestions() {
+  const seen = new Set();
+  const suggestions = [];
+
+  // 1. Match presets
+  const matched = matchPreset();
+  if (matched && !matched.complete) {
+    matched.preset.paradigms.forEach(id => {
+      if (!combo.has(id) && !seen.has(id)) {
+        seen.add(id);
+        suggestions.push({
+          id,
+          name: PARADIGM_BY_ID[id].name_zh,
+          reason: `補完 ${matched.preset.name}`,
+        });
+      }
+    });
+  }
+
+  // 2. From synergies of selected
+  combo.forEach(id => {
+    const p = PARADIGM_BY_ID[id];
+    p.synergies.forEach(s => {
+      if (!combo.has(s.with) && !seen.has(s.with) && PARADIGM_BY_ID[s.with]) {
+        seen.add(s.with);
+        suggestions.push({
+          id: s.with,
+          name: PARADIGM_BY_ID[s.with].name_zh,
+          reason: `${p.name_zh} 的搭檔:${s.why}`,
+        });
+      }
+    });
+  });
+
+  return suggestions.slice(0, 4);
+}
+
+// ========= Combo Presets section =========
+function renderPresets() {
+  const grid = document.getElementById('combo-grid');
+  grid.textContent = '';
+  COMBO_PRESETS.forEach(preset => {
+    const div = document.createElement('div');
+    div.className = 'combo';
+    div.addEventListener('click', () => loadCombo(preset.paradigms));
+
+    const name = document.createElement('h3');
+    name.className = 'combo-name';
+    name.textContent = preset.name;
+    const ctx = document.createElement('div');
+    ctx.className = 'combo-context';
+    ctx.textContent = preset.context;
+
+    const formula = document.createElement('div');
+    formula.className = 'combo-formula';
+    preset.paradigms.forEach((pid, i) => {
+      if (i > 0) {
+        const plus = document.createElement('span');
+        plus.className = 'plus';
+        plus.textContent = '+';
+        formula.appendChild(plus);
+      }
+      formula.appendChild(document.createTextNode(PARADIGM_BY_ID[pid].name_zh));
+    });
+
+    const r = document.createElement('p');
+    r.className = 'combo-rationale';
+    r.textContent = preset.rationale;
+
+    const load = document.createElement('div');
+    load.className = 'combo-load';
+    load.textContent = '↗ 點此一鍵載入 / Load this combo';
+
+    div.append(name, ctx, formula, r, load);
+    grid.appendChild(div);
+  });
+}
+
+// ========= Refresh ALL =========
+function refreshAll() {
+  applyCardStates();
+  renderWorkbench();
+  if (currentDetailId) updateAddBtnState();
+}
+
+// ========= Init =========
+renderCards();
+renderPresets();
+setupDropTargets();
+refreshAll();
+</script>
+</body>
+</html>

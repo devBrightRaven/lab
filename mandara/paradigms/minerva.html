@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Minerva HCs · Mandara · 工房</title>
+<meta name="description" content="109 Habits of Mind & Foundational Concepts across 4 competencies. Deep-dive page in Mandara atlas.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Noto+Serif+TC:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Source+Sans+3:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="_atlas-shared.css">
+<style>
+/* Minerva-specific overrides */
+.paradigm-head[data-cat="2"] { color: var(--cat-2); }
+.competency .roman { color: var(--cat-2); }
+.competency .course-tag { color: var(--cat-2); border-color: var(--cat-2); }
+.hc-card[data-source="official"] { border-color: var(--cat-2); }
+.hc-card[data-source="official"] .hc-tag,
+.hc-card .hc-tag { color: var(--cat-2); }
+.hc-meta .official-badge { background: var(--cat-2); }
+.hc-card .app-row .app-text.l1-only {
+  font-style: italic;
+  color: var(--ink-faint);
+  font-size: 12px;
+}
+.hc-card .l1-marker {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--ink-faint);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding-top: 2px;
+}
+.summary-strip {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 18px;
+  margin: 18px 0 0 0;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+}
+.summary-strip strong {
+  font-family: var(--serif);
+  font-size: 16px;
+  color: var(--ink);
+  font-weight: 600;
+  letter-spacing: 0;
+  text-transform: none;
+  margin-right: 4px;
+}
+.shortlist-info {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--ink-mute);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.shortlist-info .num {
+  font-family: var(--serif);
+  font-size: 14px;
+  color: var(--ink);
+  font-weight: 600;
+  letter-spacing: 0;
+  margin: 0 4px;
+  text-transform: none;
+}
+.hc-card .use-toggle {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 22px;
+  height: 22px;
+  border: 1px solid var(--hairline);
+  background: var(--paper);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--ink-faint);
+  border-radius: 3px;
+  transition: all 0.18s ease;
+}
+.hc-card .use-toggle:hover { background: var(--paper-deep); border-color: var(--ink-mute); color: var(--ink); }
+.hc-card .use-toggle:focus-visible { outline: 2px solid var(--cat-2); outline-offset: 1px; }
+.hc-card.in-use { background: #FEF7E8; border-color: var(--cat-2); }
+.hc-card.in-use .use-toggle { background: var(--cat-2); color: var(--paper); border-color: var(--cat-2); }
+.hc-card[data-source="official"].in-use { background: #FBEED1; }
+.hc-card-head { padding-right: 32px; }
+@media (prefers-reduced-motion: reduce) {
+  .hc-card .use-toggle { transition: none; }
+}
+</style>
+</head>
+<body>
+
+<nav class="paradigm-nav" aria-label="Top navigation">
+  <a href="../" class="back-link">← back to mandara</a>
+  <div class="breadcrumb">Mandara → Curriculum → <strong>Minerva HCs</strong></div>
+  <div class="nav-chips" id="combo-strip">
+    <span class="nav-empty">no combo yet</span>
+  </div>
+</nav>
+
+<header class="paradigm-head" data-cat="2">
+  <div class="cat-stripe"></div>
+  <div class="cat-label">範式 02 / Curriculum 課程型 · FA · EA · MC · CS</div>
+  <h1>Minerva HCs</h1>
+  <p class="name-en">Habits of Mind &amp; Foundational Concepts</p>
+  <div class="meta">
+    Minerva University <span class="dot">·</span> ~109 HCs <span class="dot">·</span> 4 competencies <span class="dot">·</span> 11 verified from official intro PDF
+  </div>
+  <p class="philosophy">
+    Minerva 把「應該知道的工具」拆成 109 個可被命名、可被練習、可被評估的 HC,分布在 4 大 competency。每個 HC 都有 rubric(從 1 不懂到 5 深度應用)— 學生反覆練到內化成思考習慣。本頁列全部 109,40 個跟你兩個工作軌道(個人品牌 + APAC AIA NGO)最相關的有完整應用例,其餘有定義但無應用 — 不裝懂硬寫。
+  </p>
+  <div class="actions">
+    <button class="btn-primary" id="paradigm-add" type="button">加入 Mandara 組合</button>
+    <a class="btn-secondary" href="https://www.minerva.edu/public/media/enrollment-center/Minerva-HCs-Intro.pdf" target="_blank" rel="noopener">📄 Official intro PDF</a>
+  </div>
+  <div class="summary-strip">
+    <span><strong id="sum-total">109</strong> 全部</span>
+    <span><strong id="sum-h">49</strong> Habits</span>
+    <span><strong id="sum-c">60</strong> Concepts</span>
+    <span><strong id="sum-l2">40</strong> 含應用</span>
+    <span><strong id="sum-verified">11</strong> 官方驗證</span>
+    <span class="shortlist-info">標記中 <span class="num" id="in-use-count">0</span> / 109</span>
+  </div>
+</header>
+
+<main>
+  <div id="competency-container"></div>
+
+  <section class="provenance" aria-label="Provenance">
+    <h4>Provenance · 來源說明</h4>
+    <p>
+      <strong>11 個官方驗證</strong>(標 ✅ 徽章):從 Minerva 官方 <a href="https://www.minerva.edu/public/media/enrollment-center/Minerva-HCs-Intro.pdf" target="_blank" rel="noopener">Habits of Mind &amp; Foundational Concepts intro PDF</a> 直接抄錄,定義原文翻譯。
+    </p>
+    <p>
+      <strong>其餘 ~98 個</strong>(無徽章):從 <a href="https://eshmanager.blogspot.com/2024/12/blog-post.html" target="_blank" rel="noopener">eshmanager 公開整理 (2024-12)</a>,該整理涵蓋 Minerva 4 大 competency 完整結構與 119 條目,跟官方 PDF 11 個範例完全對齊。MIT Press《Building the Intentional University》(Kosslyn &amp; Nelson, 2017) Appendix A 是另一更權威來源,但非開放閱讀。
+    </p>
+    <p>
+      <strong>注意</strong>:Minerva 自述「the set of HCs is adjusted each year based on feedback」— 此清單是 2024-12 的快照,不必然等於今年實際課程內容。完整 ~109 個是廣義工具庫,**個人不可能也不應該全用** — 內化 12-15 個常用,其他知道存在即可。
+    </p>
+    <p>
+      <strong>應用例(L2)</strong>:40 個有 NGO + 個人品牌應用例的 HC 是作者主觀篩選,標準是「對你兩個工作軌道最常用」。其餘 69 個只列 L1(定義),不裝懂寫應用。歡迎挑戰選擇。
+    </p>
+  </section>
+
+  <nav class="page-footer-nav" aria-label="Cross-paradigm navigation">
+    <a href="../" class="nav-link">← 回 mandara atlas</a>
+    <span class="nav-link disabled">下一個範式: Munger Latticework → (尚未撰寫)</span>
+  </nav>
+</main>
+
+<script>
+const HC_DATA = {
+  competencies: [
+    {
+      roman: 'I', name_en: 'Thinking Critically', name_zh: '批判性思考', course: 'FA', course_full: 'Formal Analyses',
+      desc: '評估主張、分析推論、權衡決策、分解問題 — 把「相信什麼、為什麼相信」拆成可被檢驗的步驟。',
+      sections: [
+        {
+          letter: 'A', name_en: 'Evaluating Claims', name_zh: '評估主張',
+          desc: '識別主張、檢查結論可信度、用資訊素養 + 概率統計判斷。',
+          hcs: [
+            { tag: 'assertions', type: 'H', name_en: 'Identify and analyze premises and conclusions', name_zh: '識別並分析前提與結論', def: '把任何論述拆成「前提 → 結論」結構,看清推理鏈。' },
+            { tag: 'critique', type: 'H', name_en: 'Engage critically with texts and other communication', name_zh: '主動且批判性地與文本互動', def: '不只讀懂,還能找出文本的弱點、偏見、隱藏假設。', apps: { ngo: '審政策文件 / 評估報告時,讀到「結論」就停下問:它到底基於什麼?', brand: '讀別人的觀點文章時,主動找作者沒處理的反例 — 那就是你寫作的角度' } },
+            { tag: 'infoneeded', type: 'H', name_en: 'Define what information is needed to support an argument', name_zh: '定義論證需要哪些資訊', def: '在收集資料前先想清楚:要證明什麼,需要什麼樣的證據才夠?' },
+            { tag: 'sourcequality', type: 'H', name_en: 'Distinguish source quality across information types', name_zh: '判斷資訊來源品質', def: '區分一手 / 二手 / 評論 / 意見 / 廣告 / AI 生成,各有不同的可信權重。', apps: { ngo: '政策研究時優先一手政府文件 + 同儕評審論文,小心 advocacy 機構的 framing', brand: '寫文章引用前查 source 的 source — 二手轉述常失真' } },
+            { tag: 'estimation', type: 'H', verified: true, name_en: 'Use estimation to judge whether quantitative claims are plausible', name_zh: '用估算技術判斷量化主張是否合理', def: '用近似值與整數做快速合理性檢查,建立 min/max 範圍。', apps: { ngo: '檢查計畫提案「會幫助 X 萬人」是否量級合理 — 預算 ÷ 每人成本反推', brand: '寫評論前先估「真的有那麼多人受影響嗎?」避免誇大 framing' } },
+            { tag: 'plausibility', type: 'H', name_en: 'Evaluate premises and assumptions underlying hypotheses', name_zh: '評估假設背後的前提', def: '不只看結論是否成立,還看推到結論的中間假設是否合理。' },
+            { tag: 'testability', type: 'H', name_en: 'Evaluate whether hypotheses lead to testable predictions', name_zh: '判斷假設是否可被檢驗', def: '能產生具體可檢驗預測的假設才有意義 — 否則只是信念。' },
+            { tag: 'pseudoscience', type: 'C', name_en: 'Identify and analyze pseudoscientific claims', name_zh: '識別偽科學主張', def: '看似科學但缺乏可證偽性、依賴軼事、忽略反例的主張。' },
+            { tag: 'epistemology', type: 'C', name_en: 'Distinguish hypotheses, theories, facts, laws', name_zh: '區分假設 / 理論 / 事實 / 定律', def: '科學語境裡這四個詞含義截然不同,日常混用會誤導。' },
+            { tag: 'sci-breakdown', type: 'C', name_en: 'Evaluate scientific method applications', name_zh: '評估科學方法的應用', def: '某項研究是否真的遵循科學方法 — 還是包裝成科學的觀察。' },
+            { tag: 'probability', type: 'C', name_en: 'Apply and interpret probability fundamentals', name_zh: '運用機率基礎', def: '加法 / 乘法定律、互斥 / 獨立事件、條件機率的基本邏輯。' },
+            { tag: 'conditional-prob', type: 'C', name_en: 'Apply conditional probabilities and Bayesian methods', name_zh: '條件機率與貝氏方法', def: 'P(A|B) 跟 P(B|A) 不同 — 醫學檢驗、法庭證據常被誤讀。' },
+            { tag: 'sampling', type: 'C', name_en: 'Recognize sampling from different distributions', name_zh: '辨識不同分布的抽樣', def: '抽樣方式決定能推論到的母體 — convenience sample 的危險。' },
+            { tag: 'descriptivestats', type: 'H', name_en: 'Use descriptive statistics appropriately', name_zh: '使用描述性統計', def: '平均 / 中位 / 眾數 / 變異 — 各自適合什麼場景,避免用錯。' },
+            { tag: 'effectsize', type: 'C', name_en: 'Apply and interpret effect size', name_zh: '應用並解釋效應量', def: '統計顯著 ≠ 實際重要;effect size 才告訴你影響多大。' },
+            { tag: 'confidenceintervals', type: 'C', name_en: 'Apply and interpret confidence intervals', name_zh: '信心區間', def: '點估計後加上不確定性範圍,比單一數字誠實。' },
+            { tag: 'correlation', type: 'C', name_en: 'Distinguish correlation and causation', name_zh: '區分相關與因果', def: 'X 跟 Y 一起動,不代表 X 造成 Y — 可能有共同 confounder。', apps: { ngo: '評估計畫成效時,別把「參與者比沒參與者好」當 causal 證據 — 自選擇偏誤', brand: '寫評論主張因果關係前,問:有沒有 confounder?有沒有反向因果?' } },
+            { tag: 'regression', type: 'C', name_en: 'Apply and interpret regression', name_zh: '迴歸分析', def: '在控制其他變數後,看單一變數的解釋力。' },
+            { tag: 'regresstomean', type: 'C', name_en: 'Apply regression to the mean in predictions', name_zh: '均值迴歸', def: '極端表現後通常會回歸平均 — 不是干預有效,是統計現象。' },
+            { tag: 'bayes', type: 'C', name_en: 'Apply Bayesian statistics for inference', name_zh: '貝氏推論', def: '從先驗信念 + 新證據更新後驗 — 不丟棄已知資訊。' },
+            { tag: 'significance', type: 'C', name_en: 'Apply statistical significance', name_zh: '統計顯著性', def: 'p-value 的真正含義跟常見誤解(p < 0.05 ≠ 假設為真)。' },
+          ],
+        },
+        {
+          letter: 'B', name_en: 'Analyzing Inferences', name_zh: '分析推論',
+          desc: '推論是從已知建構新知識的過程。即使主張正確,推論也可能錯。',
+          hcs: [
+            { tag: 'deduction', type: 'C', name_en: 'Apply formal deductive logic', name_zh: '運用形式演繹邏輯', def: '從一般原理推到特定結論 — 結論的正確性取決於前提。', apps: { ngo: '政策邏輯鏈檢查 — 「目標 → 政策 → 結果」每段邏輯是否合理', brand: '評論文章的論證骨架 — claim 從哪些前提推出,前提站得住嗎?' } },
+            { tag: 'fallacies', type: 'C', name_en: 'Identify and correct logical fallacies', name_zh: '識別並修正邏輯謬誤', def: 'ad hominem / straw man / appeal to authority / false dichotomy 等。', apps: { ngo: '會議裡有人說「反對者就是 X 派」— ad hominem,把它指認出來', brand: '寫反駁文章時對方常用 fallacy,你可以解構它做為論述基礎' } },
+            { tag: 'induction', type: 'C', verified: true, name_en: 'Formulate plausible generalizations from evidence', name_zh: '從證據建立多個可能的泛化', def: '從具體例子推到一般原則 — 強歸納仍不保證結論真,可能多個解釋都合理,需配合演繹挑出對的。', apps: { ngo: '從少數案例做政策推論時,先列「這些觀察可能對應的 N 種泛化」再挑', brand: '從你的觀察寫普遍結論時,小心 — 你看到的可能只是 special case' } },
+            { tag: 'prediction', type: 'H', name_en: 'Make predictions about short vs long-term behaviors', name_zh: '短期 vs 長期行為預測', def: '不同時間尺度下系統行為不同;短期穩定不代表長期不會崩。' },
+            { tag: 'attention-perception-biases', type: 'C', name_en: 'Identify attentional and perceptual biases', name_zh: '注意力與知覺偏誤', def: '我們看到的不等於存在的 — 注意力是有限資源、知覺有預設模式。', apps: { ngo: '會議裡誰先發言誰被聽到 — 注意力結構性偏向 dominant 角色', brand: '寫議題時知道讀者注意力有限,前 3 段沒 hook 就掉了 80%' } },
+            { tag: 'memorybias', type: 'C', name_en: 'Identify biases affecting memory', name_zh: '記憶偏誤', def: '記憶是重建不是錄影 — 後見之明、情緒色彩會改寫過去。', apps: { ngo: '事後 retrospective 不可全信參與者「當時想的」— 記憶被結果污染', brand: '寫個人故事時誠實標記哪些是當下感受、哪些是事後重組' } },
+            { tag: 'confirmationbias', type: 'C', name_en: 'Identify and minimize confirmation bias', name_zh: '識別並減少確認偏誤', def: '我們不自覺尋找符合既有信念的證據,忽略反證 — 知道也防不了,要靠結構性檢查。', apps: { ngo: '做政策評估前先列「會推翻我假設的證據是什麼」並主動找它', brand: '寫評論前自問:我有沒有 cherry-pick 例子?反例怎麼處理?' } },
+            { tag: 'interpretivebias', type: 'C', name_en: 'Identify biases affecting interpretation', name_zh: '詮釋偏誤', def: '同一段話不同人會讀出不同意義 — 詮釋帶著預設。' },
+            { tag: 'context', type: 'C', name_en: 'Situate works in historical, cultural contexts', name_zh: '把作品放回歷史文化脈絡', def: '脫離脈絡的詮釋常失真 — 一句話在當時意義跟今天可能不同。' },
+            { tag: 'nonfiction', type: 'C', name_en: 'Infer meanings of nonfiction', name_zh: '推論非虛構作品意義', def: '報告 / 論文 / 新聞各有體裁慣例,讀懂體裁才讀懂訊息。' },
+            { tag: 'fiction-poetry', type: 'C', name_en: 'Infer meanings of fiction or poetry', name_zh: '推論虛構與詩的意義', def: '隱喻、節奏、留白傳達訊息的方式跟說明文不同。' },
+            { tag: 'visualart', type: 'C', name_en: 'Infer meanings of visual communications', name_zh: '推論視覺溝通意義', def: '構圖、色彩、視覺隱喻是另一套語言。' },
+            { tag: 'music', type: 'C', name_en: 'Infer meanings of auditory communications', name_zh: '推論聽覺溝通意義', def: '音樂、聲音設計、語調 — 非語言情緒承載。' },
+            { tag: 'multimedia', type: 'C', name_en: 'Infer meanings in multimedia works', name_zh: '推論多媒體作品意義', def: '多模態整合的訊息層次 — 視 + 聽 + 文 + 互動。' },
+            { tag: 'levelsofanalysis', type: 'H', name_en: 'Describe interactions at different levels of analysis', name_zh: '不同分析層級的互動', def: '個人 / 群體 / 組織 / 系統各自有解釋力,別停在單一層。', apps: { ngo: '同個 NGO 議題在「個體 / 社區 / 政策」三層上有不同解釋,要多層看', brand: '寫深度文章時讓讀者跨層思考 — 個人故事接到社會結構' } },
+            { tag: 'multipleagents', type: 'C', name_en: 'Decompose complex systems into constituent parts', name_zh: '把複雜系統拆解成多個 agents', def: '系統 = 多個有自己邏輯的 agent 互動 — 不是單一意志。', apps: { ngo: 'NGO 裡每個 stakeholder (donor / staff / beneficiary / partner) 是 agent 各有邏輯', brand: '寫組織批評時別當「組織」是黑盒子 — 拆成決策者、執行者各自的誘因' } },
+            { tag: 'systemdynamics', type: 'C', name_en: 'Recognize attractors and sensitivity to conditions', name_zh: '系統動態:吸引子與條件敏感性', def: '系統有穩態(吸引子)也有 tipping point — 小擾動可能放大成大改變。', apps: { ngo: '組織文化是 attractor,個別事件難改 — 要找 leverage point', brand: '寫趨勢分析時識別「臨界點」— 讀者最關注的是何時翻轉' } },
+            { tag: 'emergentproperties', type: 'C', name_en: 'Identify emergent properties of complex systems', name_zh: '湧現性質', def: '整體性質從個體互動湧現,無法從個體單獨預測 — 例:塞車不是任何一台車的屬性。', apps: { ngo: 'NGO 的「組織文化」是湧現的,不在任何一個成員身上 — 要從互動結構入手', brand: '寫社會現象時用 emergent 框架可避免「都是 XX 的錯」單因論述' } },
+            { tag: 'multiplecauses', type: 'C', name_en: 'Identify how multiple causes interact', name_zh: '多因互動', def: '真實世界很少單因 — 多因互動有 additive、multiplicative、threshold 等模式。', apps: { ngo: '評估 NGO 計畫成果時,把「我們的計畫 + 大環境變化 + 受益人原本軌跡」分開' } },
+            { tag: 'networks', type: 'C', name_en: 'Identify primary, secondary, further effects in networks', name_zh: '網絡中的初級、次級、後續效應', def: '一個動作有 1st-order / 2nd-order / 3rd-order 效應,2nd 之後常被忽略。', apps: { ngo: '政策的 2nd-order 效應(被影響人改變行為再影響別人)常比 1st 大', brand: '寫評論時看到 2nd / 3rd-order 效應就有深度 — 多數人停在 1st' } },
+          ],
+        },
+        {
+          letter: 'C', name_en: 'Weighing Decisions', name_zh: '權衡決策',
+          desc: '評估主張、分析推論之所以重要,是因為要做決定。理性決策需要分析選項與 trade-off。',
+          hcs: [
+            { tag: 'purpose', type: 'H', name_en: 'Identify and evaluate underlying goals and values', name_zh: '識別並評估底層目標與價值', def: '決策前先問:我真正在解什麼問題?根植於什麼價值?', apps: { ngo: 'NGO 治理常在中層目標打轉,沒回到「我們最終要什麼」會 mission drift', brand: '個人品牌定位時先回到 — 我為什麼寫?要影響誰?其他都是手段' } },
+            { tag: 'firstprinciples', type: 'H', name_en: 'Recognize and evaluate foundational commitments', name_zh: '識別並評估基本承諾(第一原理)', def: '把問題拆到不可再分的根本假設,不靠類比。Musk 火箭、Bezos AWS 都用這條。', apps: { ngo: '質疑「為什麼這樣治理?」拆到根本 — 多半發現繼承自前任而非設計', brand: '寫深度文時拆掉常識假設,從不可再分的事實重建論點' } },
+            { tag: 'utility', type: 'H', verified: true, name_en: 'Consider future costs and benefits for all stakeholders', name_zh: '考慮所有利害關係人未來的成本與效益', def: '決策時,從不同 stakeholder 的角度思考 trade-off,在多個分析層次上推論。', apps: { ngo: '治理決策的多方影響:donor / staff / community / partner 各有 cost/benefit', brand: '寫批評文章前想:這篇對作者、讀者、被批評者各有什麼後果?' } },
+            { tag: 'payoffs', type: 'H', name_en: 'Identify ways incentives affect decisions', name_zh: '識別誘因如何影響決策', def: '人不是純理性 — 誘因結構決定多數行為。看誘因比看宣稱準。' },
+            { tag: 'sunkcost', type: 'H', name_en: 'Identify and analyze effects of sunk costs', name_zh: '沉沒成本效應', def: '已投入的不該影響未來決策 — 但人類大腦會本能不放棄已投入的。', apps: { ngo: '改革計畫時,「已投入這麼多」是組織抗拒改變的常見理由 — 要主動切割', brand: '寫了一半的文章發現方向錯,要敢丟掉重寫,不要因為「已寫」而硬發' } },
+            { tag: 'discounting', type: 'H', name_en: 'Analyze temporal discounting effects', name_zh: '時間折現效應', def: '人對未來的價值打折,常導致短視決策(吃糖 vs 健康)。' },
+            { tag: 'risk', type: 'C', name_en: 'Analyze effects of risk versus uncertainty', name_zh: '風險 vs 不確定性', def: '風險有已知機率分布,不確定性連分布都不知 — 處理方式不同。', apps: { ngo: '危機決策時別把不確定性當風險處理 — 不確定要 probe-sense-respond' } },
+            { tag: 'broadframing', type: 'H', name_en: 'Consider multiple choices simultaneously', name_zh: '同時考慮多個選項', def: '一次只看一個選項是 narrow framing,容易接受次優;多選項比較才能找最佳。', apps: { ngo: '政策提案時要求至少 3 個選項並列比較,別讓 single proposal pass', brand: '寫文章前 brainstorm 5 個 angle 再挑,別第一個 idea 就直接寫' } },
+            { tag: 'decisiontrees', type: 'H', name_en: 'Apply decision trees to explore consequences', name_zh: '決策樹分析後果', def: '把決策展開成樹狀,各分支對應不同情境跟期望值。' },
+            { tag: 'efficientheuristics', type: 'H', name_en: 'Apply heuristics to make decisions efficiently', name_zh: '用啟發法高效決策', def: '完整分析太貴時,合理的捷徑(rules of thumb)達到 80% 效果 ÷ 20% 成本。' },
+            { tag: 'emotionalbias', type: 'C', name_en: 'Identify decision biases from emotional states', name_zh: '情緒造成的決策偏誤', def: '焦慮時保守 / 興奮時樂觀 — 情緒系統性扭曲判斷。' },
+          ],
+        },
+        {
+          letter: 'D', name_en: 'Analyzing Problems', name_zh: '分析問題',
+          desc: '把不清楚的問題拆解到可下手的單元。',
+          hcs: [
+            { tag: 'gapanalysis', type: 'C', name_en: 'Identify gaps that reveal where creativity is required', name_zh: '識別需要創新的缺口', def: '看現狀 vs 期望狀態,差距就是問題所在;有些缺口需要新方法填補。' },
+            { tag: 'rightproblem', type: 'H', name_en: 'Characterize the nature of the problem', name_zh: '刻畫問題本質', def: '解錯的問題比解錯的方法更糟 — 先確認自己在解什麼。' },
+            { tag: 'breakitdown', type: 'H', name_en: 'Organize problems into tractable components', name_zh: '把問題拆成可處理的單元', def: '大問題拆成多個子問題分別解,組合成完整解。', apps: { ngo: 'NGO 計畫管理:「實現 X 願景」拆成可衡量的階段性產出', brand: '寫長文先 outline 拆段,每段獨立成立,組合成完整論述' } },
+            { tag: 'variables', type: 'H', name_en: 'Identify and analyze variables and parameters', name_zh: '識別並分析變數與參數', def: '哪些是可調的(variable),哪些是固定的(parameter),拆清楚才好優化。' },
+            { tag: 'gametheory', type: 'C', name_en: 'Apply and evaluate game-theoretic models', name_zh: '應用賽局理論模型', def: '多方互動的策略選擇 — Nash equilibrium、囚徒困境、coordination game。' },
+          ],
+        },
+      ],
+    },
+    {
+      roman: 'II', name_en: 'Thinking Creatively', name_zh: '創造性思考', course: 'EA', course_full: 'Empirical Analyses',
+      desc: '促進發現、解決問題、創造產品/流程/服務 — 把「不知道的事」變成「可被建構的事」。',
+      sections: [
+        {
+          letter: 'A', name_en: 'Facilitating Discovery', name_zh: '促進發現',
+          desc: '建立假設、運用研究方法、識別系統層次來促進發現。',
+          hcs: [
+            { tag: 'hypothesisdriven', type: 'C', name_en: 'Evaluate link between data collection and hypothesis', name_zh: '資料收集是否服務假設', def: '收什麼資料應該由假設決定,不是先收再看。' },
+            { tag: 'theorytesting', type: 'C', name_en: 'Evaluate link between theories and study design', name_zh: '理論與研究設計的連結', def: '研究設計能否真正檢驗理論,還是只能驗證部分推論。' },
+            { tag: 'modeltypes', type: 'C', verified: true, name_en: 'Recognize how models explain data and generate predictions', name_zh: '識別模型如何解釋資料與生成預測', def: '從概念模型到物理 / 數學 / 模擬 — 不同類型模型有不同用途;改變輸入或限制,觀察行為。' },
+            { tag: 'dataviz', type: 'C', name_en: 'Interpret, analyze, and create data visualizations', name_zh: '解讀、分析、製作資料視覺化', def: '同樣資料不同視覺化會講不同故事 — 是 communication 也是 analysis 工具。', apps: { ngo: '報告呈現時,圖比表格更能驅動決策對話', brand: '寫資料驅動文章時自製視覺化,不依賴別人的圖' } },
+            { tag: 'experimentaldesign', type: 'C', name_en: 'Apply principles of experimental design', name_zh: '實驗設計原理', def: '隨機化 / 控制 / 重複 / 對照組 — 因果推論的標準工具。' },
+            { tag: 'observation', type: 'C', name_en: 'Design and interpret observational studies', name_zh: '觀察研究的設計與解讀', def: '不能做實驗時,設計嚴謹的觀察研究 — 仍有 confounder 風險。' },
+            { tag: 'interview', type: 'C', name_en: 'Design and interpret interviews or surveys', name_zh: '訪談與調查的設計與解讀', def: '問句設計影響回答 — 帶 bias 的問句產生 bias 的資料。' },
+            { tag: 'casestudy', type: 'C', name_en: 'Design and interpret case studies', name_zh: '個案研究', def: '深度描述單一情境 — 不能 generalize,但能揭示機制。' },
+            { tag: 'replication', type: 'C', name_en: 'Evaluate and incorporate replicability', name_zh: '可重複性', def: '一次成功不算成立,要能被別人在不同情境再現。' },
+            { tag: 'control', type: 'C', name_en: 'Identify and evaluate appropriate controls', name_zh: '識別並評估適當的對照', def: '沒對照組就沒辦法歸因 — 對照組要儘量像實驗組,只差被試因素。' },
+          ],
+        },
+        {
+          letter: 'B', name_en: 'Solving Problems', name_zh: '解決問題',
+          desc: '創造性思考解決問題的方法、識別偏誤、運用啟發法。',
+          hcs: [
+            { tag: 'analogies', type: 'C', name_en: 'Use analogies in problem solving', name_zh: '以類比解決問題', def: '相似結構的問題已有解 — 找到類比就有捷徑;但要小心類比的限制。', apps: { ngo: 'NGO 治理問題在企業界 / 公共部門有先例 — 找類比省輪子', brand: '寫議題時用類比讓抽象概念變具體 — 但說清楚類比的邊界' } },
+            { tag: 'constraints', type: 'C', verified: true, name_en: 'Identify and apply constraint satisfaction', name_zh: '識別並應用約束滿足', def: '問題存在於某個目標的障礙;約束界定可能解的邊界。把所有約束同時滿足,常常解就浮現。' },
+            { tag: 'optimization', type: 'C', name_en: 'Apply optimization techniques', name_zh: '應用最佳化技術', def: '在約束下尋找目標函數最大 / 最小 — 有 closed-form 跟 heuristic 兩種路徑。' },
+            { tag: 'problemheuristics', type: 'H', name_en: 'Apply heuristics to transition between subproblems', name_zh: '在子問題間轉換的啟發法', def: '解 A 卡了,用 means-end / working backwards 轉到 B。' },
+            { tag: 'contrarian', type: 'H', name_en: 'Apply contrarian thinking to devise new strategies', name_zh: '反向思維想新策略', def: '主流方向都失敗時,試反向 — 反例會迫使你重新框架問題。', apps: { ngo: 'NGO 改革如果常規路徑死巷,試反向:不問「怎麼做更多」,問「怎麼做更少」', brand: '熱門議題寫到一半發現太擁擠 — 改寫 contrarian 觀點開出差異化' } },
+            { tag: 'algorithms', type: 'C', name_en: 'Apply algorithmic strategies to real-world problems', name_zh: '把算法策略應用到真實問題', def: '排序 / 搜尋 / 圖論等思維可以遷移到非編程的決策結構。' },
+            { tag: 'simulation', type: 'C', name_en: 'Apply and interpret simulation modeling', name_zh: '應用並解讀模擬建模', def: '無法做真實實驗時,用模擬看系統行為 — 但模擬有 garbage in/out。' },
+            { tag: 'heuristicbias', type: 'C', name_en: 'Identify biases from availability and representativeness', name_zh: '可得性與代表性偏誤', def: '腦袋容易想起的例子被當成普遍 — 媒體報導扭曲機率感。' },
+            { tag: 'selflearning', type: 'H', name_en: 'Apply strategies to teach yourself material', name_zh: '自學特定材料的策略', def: 'feynman technique / 間隔重複 / active recall — 學習方法本身是工具。' },
+          ],
+        },
+        {
+          letter: 'C', name_en: 'Creating Products, Processes, Services', name_zh: '創造產品、流程、服務',
+          desc: '反覆迭代、運用啟發法、抽象化關鍵元素。',
+          hcs: [
+            { tag: 'designthinking', type: 'H', verified: true, name_en: 'Apply iterative design thinking', name_zh: '應用迭代式設計思考', def: '優秀作品很少一次成型 — 透過設計循環(definition → ideation → prototype → test)反覆迭代。', apps: { ngo: 'NGO 計畫設計用 prototype + test 而非一次完整 plan,降低 sunk cost', brand: '個人品牌作品系列當 prototype 看 — 早期作品不完美沒關係,信號是 trajectory' } },
+            { tag: 'creativeheuristics', type: 'H', name_en: 'Apply heuristics to find creative solutions', name_zh: '創造性啟發法', def: 'SCAMPER / 反向思維 / 組合 / 減法等啟發法,系統性地產生新組合。' },
+            { tag: 'abstraction', type: 'H', name_en: 'Use reverse engineering to abstract key elements', name_zh: '反向工程抽象關鍵元素', def: '看到好的成品,逆向拆出設計原則 — 然後把原則應用到自己場景。', apps: { brand: '看到讓你共鳴的文章,逆向拆它的論證骨架 / 修辭技巧,再用到自己作品' } },
+          ],
+        },
+      ],
+    },
+    {
+      roman: 'III', name_en: 'Communicating Effectively', name_zh: '有效溝通', course: 'MC', course_full: 'Multimodal Communications',
+      desc: '使用語言、運用非語言溝通 — 訊息怎麼被接收,跟訊息本身一樣重要。',
+      sections: [
+        {
+          letter: 'A', name_en: 'Using Language Effectively', name_zh: '有效使用語言',
+          desc: '清晰的論點、結構、風格、修辭 — 寫作的基本工具。',
+          hcs: [
+            { tag: 'thesis', type: 'H', name_en: 'Formulate a well-defined thesis', name_zh: '形成明確界定的論點', def: '一句話能講完核心主張 — 讀者不必猜你想說什麼。', apps: { ngo: '倡議文件、政策建議書的第一段就該有 thesis,別讓決策者自己歸納', brand: '每篇文章必須能濃縮成一句話 — 寫不出來代表還沒到位' } },
+            { tag: 'organization', type: 'H', name_en: 'Effectively organize communications', name_zh: '有效組織溝通', def: '結構服務目的 — 不同目的(說服 / 說明 / 敘事)用不同結構。', apps: { ngo: 'policy brief 結構標準:problem → why now → options → recommendation', brand: '長文章用「問題 / 拆解 / 解 / 回應反駁」的結構,讀者不會迷路' } },
+            { tag: 'composition', type: 'H', verified: true, name_en: 'Communicate with a clear and precise style', name_zh: '以清晰精確的風格溝通', def: '反映 communicator 的聲音、貼合受眾;避免被動 / 累贅 / 不精確;遵守簡約原則。', apps: { ngo: '政策文件去掉所有形容詞還站得住才是好寫作', brand: '草稿寫完後刪 30% 字,留下的會更鋒利' } },
+            { tag: 'presentation', type: 'H', name_en: 'Follow guidelines to present professionally', name_zh: '按既有規範專業呈現', def: '排版、引用、術語使用都遵循領域慣例 — 看似形式,其實是專業 signal。' },
+            { tag: 'connotation', type: 'H', name_en: 'Understand and use connotations, tone, style', name_zh: '理解並運用言外之意、語氣、風格', def: '同一個事實用不同詞彙表達會傳遞完全不同情緒。', apps: { ngo: '政策論述「弱勢族群」vs「marginalized communities」connotation 不同,選詞影響受眾', brand: '寫評論時挑選帶情緒的詞 — 但要主動選擇,不是無意識用上' } },
+            { tag: 'audience', type: 'H', name_en: 'Tailor work for the context and audience', name_zh: '針對情境與受眾調整作品', def: '寫給專家 / 一般大眾 / 決策者用不同語言。同個內容多版本是常態。', apps: { ngo: '同個議題的 donor 版 / staff 版 / community 版 messaging 截然不同', brand: '寫文章前先具體想 1 個 reader,寫給他 — 抽象「大家」會稀釋' } },
+          ],
+        },
+        {
+          letter: 'B', name_en: 'Using Nonverbal Communication Effectively', name_zh: '有效使用非語言溝通',
+          desc: '臉部表情、肢體語言、視覺/多媒體設計 — 訊息的非語言層次。',
+          hcs: [
+            { tag: 'facialexpression', type: 'H', name_en: 'Interpret facial expressions', name_zh: '解讀臉部表情', def: '七大基本情緒在表情上有跨文化共通性,但社交脈絡會調節表達。' },
+            { tag: 'bodylanguage', type: 'H', name_en: 'Interpret and use body language', name_zh: '解讀並運用肢體語言', def: '姿態、距離、眼神接觸傳達 status / 情緒 / 意圖。' },
+            { tag: 'communicationdesign', type: 'H', verified: true, name_en: 'Apply principles of perception and cognition in design', name_zh: '在設計中運用知覺與認知原理', def: '應用知覺與認知原理在簡單圖表到複雜設備、從茶壺到觸控面;違反原理的產品難用。' },
+          ],
+        },
+      ],
+    },
+    {
+      roman: 'IV', name_en: 'Interacting Effectively', name_zh: '有效互動', course: 'CS', course_full: 'Complex Systems',
+      desc: '談判、合作、解決倫理問題 — 與人互動的工具集。',
+      sections: [
+        {
+          letter: 'A', name_en: 'Negotiating, Mediating, Persuading', name_zh: '談判、調解、說服',
+          desc: '預期訊息效果、調整溝通、達成相互利益的協議。',
+          hcs: [
+            { tag: 'mediate', type: 'H', name_en: 'Mediate disagreements', name_zh: '調解分歧', def: '中立第三方協助雙方找到共同利益,而非裁判誰對。' },
+            { tag: 'negotiate', type: 'H', verified: true, name_en: 'Use a structured approach to negotiation', name_zh: '用結構化方式談判', def: '清晰識別利益、同意流程、準備犧牲部分目標換取其他;優先排序但保持彈性與妥協開放。', apps: { ngo: 'donor 談判用結構化:利益 → 流程 → 可棄/不可棄項 → BATNA', brand: '合作談判時先框架共同利益再談分配,避免一開始就 zero-sum' } },
+            { tag: 'batna', type: 'H', name_en: 'Prepare best alternatives to a negotiated agreement', name_zh: '準備談判的最佳替代方案', def: 'BATNA 越強,談判 leverage 越大。沒 BATNA 就只能接受對方條件。', apps: { ngo: '與 partner 談合約前先確認沒這個 partner 有什麼 alternative — 有 BATNA 才敢拒絕' } },
+            { tag: 'counterargument', type: 'H', name_en: 'Evaluate counterarguments holistically', name_zh: '從多面評估反論點', def: '考慮情緒、邏輯、個人因素 — 對手不只是邏輯不同,還有情緒結構不同。', apps: { brand: '寫評論時主動列出反論點,並回應 — 比沒處理的論述強 3 倍' } },
+            { tag: 'debatestrategy', type: 'H', name_en: 'Recognize strengths and weaknesses in strategies', name_zh: '識別自己與對方策略的強弱', def: '不只攻擊對方弱點,也要意識到自己論述的脆弱處。' },
+            { tag: 'commonground', type: 'H', name_en: 'Identify common ground for concessions', name_zh: '找出共同立場以決定讓步', def: '雙方都同意的事是談判起點 — 從那擴展比從分歧處硬攻好。', apps: { ngo: '跨文化、跨立場談判先找雙方都重視的價值,再談具體條款' } },
+          ],
+        },
+        {
+          letter: 'B', name_en: 'Working Effectively with Others', name_zh: '與他人有效合作',
+          desc: '領導、團隊角色、權力動態、自我覺察 — 群體動力學。',
+          hcs: [
+            { tag: 'leadprinciples', type: 'H', name_en: 'Apply principles of effective leadership', name_zh: '應用有效領導原則', def: 'transformational / servant / situational 等不同 leadership 風格各有適合場景。' },
+            { tag: 'teamroles', type: 'H', name_en: 'Assign team roles appropriately', name_zh: '依任務指派團隊角色', def: 'Belbin 9 種團隊角色,平衡任務面跟關係面才有效。' },
+            { tag: 'powerdynamics', type: 'H', name_en: 'Influence group through different power types', name_zh: '透過不同權力類型影響群體', def: 'French &amp; Raven 5 種權力(coercive / reward / legitimate / referent / expert)各有用法。', apps: { ngo: '辨識會議裡誰用哪種權力 — donor 用 reward,founder 用 referent,專家用 expert' } },
+            { tag: 'carrotandstick', type: 'C', name_en: 'Analyze how reinforcement and punishment alter behavior', name_zh: '增強與懲罰如何改變行為', def: '行為主義基礎 — 但長期使用會破壞 intrinsic motivation。' },
+            { tag: 'conformity', type: 'H', name_en: 'Mitigate conformity in group settings', name_zh: '在群體中減少從眾', def: '從眾傾向強的群體做不出好決策 — 結構性引入異見(devil\'s advocate)反制。', apps: { ngo: 'governance meeting 結構性指派一人扮演反對派 — 避免 groupthink' } },
+            { tag: 'differences', type: 'H', verified: true, name_en: 'Recognize and leverage people\'s differences', name_zh: '識別並善用個體差異', def: '識別並善用人們在技能、能力、特質、態度、信念上的差異;有效互動建立在這些資訊上,並以相容的方式 framing。', apps: { ngo: '多元 NGO 團隊用 motivation 差異派任務 — Robert 在乎評價就強調群體感激,Larry 在乎影響就強調 making a difference' } },
+            { tag: 'orgstructure', type: 'C', name_en: 'Understand organizational structure\'s impact', name_zh: '組織結構對表現的影響', def: '扁平 / 階層 / 矩陣 / 網絡 結構各影響資訊流、決策速度、創新能力。', apps: { ngo: 'NGO 改革時別先改人事 — 改 reporting structure 比改 people 更快 leverage' } },
+            { tag: 'openmind', type: 'H', name_en: 'Listen well and be open-minded', name_zh: '善聽並保持開放心態', def: '主動傾聽不是等對方講完輪到你 — 是真的進入對方框架再回應。' },
+            { tag: 'metaknowledge', type: 'C', name_en: 'Monitor yourself to know what you don\'t know', name_zh: '監察自己,知道自己不知道什麼', def: 'Dunning-Kruger 反向 — 越有能力越知道自己的限制。', apps: { ngo: '治理決策時清楚標記「這部分我們不知道」比偽裝知道好;誠實的 uncertainty 是專業 signal', brand: '寫評論時誠實聲明 limit — 「我沒看過 X 領域,但這個觀察可能適用」' } },
+            { tag: 'selfawareness', type: 'C', name_en: 'Identify strengths and weaknesses; exercise humility', name_zh: '識別優劣勢、保持謙遜', def: '清楚自己的相對優勢跟盲點 — 不是自貶也不是吹噓。', apps: { brand: '個人品牌定位需要 self awareness — 別假裝在自己不擅長的領域有觀點' } },
+            { tag: 'emotionaliq', type: 'H', name_en: 'Use emotional intelligence', name_zh: '運用情緒智能', def: '識別自己跟他人情緒、調節自己反應、用情緒資訊指導行動。', apps: { ngo: 'tense 會議讀房間情緒比 push agenda 更重要 — 暫停 / framing shift', brand: '回應批評前自我調節情緒,別在憤怒時發 — 多數時候 24 小時後寫的會更好' } },
+          ],
+        },
+        {
+          letter: 'C', name_en: 'Resolving Ethical Problems and Social Consciousness', name_zh: '解決倫理問題與社會意識',
+          desc: '識別倫理衝突、用倫理框架解、關注共善。',
+          hcs: [
+            { tag: 'ethicalframing', type: 'C', verified: true, name_en: 'Identify ethical problems, framing them to resolve', name_zh: '識別倫理問題、framing 以求解', def: '當行動或結果與倫理原則衝突或可能衝突時,需用相關倫理理論 framing 比較不同處理方式。', apps: { ngo: '組織倫理灰區先用倫理理論 framing(義務論 / 後果論 / 德行論)再決策', brand: '寫倫理議題評論時清楚標明 framing — 同件事 utilitarian 跟 deontological 看法不同' } },
+            { tag: 'ethicalconflicts', type: 'C', name_en: 'Resolve conflicts between ethical principles', name_zh: '解決倫理原則之間的衝突', def: '兩個都對的原則衝突時,看 context 決定哪個優先 — 不是普遍排序。', apps: { ngo: 'Beneficence vs Autonomy 衝突時看具體 context — donor 期待 vs community 自主' } },
+            { tag: 'fairness', type: 'C', name_en: 'Recognize and mitigate unfair practices', name_zh: '識別並減少不公平實作', def: '系統性不公平比個人歧視難察 — 結構分析比個案分析更有用。', apps: { ngo: '評估 NGO 計畫的 access — 是否系統性偏向有資源的 community?' } },
+            { tag: 'responsibility', type: 'H', name_en: 'Follow through, be proactive, take responsibility', name_zh: '貫徹承諾、主動、負責', def: '說了就做 + 主動發現問題 + 出錯時承擔 — 成熟協作者的基本。' },
+          ],
+        },
+      ],
+    },
+  ],
+};
+
+const PARADIGM_ID = 'minerva';
+const STORAGE_KEY = 'minerva-shortlist-v0.3';
+const HC_USE_KEY = 'minerva-hc-in-use';
+
+// ========= Utilities =========
+function loadJSON(key, fallback) {
+  try { return JSON.parse(localStorage.getItem(key) || JSON.stringify(fallback)); }
+  catch (e) { return fallback; }
+}
+function saveJSON(key, val) {
+  try { localStorage.setItem(key, JSON.stringify(val)); } catch (e) {}
+}
+
+let combo = new Set(loadJSON(STORAGE_KEY, []));
+let hcInUse = new Set(loadJSON(HC_USE_KEY, []));
+
+function persistCombo() { saveJSON(STORAGE_KEY, [...combo]); }
+function persistHCs() { saveJSON(HC_USE_KEY, [...hcInUse]); }
+
+// ========= Render HC cards =========
+function buildHCCard(hc, comp) {
+  const card = document.createElement('div');
+  card.className = 'hc-card';
+  if (hc.verified) card.dataset.source = 'official';
+  card.dataset.tag = hc.tag;
+
+  const head = document.createElement('div');
+  head.className = 'hc-card-head';
+
+  const tag = document.createElement('span');
+  tag.className = 'hc-tag';
+  tag.textContent = '#' + hc.tag;
+
+  const meta = document.createElement('span');
+  meta.className = 'hc-meta';
+  if (hc.verified) {
+    const badge = document.createElement('span');
+    badge.className = 'official-badge';
+    badge.textContent = '✓ OFFICIAL';
+    meta.appendChild(badge);
+  }
+  const typeSpan = document.createElement('span');
+  typeSpan.textContent = hc.type;
+  meta.appendChild(typeSpan);
+  const courseSpan = document.createElement('span');
+  courseSpan.textContent = comp.course;
+  meta.appendChild(courseSpan);
+
+  head.append(tag, meta);
+
+  const nameEn = document.createElement('div');
+  nameEn.className = 'hc-name-en';
+  nameEn.textContent = hc.name_en;
+
+  const nameZh = document.createElement('div');
+  nameZh.className = 'hc-name-zh';
+  nameZh.textContent = hc.name_zh;
+
+  const definition = document.createElement('div');
+  definition.className = 'hc-definition';
+  definition.textContent = hc.def;
+
+  const apps = document.createElement('div');
+  apps.className = 'hc-applications';
+
+  if (hc.apps) {
+    if (hc.apps.ngo) {
+      apps.appendChild(buildAppRow('NGO', hc.apps.ngo));
+    }
+    if (hc.apps.brand) {
+      apps.appendChild(buildAppRow('個人品牌', hc.apps.brand));
+    }
+    if (hc.apps.cultural) {
+      apps.appendChild(buildAppRow('跨文化', hc.apps.cultural));
+    }
+  } else {
+    const l1Note = document.createElement('div');
+    l1Note.className = 'l1-marker';
+    l1Note.textContent = 'L1 only · 無應用例';
+    apps.appendChild(l1Note);
+  }
+
+  // Use toggle button
+  const toggle = document.createElement('button');
+  toggle.type = 'button';
+  toggle.className = 'use-toggle';
+  toggle.addEventListener('click', () => toggleHCUse(hc.tag, card, toggle));
+
+  card.append(head, nameEn, nameZh, definition, apps, toggle);
+
+  applyToggleState(toggle, card, hc.tag);
+
+  return card;
+}
+
+function applyToggleState(toggle, card, tag) {
+  const inUse = hcInUse.has(tag);
+  toggle.textContent = inUse ? '●' : '○';
+  toggle.setAttribute('aria-pressed', inUse ? 'true' : 'false');
+  toggle.setAttribute('aria-label', inUse ? `已標記 #${tag} 為使用中,點擊取消` : `將 #${tag} 標記為使用中`);
+  card.classList.toggle('in-use', inUse);
+}
+
+function buildAppRow(label, text) {
+  const row = document.createElement('div');
+  row.className = 'app-row';
+  const labelEl = document.createElement('div');
+  labelEl.className = 'app-label';
+  labelEl.textContent = label;
+  const textEl = document.createElement('div');
+  textEl.className = 'app-text';
+  textEl.textContent = text;
+  row.append(labelEl, textEl);
+  return row;
+}
+
+function toggleHCUse(tag, card, toggle) {
+  if (hcInUse.has(tag)) hcInUse.delete(tag);
+  else hcInUse.add(tag);
+  applyToggleState(toggle, card, tag);
+  persistHCs();
+  updateInUseCount();
+}
+
+function updateInUseCount() {
+  const el = document.getElementById('in-use-count');
+  if (el) el.textContent = String(hcInUse.size);
+}
+
+// ========= Render competency tree =========
+function renderTree() {
+  const container = document.getElementById('competency-container');
+  HC_DATA.competencies.forEach((comp, i) => {
+    const sec = document.createElement('section');
+    sec.className = 'competency';
+    sec.dataset.competency = comp.roman;
+
+    const head = document.createElement('div');
+    head.className = 'competency-head';
+    const roman = document.createElement('div');
+    roman.className = 'roman';
+    roman.textContent = comp.roman;
+    const headRight = document.createElement('div');
+    const h2 = document.createElement('h2');
+    h2.textContent = comp.name_en;
+    const en = document.createElement('div');
+    en.className = 'competency-en';
+    en.textContent = comp.name_zh;
+    const courseTag = document.createElement('span');
+    courseTag.className = 'course-tag';
+    courseTag.textContent = `${comp.course} · ${comp.course_full}`;
+    const desc = document.createElement('p');
+    desc.className = 'competency-desc';
+    desc.textContent = comp.desc;
+    headRight.append(h2, en, courseTag, desc);
+    head.append(roman, headRight);
+    sec.appendChild(head);
+
+    comp.sections.forEach((section) => {
+      const subsec = document.createElement('div');
+      subsec.className = 'section';
+      const h3 = document.createElement('h3');
+      h3.textContent = `${section.letter}. ${section.name_en}`;
+      const sectionEn = document.createElement('div');
+      sectionEn.className = 'section-en';
+      sectionEn.textContent = section.name_zh;
+      const sectionDesc = document.createElement('div');
+      sectionDesc.className = 'section-desc';
+      sectionDesc.textContent = section.desc;
+
+      const grid = document.createElement('div');
+      grid.className = 'hc-grid';
+      section.hcs.forEach(hc => {
+        grid.appendChild(buildHCCard(hc, comp));
+      });
+
+      subsec.append(h3, sectionEn, sectionDesc, grid);
+      sec.appendChild(subsec);
+    });
+
+    container.appendChild(sec);
+  });
+}
+
+// ========= Combo strip (read-only) =========
+function renderComboStrip() {
+  const strip = document.getElementById('combo-strip');
+  strip.textContent = '';
+  if (combo.size === 0) {
+    const empty = document.createElement('span');
+    empty.className = 'nav-empty';
+    empty.textContent = 'no combo yet';
+    strip.appendChild(empty);
+    return;
+  }
+  const label = document.createElement('span');
+  label.className = 'label';
+  label.textContent = 'combo:';
+  strip.appendChild(label);
+  combo.forEach(id => {
+    const chip = document.createElement('span');
+    chip.className = 'nav-chip';
+    chip.textContent = id;
+    strip.appendChild(chip);
+  });
+}
+
+// ========= Add this paradigm to combo =========
+const addBtn = document.getElementById('paradigm-add');
+function refreshAddButton() {
+  if (combo.has(PARADIGM_ID)) {
+    addBtn.classList.add('is-in');
+    addBtn.textContent = '已在組合 · 點擊移除';
+  } else {
+    addBtn.classList.remove('is-in');
+    addBtn.textContent = '加入 Mandara 組合';
+  }
+}
+
+addBtn.addEventListener('click', () => {
+  if (combo.has(PARADIGM_ID)) combo.delete(PARADIGM_ID);
+  else combo.add(PARADIGM_ID);
+  persistCombo();
+  refreshAddButton();
+  renderComboStrip();
+});
+
+// ========= Compute summary stats from data =========
+function updateSummaryFromData() {
+  let total = 0, h = 0, c = 0, l2 = 0, verified = 0;
+  HC_DATA.competencies.forEach(comp => {
+    comp.sections.forEach(section => {
+      section.hcs.forEach(hc => {
+        total++;
+        if (hc.type === 'H') h++;
+        else if (hc.type === 'C') c++;
+        if (hc.apps && (hc.apps.ngo || hc.apps.brand || hc.apps.cultural)) l2++;
+        if (hc.verified) verified++;
+      });
+    });
+  });
+  document.getElementById('sum-total').textContent = String(total);
+  document.getElementById('sum-h').textContent = String(h);
+  document.getElementById('sum-c').textContent = String(c);
+  document.getElementById('sum-l2').textContent = String(l2);
+  document.getElementById('sum-verified').textContent = String(verified);
+}
+
+// ========= Init =========
+renderTree();
+renderComboStrip();
+refreshAddButton();
+updateInUseCount();
+updateSummaryFromData();
+</script>
+</body>
+</html>

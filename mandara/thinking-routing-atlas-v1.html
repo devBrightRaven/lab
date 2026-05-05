@@ -1,0 +1,882 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>思維路由地圖 · Thinking Routing Atlas v1</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;0,6..72,600;0,6..72,700;1,6..72,400&family=Noto+Serif+TC:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Source+Sans+3:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --paper: #FAF7F0;
+  --paper-deep: #F2EDDF;
+  --paper-edge: #E8E2D0;
+  --ink: #1A1A1A;
+  --ink-soft: #2E2E2E;
+  --ink-mute: #5C5C5C;
+  --ink-faint: #8A8578;
+  --hairline: #D9D2C2;
+  --hairline-soft: #E5DEC9;
+
+  --cat-1: #B85C3D;
+  --cat-2: #C19A3D;
+  --cat-3: #5C7A4F;
+  --cat-4: #3D5C8C;
+  --cat-5: #4A4A4A;
+  --cat-6: #7A4A6A;
+
+  --serif: 'Newsreader', 'Noto Serif TC', Georgia, serif;
+  --sans: 'Source Sans 3', -apple-system, system-ui, "Segoe UI", "Microsoft JhengHei", sans-serif;
+  --mono: 'JetBrains Mono', "SF Mono", Consolas, Menlo, monospace;
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: 14px;
+  line-height: 1.55;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+header.atlas-head {
+  border-bottom: 1px solid var(--hairline);
+  padding: 56px 64px 36px 64px;
+  background: linear-gradient(180deg, var(--paper-deep) 0%, var(--paper) 100%);
+}
+.head-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 48px;
+  max-width: 1640px;
+  margin: 0 auto;
+}
+.head-left h1 {
+  font-family: var(--serif);
+  font-weight: 500;
+  font-size: 56px;
+  letter-spacing: -0.02em;
+  margin: 0 0 6px 0;
+  line-height: 1.05;
+}
+.head-left .subtitle-en {
+  font-family: var(--serif);
+  font-style: italic;
+  font-weight: 400;
+  font-size: 22px;
+  color: var(--ink-mute);
+  margin: 0;
+}
+.head-right {
+  text-align: right;
+  color: var(--ink-mute);
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  line-height: 1.8;
+}
+.head-right .stat {
+  display: inline-block;
+  margin-left: 18px;
+}
+.head-right .stat strong {
+  font-family: var(--serif);
+  font-weight: 600;
+  font-size: 18px;
+  color: var(--ink);
+  margin-right: 4px;
+  letter-spacing: 0;
+}
+
+.head-blurb {
+  margin: 28px auto 0 auto;
+  font-family: var(--serif);
+  font-size: 17px;
+  line-height: 1.65;
+  color: var(--ink-soft);
+  max-width: 880px;
+}
+.head-blurb em { color: var(--cat-1); font-style: normal; font-weight: 500; }
+
+.control-bar {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: var(--paper);
+  border-bottom: 1px solid var(--hairline);
+  padding: 14px 64px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 32px;
+}
+.filter-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.filter-label {
+  font-family: var(--mono);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--ink-faint);
+  margin-right: 8px;
+}
+.filter-pill {
+  font-family: var(--sans);
+  font-size: 13px;
+  font-weight: 500;
+  padding: 5px 12px;
+  border: 1px solid var(--hairline);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--ink-soft);
+  cursor: pointer;
+  transition: all 0.18s ease;
+  letter-spacing: 0.01em;
+}
+.filter-pill:hover { background: var(--paper-deep); border-color: var(--ink-mute); }
+.filter-pill.active { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+
+.shortlist-info {
+  font-family: var(--mono);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--ink-mute);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.shortlist-count {
+  font-family: var(--serif);
+  font-size: 16px;
+  color: var(--ink);
+  font-weight: 600;
+  letter-spacing: 0;
+  text-transform: none;
+}
+.shortlist-clear {
+  background: none;
+  border: none;
+  color: var(--ink-faint);
+  font-family: var(--mono);
+  font-size: 11px;
+  text-transform: uppercase;
+  cursor: pointer;
+  padding: 4px 8px;
+  letter-spacing: 0.06em;
+}
+.shortlist-clear:hover { color: var(--cat-1); }
+
+main {
+  padding: 0 64px 80px 64px;
+  max-width: 1640px;
+  margin: 0 auto;
+}
+
+.category {
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  gap: 48px;
+  padding: 40px 0;
+  border-bottom: 1px solid var(--hairline-soft);
+}
+.cat-meta {
+  position: sticky;
+  top: 80px;
+  align-self: start;
+}
+.cat-num {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  color: var(--ink-faint);
+  margin-bottom: 6px;
+}
+.cat-name-zh {
+  font-family: var(--serif);
+  font-size: 30px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  line-height: 1.1;
+  margin: 0;
+}
+.cat-name-en {
+  font-family: var(--serif);
+  font-style: italic;
+  color: var(--ink-mute);
+  font-size: 16px;
+  margin-top: 2px;
+  font-weight: 400;
+}
+.cat-tagline {
+  margin-top: 14px;
+  font-size: 13.5px;
+  color: var(--ink-mute);
+  line-height: 1.55;
+  border-left: 2px solid;
+  padding-left: 12px;
+}
+
+.category[data-cat="1"] .cat-tagline { border-color: var(--cat-1); }
+.category[data-cat="2"] .cat-tagline { border-color: var(--cat-2); }
+.category[data-cat="3"] .cat-tagline { border-color: var(--cat-3); }
+.category[data-cat="4"] .cat-tagline { border-color: var(--cat-4); }
+.category[data-cat="5"] .cat-tagline { border-color: var(--cat-5); }
+.category[data-cat="6"] .cat-tagline { border-color: var(--cat-6); }
+
+.category[data-cat="1"] .cat-num { color: var(--cat-1); }
+.category[data-cat="2"] .cat-num { color: var(--cat-2); }
+.category[data-cat="3"] .cat-num { color: var(--cat-3); }
+.category[data-cat="4"] .cat-num { color: var(--cat-4); }
+.category[data-cat="5"] .cat-num { color: var(--cat-5); }
+.category[data-cat="6"] .cat-num { color: var(--cat-6); }
+
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 18px;
+}
+.card {
+  position: relative;
+  padding: 18px 20px 18px 24px;
+  border: 1px solid var(--hairline);
+  background: var(--paper);
+  cursor: pointer;
+  transition: all 0.18s ease;
+  display: flex;
+  flex-direction: column;
+}
+.card::before {
+  content: "";
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 3px;
+  background: currentColor;
+  opacity: 0.85;
+}
+.card[data-cat="1"] { color: var(--cat-1); }
+.card[data-cat="2"] { color: var(--cat-2); }
+.card[data-cat="3"] { color: var(--cat-3); }
+.card[data-cat="4"] { color: var(--cat-4); }
+.card[data-cat="5"] { color: var(--cat-5); }
+.card[data-cat="6"] { color: var(--cat-6); }
+
+.card:hover { background: var(--paper-deep); border-color: var(--ink-mute); }
+.card.selected {
+  background: var(--ink);
+  border-color: var(--ink);
+  color: var(--paper);
+}
+.card.selected .card-philosophy,
+.card.selected .card-meta-row,
+.card.selected .card-tags { color: var(--paper); }
+.card.selected::before { background: var(--paper); opacity: 1; }
+.card.dim { opacity: 0.32; }
+
+.card-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 10px;
+  margin-bottom: 6px;
+}
+.card-name {
+  font-family: var(--serif);
+  font-size: 19px;
+  font-weight: 600;
+  color: var(--ink);
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+}
+.card.selected .card-name { color: var(--paper); }
+.card-count {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--ink-faint);
+  white-space: nowrap;
+}
+.card.selected .card-count { color: var(--paper-edge); opacity: 0.7; }
+.card-en {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 13px;
+  color: var(--ink-mute);
+  margin-bottom: 4px;
+}
+.card.selected .card-en { color: var(--paper-edge); opacity: 0.85; }
+.card-meta-row {
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  margin-bottom: 10px;
+}
+.card-philosophy {
+  font-size: 13px;
+  line-height: 1.55;
+  color: var(--ink-soft);
+  flex-grow: 1;
+  margin-bottom: 12px;
+}
+.card-tags {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.05em;
+  color: var(--ink-mute);
+  text-transform: uppercase;
+}
+.card-tag {
+  padding: 2px 7px;
+  border: 1px solid var(--hairline);
+  border-radius: 2px;
+  background: transparent;
+}
+.card.selected .card-tag {
+  border-color: var(--paper-edge);
+  color: var(--paper-edge);
+  opacity: 0.85;
+}
+
+.matrix-section {
+  padding: 56px 0 48px 0;
+  border-bottom: 1px solid var(--hairline-soft);
+}
+.section-h {
+  font-family: var(--serif);
+  font-weight: 500;
+  font-size: 28px;
+  letter-spacing: -0.01em;
+  margin: 0 0 4px 0;
+}
+.section-h-en {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 15px;
+  color: var(--ink-mute);
+  margin-bottom: 28px;
+}
+
+.matrix-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+.matrix-table th, .matrix-table td {
+  padding: 12px 14px;
+  text-align: left;
+  vertical-align: top;
+  border-bottom: 1px solid var(--hairline-soft);
+}
+.matrix-table th {
+  font-family: var(--mono);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--ink-faint);
+  font-weight: 500;
+  border-bottom: 1px solid var(--hairline);
+}
+.matrix-table .situation {
+  font-family: var(--serif);
+  font-size: 16px;
+  font-weight: 500;
+  width: 22%;
+}
+.matrix-table .primary {
+  font-weight: 500;
+}
+.matrix-table .primary .ref {
+  color: var(--cat-1);
+  font-family: var(--mono);
+  font-size: 11px;
+  margin-left: 4px;
+}
+.matrix-table .secondary {
+  color: var(--ink-mute);
+  width: 28%;
+}
+.matrix-table .why {
+  color: var(--ink-soft);
+  font-size: 12.5px;
+  line-height: 1.55;
+}
+
+.combos {
+  padding: 48px 0 32px 0;
+}
+.combo-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(420px, 1fr));
+  gap: 28px;
+  margin-top: 12px;
+}
+.combo {
+  border: 1px solid var(--hairline);
+  padding: 24px 26px;
+  background: var(--paper-deep);
+}
+.combo-name {
+  font-family: var(--serif);
+  font-size: 22px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  margin: 0 0 4px 0;
+}
+.combo-context {
+  font-family: var(--mono);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--ink-faint);
+  margin-bottom: 16px;
+}
+.combo-formula {
+  font-family: var(--serif);
+  font-size: 15px;
+  font-style: italic;
+  color: var(--ink-mute);
+  padding: 10px 0;
+  border-top: 1px solid var(--hairline);
+  border-bottom: 1px solid var(--hairline);
+  margin-bottom: 14px;
+}
+.combo-formula .plus { color: var(--cat-1); margin: 0 6px; font-style: normal; font-weight: 500; }
+.combo-rationale {
+  font-size: 13px;
+  color: var(--ink-soft);
+  line-height: 1.6;
+  margin: 0;
+}
+
+.footnote {
+  margin-top: 64px;
+  padding-top: 24px;
+  border-top: 1px solid var(--hairline);
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 32px;
+  font-size: 12px;
+  color: var(--ink-mute);
+  line-height: 1.55;
+}
+.footnote h4 {
+  font-family: var(--mono);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--ink);
+  font-weight: 500;
+  margin: 0 0 8px 0;
+}
+.footnote p { margin: 0 0 8px 0; }
+.footnote code {
+  background: var(--paper-deep);
+  padding: 1px 5px;
+  border: 1px solid var(--hairline);
+  border-radius: 2px;
+  font-family: var(--mono);
+  font-size: 11px;
+}
+
+.junior-note {
+  background: var(--paper-deep);
+  border: 1px dashed var(--hairline);
+  padding: 14px 18px;
+  margin: 0 auto;
+  max-width: 1640px;
+  font-size: 13px;
+  color: var(--ink-mute);
+  line-height: 1.55;
+}
+.junior-note strong {
+  color: var(--ink);
+  font-family: var(--mono);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-right: 8px;
+}
+
+@media (max-width: 1100px) {
+  header.atlas-head, .control-bar, main { padding-left: 32px; padding-right: 32px; }
+  .head-row { flex-direction: column; align-items: flex-start; }
+  .head-right { text-align: left; }
+  .category { grid-template-columns: 1fr; gap: 20px; }
+  .cat-meta { position: static; }
+  .footnote { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<header class="atlas-head">
+  <div class="head-row">
+    <div class="head-left">
+      <h1>思維路由地圖</h1>
+      <p class="subtitle-en">Thinking Routing Atlas · v1</p>
+    </div>
+    <div class="head-right">
+      <div>編譯版本 / Edition v1 · 2026-05-04</div>
+      <div>
+        <span class="stat"><strong>23</strong> 框架</span>
+        <span class="stat"><strong>6</strong> 範式</span>
+        <span class="stat"><strong>2</strong> 工作軌道</span>
+      </div>
+    </div>
+  </div>
+  <p class="head-blurb">
+    這不是一張「應該知道的清單」。這是一張<em>路由圖</em>:把工作中可能遇到的情境(個人品牌、APAC AIA NGO、跨文化、危機、反思)接到適合處理它的思考典範,再接到具體可召喚的工具。23 個框架不是要你全用,而是讓你看清光譜,挑出屬於你的那個子集。
+  </p>
+</header>
+
+<div class="junior-note">
+  <strong>v1 草稿</strong>內容已填、互動可用 (點卡片加入短名單、用上方 filter 切換情境)。視覺風格、分類粒度、缺漏框架、路由邏輯歡迎逐條討論。
+</div>
+
+<section class="control-bar">
+  <div class="filter-group">
+    <span class="filter-label">情境 / Context</span>
+    <button class="filter-pill active" data-filter="all">所有</button>
+    <button class="filter-pill" data-filter="brand">個人品牌</button>
+    <button class="filter-pill" data-filter="ngo">NGO governance</button>
+    <button class="filter-pill" data-filter="cultural">跨文化</button>
+    <button class="filter-pill" data-filter="crisis">危機決策</button>
+    <button class="filter-pill" data-filter="reflective">反思學習</button>
+  </div>
+  <div class="shortlist-info">
+    <span>shortlist</span>
+    <span class="shortlist-count" id="shortlist-count">0</span>
+    <button class="shortlist-clear" id="shortlist-clear">clear</button>
+  </div>
+</section>
+
+<main>
+
+<section class="category" data-cat="1">
+  <aside class="cat-meta">
+    <div class="cat-num">範式 01 / Cat. I</div>
+    <h2 class="cat-name-zh">Latticework 收集型</h2>
+    <div class="cat-name-en">The Latticework Approach</div>
+    <p class="cat-tagline">多多益善,跨學科連網,case-by-case 召喚。沒有正式結構,廣度優先。</p>
+  </aside>
+  <div class="cards" id="cards-cat1"></div>
+</section>
+
+<section class="category" data-cat="2">
+  <aside class="cat-meta">
+    <div class="cat-num">範式 02 / Cat. II</div>
+    <h2 class="cat-name-zh">Curriculum 課程型</h2>
+    <div class="cat-name-en">The Curricular Approach</div>
+    <p class="cat-tagline">精選工具集,有定義 + 應用範例 + 評估標準,反覆練習到內化成思考習慣。</p>
+  </aside>
+  <div class="cards" id="cards-cat2"></div>
+</section>
+
+<section class="category" data-cat="3">
+  <aside class="cat-meta">
+    <div class="cat-num">範式 03 / Cat. III</div>
+    <h2 class="cat-name-zh">Cynefin 情境路由型</h2>
+    <div class="cat-name-en">The Sense-Making Approach</div>
+    <p class="cat-tagline">先判斷你在哪個情境,再決定方法論。本身是 router 而不是 toolkit。</p>
+  </aside>
+  <div class="cards" id="cards-cat3"></div>
+</section>
+
+<section class="category" data-cat="4">
+  <aside class="cat-meta">
+    <div class="cat-num">範式 04 / Cat. IV</div>
+    <h2 class="cat-name-zh">Loop 迴路型</h2>
+    <div class="cat-name-en">The Cyclic Approach</div>
+    <p class="cat-tagline">不是工具庫,是動作節奏。觀察、定向、決策、行動的迭代循環。</p>
+  </aside>
+  <div class="cards" id="cards-cat4"></div>
+</section>
+
+<section class="category" data-cat="5">
+  <aside class="cat-meta">
+    <div class="cat-num">範式 05 / Cat. V</div>
+    <h2 class="cat-name-zh">Anti-Bias 反思型</h2>
+    <div class="cat-name-en">The Reflective Approach</div>
+    <p class="cat-tagline">不給你新觀點,讓你避開現有思考的陷阱。校準判斷力,適合決策後 retrospective。</p>
+  </aside>
+  <div class="cards" id="cards-cat5"></div>
+</section>
+
+<section class="category" data-cat="6">
+  <aside class="cat-meta">
+    <div class="cat-num">範式 06 / Cat. VI</div>
+    <h2 class="cat-name-zh">Container/Frame 容器框架型</h2>
+    <div class="cat-name-en">The Structural Approach</div>
+    <p class="cat-tagline">工具的「家」,或角色/論證/影響/世界觀的舞台。提供結構,不直接給內容。</p>
+  </aside>
+  <div class="cards" id="cards-cat6"></div>
+</section>
+
+<section class="matrix-section">
+  <h2 class="section-h">路由邏輯</h2>
+  <div class="section-h-en">Routing Logic · 從情境到範式</div>
+  <table class="matrix-table">
+    <thead>
+      <tr>
+        <th>情境 / Situation</th>
+        <th>主軸範式 / Primary</th>
+        <th>輔助範式 / Secondary</th>
+        <th>為何這樣路由 / Rationale</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="situation">個人品牌寫作 · 內容創作</td>
+        <td class="primary">Latticework <span class="ref">[Cat. I]</span></td>
+        <td class="secondary">Container/Frame · Reflective</td>
+        <td class="why">寫作要的是觀點密度與跨領域啟發。Munger / Farnam Street 提供素材庫,Toulmin 提供論證骨架,Kahneman bias 清單提供「這樣寫會誤導讀者嗎」的反思。</td>
+      </tr>
+      <tr>
+        <td class="situation">NGO governance · 多利害關係人決策</td>
+        <td class="primary">Cynefin <span class="ref">[Cat. III]</span></td>
+        <td class="secondary">Curriculum · Anti-Bias</td>
+        <td class="why">NGO 治理常落在 Complex 區 (emergent、不可預測),先用 Cynefin 判斷區域避免硬套 best practice。Minerva HC 提供實證/系統工具,Tetlock 校準預測,Leverage Points 找介入位置。</td>
+      </tr>
+      <tr>
+        <td class="situation">APAC 跨文化談判 · 多國協作</td>
+        <td class="primary">Container/Frame <span class="ref">[Cat. VI]</span></td>
+        <td class="secondary">Loop · Latticework</td>
+        <td class="why">跨文化情境的核心是「世界觀差異」,Spiral Dynamics 提供 vMeme 對齊判斷。OODA 處理談判的迭代節奏。Cialdini 6 法則跨文化失準率高,需搭配 Spiral 校準。</td>
+      </tr>
+      <tr>
+        <td class="situation">危機 · 時間壓力決策</td>
+        <td class="primary">Loop <span class="ref">[Cat. IV]</span></td>
+        <td class="secondary">Anti-Bias</td>
+        <td class="why">時間壓力下沒空 lookup latticework。OODA / RPD 是專為這種情境設計的「直覺 + 模式辨識」流程。事後用 Stoic premeditation / Kahneman bias 做 retrospective。</td>
+      </tr>
+      <tr>
+        <td class="situation">創新探索 · 突破思考</td>
+        <td class="primary">Curriculum <span class="ref">[Cat. II]</span></td>
+        <td class="secondary">Loop · Cynefin</td>
+        <td class="why">突破要的是有結構的拆解。First Principles 拆問題到根本,TRIZ 40 原理提供可重組的元件,Effectuation 從手邊資源出發,Wardley Mapping 看演化階段選介入點。</td>
+      </tr>
+      <tr>
+        <td class="situation">學習新領域 · 沉澱知識</td>
+        <td class="primary">Container/Frame <span class="ref">[Cat. VI]</span></td>
+        <td class="secondary">Curriculum · Latticework</td>
+        <td class="why">學習的核心是「結構性記憶」。Zettelkasten 提供原子化筆記與自我演化容器,Minerva HC 提供可遷移性練習,Munger latticework 引導跨學科連結。</td>
+      </tr>
+      <tr>
+        <td class="situation">系統性問題 · 想做根本改變</td>
+        <td class="primary">Cynefin <span class="ref">[Cat. III]</span></td>
+        <td class="secondary">Curriculum · Loop</td>
+        <td class="why">「根本改變」是系統話語。Donella Meadows 12 槓桿點是專門用來找介入位置的工具,搭配 Wardley 看演化階段、Theory U 處理深層心智模式轉變。</td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+
+<section class="combos">
+  <h2 class="section-h">推薦組合 / Preset Routes</h2>
+  <div class="section-h-en">三條建議組合 · 適合你兩個工作軌道</div>
+  <div class="combo-grid">
+    <div class="combo">
+      <h3 class="combo-name">A · 個人品牌 Daily Driver</h3>
+      <div class="combo-context">For Personal Brand · Writing &amp; Content</div>
+      <div class="combo-formula">
+        Munger Latticework <span class="plus">+</span> Toulmin Argumentation <span class="plus">+</span> Kahneman Bias Check
+      </div>
+      <p class="combo-rationale">寫作前用 Munger 找跨學科啟發,寫完用 Toulmin 檢查論證骨架 (claim/grounds/warrant 都齊全嗎),最後用 Kahneman bias 清單檢查「我是不是過度推論 / cherry-pick 例子」。低工程量,可立即上手。</p>
+    </div>
+    <div class="combo">
+      <h3 class="combo-name">B · APAC AIA NGO Decision</h3>
+      <div class="combo-context">For NGO governance · Multi-Stakeholder</div>
+      <div class="combo-formula">
+        Cynefin <span class="plus">+</span> Minerva HC subset <span class="plus">+</span> Spiral Dynamics
+      </div>
+      <p class="combo-rationale">用 Cynefin 先判斷議題是 Complicated 還是 Complex (這個判斷錯誤是 NGO 卡關常見原因)。Complex 區用 Minerva 的 #emergentproperties / #networks / #systemmapping 三個 HC。Spiral Dynamics 校準不同國家代表的 vMeme,避免用單一邏輯套所有人。</p>
+    </div>
+    <div class="combo">
+      <h3 class="combo-name">C · 高壓決策 + Retrospective</h3>
+      <div class="combo-context">For Crisis · Decisions Under Time Pressure</div>
+      <div class="combo-formula">
+        OODA Loop <span class="plus">+</span> Recognition-Primed Decision <span class="plus">+</span> Stoic Premeditation
+      </div>
+      <p class="combo-rationale">當下:OODA 維持節奏,RPD 信任專家直覺 (在你熟的領域)。事後:Stoic premeditatio malorum (預先想像各種失敗場景) 把這次經驗轉成下一次的「模式庫」。對 NGO 危機 / 個人品牌風波都適用。</p>
+    </div>
+  </div>
+</section>
+
+<div class="footnote">
+  <div>
+    <h4>How to use this map</h4>
+    <p>點卡片加進 shortlist (右上角計數),選定的會 highlight。 用上方 <code>情境</code> filter 切換場景,看哪些範式在那個場景特別亮。 短名單存在 localStorage,刷新不丟。</p>
+  </div>
+  <div>
+    <h4>What v1 doesn&#39;t yet do</h4>
+    <p>(1) 點卡片只 highlight,還沒進入「具體工具列表」(下一層 ~80 個 Minerva HC + ~76 Munger model);(2) 沒接 vault 寫入;(3) 沒接 shikigarasu 4 軸的 cross-reference。 這些是看你方向確定後再決定要不要做的。</p>
+  </div>
+  <div>
+    <h4>Compiled from</h4>
+    <p>學術文獻 + 各創始者著作 + 課程綱要。完整來源列表會在 v2 補上。 部分歸類為作者主觀判斷 (例如 Effectuation 放在 Loop 而非 Curriculum) 歡迎挑戰。</p>
+  </div>
+</div>
+
+</main>
+
+<script>
+const PARADIGMS = [
+  { id: 'munger', cat: 1, name_zh: 'Munger Latticework', name_en: 'Charlie Munger Latticework', founder: 'Charlie Munger', count: '~76-109', philosophy: '從心理學/物理/生物/經濟跨學科收集模型,組成互相交織的「網」。真實問題通常需要 2-3 個模型疊加才看清。', tags: ['brand', 'reflective'] },
+  { id: 'fs', cat: 1, name_zh: 'Farnam Street', name_en: 'Farnam Street Mental Models', founder: 'Shane Parrish', count: '~100+', philosophy: '把 Munger 的散落模型系統化成書,可讀性高。每個模型有定義 + 例子 + 反例。適合當入門目錄。', tags: ['brand', 'reflective'] },
+  { id: 'decision-book', cat: 1, name_zh: 'The Decision Book', name_en: '50 Models for Strategic Thinking', founder: 'Krogerus & Tschäppeler', count: '50', philosophy: '50 個視覺化決策模型,每個一頁。商管導向、輕量、適合決策現場速查。', tags: ['brand', 'crisis'] },
+
+  { id: 'minerva', cat: 2, name_zh: 'Minerva HCs', name_en: 'Habits of Mind & Foundational Concepts', founder: 'Minerva University', count: '~80', philosophy: '4 大類 (Empirical/Formal/Multimodal/Complex Systems),每個 HC 有正式定義 + 應用範例 + 評估 rubric。設計目標是內化成思考習慣。', tags: ['brand', 'ngo', 'reflective'] },
+  { id: 'triz', cat: 2, name_zh: 'TRIZ', name_en: 'Theory of Inventive Problem Solving', founder: 'Genrich Altshuller', count: '40', philosophy: '從 250 萬份專利庫蒸餾出的 40 個發明原理。專利導向但可外推到任何「卡住的設計問題」。', tags: ['ngo'] },
+  { id: 'polya', cat: 2, name_zh: 'Polya 4-Phase', name_en: 'How to Solve It', founder: 'George Polya', count: '4', philosophy: '理解問題 / 設計計畫 / 執行 / 回顧。看似簡單,但「回顧」這步絕大多數人跳過,反而是學習效率的關鍵。', tags: ['ngo'] },
+  { id: 'first-principles', cat: 2, name_zh: 'First Principles', name_en: 'First Principles Thinking', founder: 'Aristotle / Descartes', count: '1 method', philosophy: '把問題拆到不可再分的根本假設,不靠類比。Musk 火箭、Bezos AWS 都用這條。代價:很費腦力。', tags: ['ngo', 'brand'] },
+
+  { id: 'cynefin', cat: 3, name_zh: 'Cynefin Framework', name_en: 'Sense-Making Framework', founder: 'Dave Snowden', count: '4-5 區', philosophy: 'Clear / Complicated / Complex / Chaotic 四區 + Disorder。每區用不同方法論。誤把 Complex 當 Complicated 是組織失敗常見原因。', tags: ['ngo', 'cultural'] },
+  { id: 'wardley', cat: 3, name_zh: 'Wardley Mapping', name_en: 'Strategy as Visual Map', founder: 'Simon Wardley', count: 'mapping', philosophy: '把價值鏈畫成「用戶可見性 × 演化階段」的地圖。看到自己跟競爭者在演化光譜哪裡,決定該創新還是該標準化。', tags: ['ngo'] },
+  { id: 'leverage', cat: 3, name_zh: 'Donella Meadows 槓桿點', name_en: '12 Leverage Points', founder: 'Donella Meadows', count: '12', philosophy: '系統介入點按效力排序。最強是「典範轉移」,最弱是「調參數」。NGO 改革常瞄準弱槓桿,費力不討好。', tags: ['ngo'] },
+
+  { id: 'ooda', cat: 4, name_zh: 'OODA Loop', name_en: 'Observe, Orient, Decide, Act', founder: 'John Boyd', count: '4 phases', philosophy: '空戰起源,矽谷愛用。Orient 是核心 (mental models 在這發揮)。誰的 OODA 跑得快,誰就掌握主動。', tags: ['crisis', 'brand'] },
+  { id: 'rpd', cat: 4, name_zh: 'Recognition-Primed Decision', name_en: 'RPD Model', founder: 'Gary Klein', count: '1 process', philosophy: '消防員、急診醫師等專家不做「比較選項」,直接 pattern-match 到熟悉的場景並執行。對 Kahneman 的反命題:直覺在熟領域是可靠的。', tags: ['crisis'] },
+  { id: 'theory-u', cat: 4, name_zh: 'Theory U', name_en: 'U-Process', founder: 'Otto Scharmer (MIT)', count: '5 stages', philosophy: '社會創新導向。從 downloading 沉到 presencing 再上升到 prototyping。處理「集體心智模式轉變」的場景。NGO 改革常用。', tags: ['ngo', 'reflective'] },
+  { id: 'effectuation', cat: 4, name_zh: 'Effectuation', name_en: 'Effectual Reasoning', founder: 'Saras Sarasvathy', count: '5 principles', philosophy: '創業家的反向邏輯:不從目標倒推,從手邊資源出發,看能變出什麼。bird-in-hand / affordable loss / lemonade / patchwork quilt / pilot-in-the-plane。', tags: ['brand', 'ngo'] },
+
+  { id: 'kahneman', cat: 5, name_zh: 'Kahneman System 1/2', name_en: 'Thinking, Fast and Slow', founder: 'Daniel Kahneman', count: '~50 biases', philosophy: '快思 (System 1, 直覺) / 慢想 (System 2, 推理)。50+ 個認知偏誤目錄。最強的是「knowing about biases doesn’t prevent them」這個發現。', tags: ['reflective', 'brand'] },
+  { id: 'tetlock', cat: 5, name_zh: 'Superforecasting', name_en: "Tetlock's 10 Commandments", founder: 'Philip Tetlock', count: '10 rules', philosophy: '預測校準訓練。Triage / 拆解問題 / outside view / 漸進式更新 / 再三檢查信心區間。Tetlock 的 GJP 計畫證明預測能力可訓練。', tags: ['ngo', 'reflective'] },
+  { id: 'stoic', cat: 5, name_zh: 'Stoic Premeditation', name_en: 'Premeditatio Malorum', founder: 'Epictetus / Marcus Aurelius', count: '多個練習', philosophy: '控制二分法 (區分能控與不能控) + 預先設想失敗。不是悲觀,是預演降低衝擊。對個人品牌風波 + NGO 危機都適用。', tags: ['reflective', 'crisis'] },
+  { id: 'zhongyong', cat: 5, name_zh: '中庸 / 儒家反思', name_en: 'Confucian Reflective Practice', founder: '孔子 / 子思', count: 'contemplative', philosophy: '「過猶不及」是反兩極端的情境調節。日三省 (吾日三省吾身)。對 APAC 受眾的論述比西方反思語言更有共鳴。', tags: ['reflective', 'cultural'] },
+
+  { id: 'zk', cat: 6, name_zh: 'Zettelkasten', name_en: "Niklas Luhmann's Slip-Box", founder: 'Niklas Luhmann', count: 'atomic + linked', philosophy: '原子化筆記 + 密集連結。Luhmann 用這套寫了 70 本書。不是 input 多,是讓概念之間自己長出新關係。Andy Matuschak Evergreen Notes 是現代版。', tags: ['brand', 'reflective'] },
+  { id: 'six-hats', cat: 6, name_zh: 'Six Thinking Hats', name_en: "De Bono's Six Hats", founder: 'Edward de Bono', count: '6 hats', philosophy: '白 (事實) / 紅 (情緒) / 黑 (批評) / 黃 (樂觀) / 綠 (創意) / 藍 (流程)。團體決策時輪流戴同一頂帽子,避免角色固化造成的衝突。', tags: ['ngo', 'brand'] },
+  { id: 'toulmin', cat: 6, name_zh: 'Toulmin Argumentation', name_en: 'Toulmin Model', founder: 'Stephen Toulmin', count: '6 components', philosophy: 'claim / grounds / warrant / backing / qualifier / rebuttal。論證骨架的標準解剖。寫評論文章 + NGO 倡議文件都該過一次。', tags: ['brand', 'ngo'] },
+  { id: 'cialdini', cat: 6, name_zh: 'Cialdini 影響力法則', name_en: 'Influence Principles', founder: 'Robert Cialdini', count: '6-7', philosophy: '互惠 / 承諾一致 / 社會認同 / 喜好 / 權威 / 稀缺 (+ 後加 unity)。說服 leverage,但跨文化失準率高,需搭 Spiral Dynamics。', tags: ['brand', 'cultural'] },
+  { id: 'spiral', cat: 6, name_zh: 'Spiral Dynamics', name_en: 'vMeme System', founder: 'Beck & Cowan', count: '8 vMemes', philosophy: '把人類價值觀分成 8 個演化層 (生存 → 部落 → 權力 → 秩序 → 成就 → 社群 → 整合 → 全觀)。跨文化談判時判斷對方主導 vMeme 比語言翻譯更關鍵。', tags: ['cultural', 'ngo'] },
+];
+
+const TAG_LABEL = {
+  brand: '個人品牌',
+  ngo: 'NGO',
+  cultural: '跨文化',
+  crisis: '危機',
+  reflective: '反思',
+};
+
+function buildCard(p) {
+  const card = document.createElement('div');
+  card.className = 'card';
+  card.dataset.id = p.id;
+  card.dataset.cat = String(p.cat);
+  card.dataset.tags = p.tags.join(',');
+
+  const head = document.createElement('div');
+  head.className = 'card-head';
+  const nameEl = document.createElement('div');
+  nameEl.className = 'card-name';
+  nameEl.textContent = p.name_zh;
+  const countEl = document.createElement('div');
+  countEl.className = 'card-count';
+  countEl.textContent = p.count;
+  head.append(nameEl, countEl);
+
+  const enEl = document.createElement('div');
+  enEl.className = 'card-en';
+  enEl.textContent = p.name_en;
+
+  const metaRow = document.createElement('div');
+  metaRow.className = 'card-meta-row';
+  metaRow.textContent = p.founder;
+
+  const philEl = document.createElement('div');
+  philEl.className = 'card-philosophy';
+  philEl.textContent = p.philosophy;
+
+  const tagsEl = document.createElement('div');
+  tagsEl.className = 'card-tags';
+  p.tags.forEach(t => {
+    const tag = document.createElement('span');
+    tag.className = 'card-tag';
+    tag.textContent = TAG_LABEL[t] || t;
+    tagsEl.appendChild(tag);
+  });
+
+  card.append(head, enEl, metaRow, philEl, tagsEl);
+  card.addEventListener('click', () => toggleSelect(p.id));
+  return card;
+}
+
+function renderCards() {
+  for (let cat = 1; cat <= 6; cat++) {
+    const container = document.getElementById('cards-cat' + cat);
+    container.textContent = '';
+    PARADIGMS.filter(p => p.cat === cat).forEach(p => container.appendChild(buildCard(p)));
+  }
+}
+
+const STORAGE_KEY = 'minerva-shortlist-v1';
+let shortlist;
+try {
+  shortlist = new Set(JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]'));
+} catch (e) {
+  shortlist = new Set();
+}
+
+function toggleSelect(id) {
+  if (shortlist.has(id)) shortlist.delete(id);
+  else shortlist.add(id);
+  localStorage.setItem(STORAGE_KEY, JSON.stringify([...shortlist]));
+  applySelectionUI();
+}
+
+function applySelectionUI() {
+  document.querySelectorAll('.card').forEach(card => {
+    card.classList.toggle('selected', shortlist.has(card.dataset.id));
+  });
+  document.getElementById('shortlist-count').textContent = String(shortlist.size);
+}
+
+document.getElementById('shortlist-clear').addEventListener('click', () => {
+  shortlist.clear();
+  localStorage.setItem(STORAGE_KEY, '[]');
+  applySelectionUI();
+});
+
+let currentFilter = 'all';
+function applyFilter() {
+  document.querySelectorAll('.card').forEach(card => {
+    if (currentFilter === 'all') {
+      card.classList.remove('dim');
+    } else {
+      const tags = card.dataset.tags.split(',');
+      card.classList.toggle('dim', !tags.includes(currentFilter));
+    }
+  });
+  document.querySelectorAll('.filter-pill').forEach(p => {
+    p.classList.toggle('active', p.dataset.filter === currentFilter);
+  });
+}
+
+document.querySelectorAll('.filter-pill').forEach(pill => {
+  pill.addEventListener('click', () => {
+    currentFilter = pill.dataset.filter;
+    applyFilter();
+  });
+});
+
+renderCards();
+applySelectionUI();
+applyFilter();
+</script>
+</body>
+</html>
