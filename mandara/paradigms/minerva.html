@@ -371,6 +371,18 @@ const PARADIGM_ID = 'minerva';
 const STORAGE_KEY = 'minerva-shortlist-v0.3';
 const HC_USE_KEY = 'minerva-hc-in-use';
 
+const TYPE_TOOLTIP = {
+  H: 'Habit of Mind — 認知技能,反覆練習到自動觸發。例:每次重要量化主張前自動跑 #estimation 估算',
+  C: 'Foundational Concept — 基礎知識,理解結構後跨領域應用。例:#correlation 知道「相關不是因果」+ 認得 confounder 結構',
+};
+
+const COURSE_TOOLTIP = {
+  FA: 'Formal Analyses · 思辨課 — Thinking Critically 批判性思考的基礎課程',
+  EA: 'Empirical Analyses · 探索課 — Thinking Creatively 創造性思考的基礎課程',
+  MC: 'Multimodal Communications · 溝通課 — Communicating Effectively 有效溝通的基礎課程',
+  CS: 'Complex Systems · 互動課 — Interacting Effectively 有效互動的基礎課程',
+};
+
 // ========= Utilities =========
 function loadJSON(key, fallback) {
   try { return JSON.parse(localStorage.getItem(key) || JSON.stringify(fallback)); }
@@ -406,13 +418,16 @@ function buildHCCard(hc, comp) {
     const badge = document.createElement('span');
     badge.className = 'official-badge';
     badge.textContent = '✓ OFFICIAL';
+    badge.title = '從 Minerva 官方 Habits of Mind & Foundational Concepts intro PDF 直接驗證';
     meta.appendChild(badge);
   }
-  const typeSpan = document.createElement('span');
+  const typeSpan = document.createElement('abbr');
   typeSpan.textContent = hc.type;
+  typeSpan.title = TYPE_TOOLTIP[hc.type] || hc.type;
   meta.appendChild(typeSpan);
-  const courseSpan = document.createElement('span');
+  const courseSpan = document.createElement('abbr');
   courseSpan.textContent = comp.course;
+  courseSpan.title = COURSE_TOOLTIP[comp.course] || comp.course;
   meta.appendChild(courseSpan);
 
   head.append(tag, meta);
