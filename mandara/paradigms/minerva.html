@@ -82,30 +82,51 @@
   font-family: var(--mono);
   letter-spacing: 0;
 }
-.hc-card .use-toggle {
+.hc-card .toggle-cluster {
   position: absolute;
   top: 10px;
   right: 10px;
-  width: 28px;
-  height: 28px;
+  display: flex;
+  gap: 4px;
+}
+.hc-card .toggle-cluster button {
+  width: 30px;
+  height: 30px;
   border: 1px solid var(--hairline);
-  background: var(--paper);
+  background: var(--card-bg);
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
   font-family: var(--mono);
-  font-size: 11px;
+  font-size: 13px;
   color: var(--ink-faint);
   border-radius: 3px;
   transition: all 0.18s ease;
 }
-.hc-card .use-toggle:hover { background: var(--paper-deep); border-color: var(--ink-mute); color: var(--ink); }
-.hc-card .use-toggle:focus-visible { outline: 2px solid var(--cat-2); outline-offset: 1px; }
-.hc-card.in-use { background: #FEF7E8; border-color: var(--cat-2); }
-.hc-card.in-use .use-toggle { background: var(--cat-2); color: var(--paper); border-color: var(--cat-2); }
-.hc-card[data-source="official"].in-use { background: #FBEED1; }
-.hc-card-head { padding-right: 32px; }
+.hc-card .toggle-cluster button:hover { background: var(--paper-deep); border-color: var(--ink-mute); color: var(--ink); }
+.hc-card .toggle-cluster button:focus-visible { outline: 2px solid var(--cat-1); outline-offset: 1px; }
+/* Kit star (★) — permanent personal kit */
+.hc-card .kit-toggle[aria-pressed="true"] {
+  background: var(--cat-2);
+  color: var(--paper);
+  border-color: var(--cat-2);
+}
+/* Session circle (●) — current task */
+.hc-card .use-toggle[aria-pressed="true"] {
+  background: var(--ink);
+  color: var(--paper);
+  border-color: var(--ink);
+}
+/* Card visual: kit gives gold border, session gives darker bg */
+.hc-card.in-kit { border-color: var(--cat-2); border-width: 1px; box-shadow: inset 3px 0 0 var(--cat-2); }
+.hc-card.in-session { background: #F8F1DA; }
+.hc-card.in-kit.in-session { background: #F4EBC4; box-shadow: inset 3px 0 0 var(--cat-2); }
+.hc-card[data-source="official"].in-session { background: #F0E5BD; }
+.hc-card-head { padding-right: 76px; }
+@media (prefers-reduced-motion: reduce) {
+  .hc-card .toggle-cluster button { transition: none; }
+}
 @media (prefers-reduced-motion: reduce) {
   .hc-card .use-toggle { transition: none; }
 }
@@ -256,8 +277,78 @@
   font-weight: 500;
 }
 .synth-chip.paradigm { background: var(--ink); color: var(--paper); }
-.synth-chip.hc { background: var(--cat-2); color: var(--paper); font-family: var(--mono); }
-.synth-chip.hc::before { content: '#'; }
+.synth-chip.hc { background: var(--ink); color: var(--paper); font-family: var(--mono); }
+.synth-chip.hc::before { content: '● '; }
+.synth-chip.hc.kit { background: var(--cat-2); }
+.synth-chip.hc.kit::before { content: '★ '; }
+
+.synth-group {
+  margin: 8px 0;
+  border: 1px solid var(--hairline);
+  background: var(--card-bg);
+}
+.synth-group > summary {
+  list-style: none;
+  cursor: pointer;
+  padding: 10px 14px;
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+  font-family: var(--sans);
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--ink);
+  border-bottom: 1px solid var(--hairline-soft);
+}
+.synth-group > summary::marker, .synth-group > summary::-webkit-details-marker { display: none; }
+.synth-group > summary::after {
+  content: '▾';
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--ink-faint);
+  margin-left: auto;
+}
+.synth-group:not([open]) > summary::after { content: '▸'; }
+.synth-group:not([open]) > summary { border-bottom: none; }
+.synth-group > summary:hover { background: var(--paper-deep); }
+.synth-group > summary:focus-visible { outline: 2px solid var(--cat-1); outline-offset: 1px; }
+.synth-group-name { color: var(--ink); }
+.synth-group-counts {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  color: var(--ink-mute);
+  font-weight: 500;
+  text-transform: none;
+  margin-left: auto;
+  margin-right: 6px;
+}
+.synth-group-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  align-items: center;
+  padding: 8px 14px;
+  border-bottom: 1px solid var(--hairline-soft);
+}
+.synth-group-row:last-child { border-bottom: none; }
+.synth-row-label {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.05em;
+  color: var(--ink-mute);
+  margin-right: 6px;
+  font-weight: 500;
+  min-width: 64px;
+}
+.synth-row-note {
+  padding: 10px 14px;
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 13px;
+  color: var(--ink-faint);
+}
 .synth-narrative {
   font-family: var(--serif);
   font-size: 16px;
@@ -356,7 +447,8 @@
     <span><strong id="sum-c">60</strong> Concepts</span>
     <span><strong id="sum-l2">40</strong> 含應用</span>
     <span><strong id="sum-verified">11</strong> 官方驗證</span>
-    <span class="shortlist-info">標記中 <span class="num" id="in-use-count">0</span> / 109</span>
+    <span class="shortlist-info" title="Kit:你內化的 HC subset(永久 · 點 ☆ 標記)">★ Kit <span class="num" id="kit-count">0</span></span>
+    <span class="shortlist-info" title="Session:這次任務在用的 HC(暫時 · 點 ○ 標記)">● Session <span class="num" id="in-use-count">0</span></span>
   </div>
 </header>
 
@@ -631,7 +723,8 @@ const HC_DATA = {
 
 const PARADIGM_ID = 'minerva';
 const STORAGE_KEY = 'minerva-shortlist-v0.3';
-const HC_USE_KEY = 'minerva-hc-in-use';
+const HC_SESSION_KEY = 'minerva-hc-in-use';  // Kept legacy key name to migrate existing data
+const HC_KIT_KEY = 'minerva-hc-kit';
 
 const TYPE_TOOLTIP = {
   H: 'Habit of Mind — 認知技能,反覆練習到自動觸發。例:每次重要量化主張前自動跑 #estimation 估算',
@@ -655,10 +748,12 @@ function saveJSON(key, val) {
 }
 
 let combo = new Set(loadJSON(STORAGE_KEY, []));
-let hcInUse = new Set(loadJSON(HC_USE_KEY, []));
+let hcInSession = new Set(loadJSON(HC_SESSION_KEY, []));
+let hcInKit = new Set(loadJSON(HC_KIT_KEY, []));
 
 function persistCombo() { saveJSON(STORAGE_KEY, [...combo]); }
-function persistHCs() { saveJSON(HC_USE_KEY, [...hcInUse]); }
+function persistSession() { saveJSON(HC_SESSION_KEY, [...hcInSession]); }
+function persistKit() { saveJSON(HC_KIT_KEY, [...hcInKit]); }
 
 // ========= Render HC cards =========
 function buildHCCard(hc, comp) {
@@ -726,25 +821,47 @@ function buildHCCard(hc, comp) {
     apps.appendChild(l1Note);
   }
 
-  // Use toggle button
-  const toggle = document.createElement('button');
-  toggle.type = 'button';
-  toggle.className = 'use-toggle';
-  toggle.addEventListener('click', () => toggleHCUse(hc.tag, card, toggle));
+  // Toggle cluster: kit star + session circle
+  const cluster = document.createElement('div');
+  cluster.className = 'toggle-cluster';
 
-  card.append(head, nameEn, nameZh, definition, apps, toggle);
+  const kitBtn = document.createElement('button');
+  kitBtn.type = 'button';
+  kitBtn.className = 'kit-toggle';
+  kitBtn.addEventListener('click', () => toggleKitHC(hc.tag, card, kitBtn));
 
-  applyToggleState(toggle, card, hc.tag);
+  const sessionBtn = document.createElement('button');
+  sessionBtn.type = 'button';
+  sessionBtn.className = 'use-toggle';
+  sessionBtn.addEventListener('click', () => toggleSessionHC(hc.tag, card, sessionBtn));
+
+  cluster.append(kitBtn, sessionBtn);
+  card.append(head, nameEn, nameZh, definition, apps, cluster);
+
+  applyKitState(kitBtn, card, hc.tag);
+  applySessionState(sessionBtn, card, hc.tag);
 
   return card;
 }
 
-function applyToggleState(toggle, card, tag) {
-  const inUse = hcInUse.has(tag);
-  toggle.textContent = inUse ? '●' : '○';
-  toggle.setAttribute('aria-pressed', inUse ? 'true' : 'false');
-  toggle.setAttribute('aria-label', inUse ? `已標記 #${tag} 為使用中,點擊取消` : `將 #${tag} 標記為使用中`);
-  card.classList.toggle('in-use', inUse);
+function applyKitState(btn, card, tag) {
+  const inKit = hcInKit.has(tag);
+  btn.textContent = inKit ? '★' : '☆';
+  btn.setAttribute('aria-pressed', inKit ? 'true' : 'false');
+  btn.setAttribute('aria-label', inKit
+    ? `已在常用組合 #${tag},點擊移除`
+    : `加入常用組合 #${tag}(永久 · 你內化的 HC subset)`);
+  card.classList.toggle('in-kit', inKit);
+}
+
+function applySessionState(btn, card, tag) {
+  const inSession = hcInSession.has(tag);
+  btn.textContent = inSession ? '●' : '○';
+  btn.setAttribute('aria-pressed', inSession ? 'true' : 'false');
+  btn.setAttribute('aria-label', inSession
+    ? `已標記 #${tag} 用於這次任務,點擊取消`
+    : `標記 #${tag} 用於這次任務(暫時 · 當前思考用)`);
+  card.classList.toggle('in-session', inSession);
 }
 
 function buildAppRow(label, text) {
@@ -760,28 +877,47 @@ function buildAppRow(label, text) {
   return row;
 }
 
-function toggleHCUse(tag, card, toggle) {
-  const wasInUse = hcInUse.has(tag);
-  if (wasInUse) hcInUse.delete(tag);
-  else {
-    hcInUse.add(tag);
-    // Auto-add Minerva paradigm to combo when first HC selected
-    if (!combo.has(PARADIGM_ID)) {
-      combo.add(PARADIGM_ID);
-      persistCombo();
-      refreshAddButton();
-    }
+function ensureMinervaInCombo() {
+  if (!combo.has(PARADIGM_ID)) {
+    combo.add(PARADIGM_ID);
+    persistCombo();
+    refreshAddButton();
   }
-  applyToggleState(toggle, card, tag);
-  persistHCs();
+}
+
+function toggleSessionHC(tag, card, btn) {
+  if (hcInSession.has(tag)) hcInSession.delete(tag);
+  else {
+    hcInSession.add(tag);
+    ensureMinervaInCombo();
+  }
+  applySessionState(btn, card, tag);
+  persistSession();
   updateInUseCount();
+  renderComboStrip();
+  refreshSynthesis();
+}
+
+function toggleKitHC(tag, card, btn) {
+  if (hcInKit.has(tag)) hcInKit.delete(tag);
+  else {
+    hcInKit.add(tag);
+    ensureMinervaInCombo();
+  }
+  applyKitState(btn, card, tag);
+  persistKit();
+  updateKitCount();
   renderComboStrip();
   refreshSynthesis();
 }
 
 function updateInUseCount() {
   const el = document.getElementById('in-use-count');
-  if (el) el.textContent = String(hcInUse.size);
+  if (el) el.textContent = String(hcInSession.size);
+}
+function updateKitCount() {
+  const el = document.getElementById('kit-count');
+  if (el) el.textContent = String(hcInKit.size);
 }
 
 // ========= Render competency tree =========
@@ -839,36 +975,39 @@ function renderTree() {
   });
 }
 
-// ========= Combo strip (paradigm chips + HC sub-chips) =========
+// ========= Combo strip (collapsed summary in top nav) =========
 function renderComboStrip() {
   const strip = document.getElementById('combo-strip');
   strip.textContent = '';
-  if (combo.size === 0 && hcInUse.size === 0) {
+  if (combo.size === 0 && hcInSession.size === 0 && hcInKit.size === 0) {
     const empty = document.createElement('span');
     empty.className = 'nav-empty';
-    empty.textContent = 'no combo yet · 標 HC 為使用中或加入組合';
+    empty.textContent = 'no combo yet';
     strip.appendChild(empty);
     return;
   }
   const label = document.createElement('span');
   label.className = 'label';
-  label.textContent = 'combo:';
+  label.textContent = 'minerva:';
   strip.appendChild(label);
-  combo.forEach(id => {
-    const chip = document.createElement('span');
-    chip.className = 'nav-chip';
-    chip.textContent = id;
-    strip.appendChild(chip);
-  });
-  if (hcInUse.size > 0) {
-    const sub = document.createElement('span');
-    sub.className = 'nav-sub-label';
-    sub.textContent = '· HCs:';
-    strip.appendChild(sub);
-    hcInUse.forEach(tag => {
+  if (hcInKit.size > 0) {
+    const kitChip = document.createElement('span');
+    kitChip.className = 'nav-chip nav-chip-kit';
+    kitChip.textContent = '★ ' + hcInKit.size + ' kit';
+    strip.appendChild(kitChip);
+  }
+  if (hcInSession.size > 0) {
+    const sessChip = document.createElement('span');
+    sessChip.className = 'nav-chip';
+    sessChip.textContent = '● ' + hcInSession.size + ' session';
+    strip.appendChild(sessChip);
+  }
+  if (combo.size > 1) {
+    const others = [...combo].filter(p => p !== PARADIGM_ID);
+    others.forEach(id => {
       const chip = document.createElement('span');
       chip.className = 'nav-chip nav-chip-sub';
-      chip.textContent = '#' + tag;
+      chip.textContent = id;
       strip.appendChild(chip);
     });
   }
@@ -889,16 +1028,16 @@ function refreshAddButton() {
 addBtn.addEventListener('click', () => {
   if (combo.has(PARADIGM_ID)) {
     combo.delete(PARADIGM_ID);
-    // Removing Minerva paradigm also clears HC selections (semantic: not using Minerva → no HCs in use)
-    if (hcInUse.size > 0) {
-      hcInUse.clear();
-      persistHCs();
+    // Removing Minerva paradigm clears the SESSION (transient) but preserves the KIT (your permanent subset).
+    // Rationale: kit is your identity, session is your current task — leaving the page shouldn't lose either.
+    if (hcInSession.size > 0) {
+      hcInSession.clear();
+      persistSession();
       updateInUseCount();
-      // Re-apply toggle UI on all cards
       document.querySelectorAll('.hc-card').forEach(card => {
         const tag = card.dataset.tag;
-        const t = card.querySelector('.use-toggle');
-        if (tag && t) applyToggleState(t, card, tag);
+        const sBtn = card.querySelector('.use-toggle');
+        if (tag && sBtn) applySessionState(sBtn, card, tag);
       });
     }
   } else {
@@ -936,73 +1075,100 @@ function findHCsByTags(tags) {
 
 function buildSynthesisText() {
   const paradigms = [...combo];
-  const hcTags = [...hcInUse];
-  const hcs = findHCsByTags(hcTags);
+  const kitTags = [...hcInKit];
+  const sessTags = [...hcInSession];
+  const kitHCs = findHCsByTags(kitTags);
+  const sessHCs = findHCsByTags(sessTags);
 
-  if (paradigms.length === 0 && hcs.length === 0) {
-    return '尚未開始組合。Toggle 任何 HC 卡片右上角的 ○ 標記為使用中,或按頁首的「加入 Mandara 組合」,組合就會在這裡浮現。';
+  if (paradigms.length === 0 && kitTags.length === 0 && sessTags.length === 0) {
+    return '尚未開始組合。\n\n左下角 ☆ 標記是「常用組合 / Kit」 — 你內化的 HC subset,長期保存。\n右下角 ○ 標記是「這次任務 / Session」 — 你現在在用的 HC,可隨時清空重來。\n\nToggle 任何 HC 開始,組合就會在這裡浮現。';
   }
 
   const lines = [];
 
-  // HC-level analysis
-  if (hcs.length === 1) {
-    const hc = hcs[0];
-    const typeLabel = hc.type === 'H' ? 'Habit of Mind(認知技能)' : 'Foundational Concept(基礎知識)';
-    lines.push(`你目前選了一個 Minerva HC:#${hc.tag}(${hc.name_zh})。`);
-    lines.push(`它屬於「${hc.comp_zh}」競能下的「${hc.section_zh}」這一塊,類型是 ${typeLabel}。`);
-    if (hc.type === 'H') {
-      lines.push(`Minerva 的設計是要把它練到自動觸發 — 不是知道有這個工具,是讓它在情境中自然浮現。你可以接下來思考:這次的工作中,什麼時候用上了這個 HC?用得對嗎?`);
+  // === KIT layer ===
+  if (kitTags.length > 0) {
+    const competencies = new Set(kitHCs.map(h => h.comp_zh));
+    const tagList = kitHCs.map(h => '#' + h.tag).join('、');
+    lines.push(`★ 你的常用組合(Kit)有 ${kitTags.length} 個 HC:${tagList}。`);
+    lines.push(`覆蓋 ${competencies.size} 個競能(${[...competencies].join(' + ')})。`);
+    if (kitTags.length < 8) {
+      lines.push(`Minerva 教學設計上,內化 12-15 個 HC 是 sweet spot — 你目前 ${kitTags.length} 個,還可以再加幾個常用的。`);
+    } else if (kitTags.length > 18) {
+      lines.push(`你已經 ${kitTags.length} 個,超過 12-15 sweet spot。檢查:這真的都是你「自動觸發」的習慣嗎?還是知道而已?`);
     } else {
-      lines.push(`這是基礎知識類,理解結構就能跨領域應用。試著用自己的話講給別人聽 — 那是真懂的試金石。`);
+      lines.push(`大小剛好(${kitTags.length} 個落在 12-15 sweet spot 附近)— 這個 Kit 是你的 thinking signature。`);
     }
-  } else if (hcs.length >= 2 && hcs.length <= 3) {
-    const competencies = new Set(hcs.map(h => h.comp_zh));
-    const tagList = hcs.map(h => '#' + h.tag).join('、');
-    lines.push(`你目前選了 ${hcs.length} 個 Minerva HC:${tagList}。`);
-    lines.push(`這幾個跨 ${competencies.size} 個競能(${[...competencies].join(' + ')}),屬於 cross-competency 的合成性思考。`);
-    lines.push(`這個組合適合用在需要多角度判斷的決策 — 例如 NGO 治理、跨領域寫作、複雜利害關係人協商。`);
-    lines.push(`建議檢查:有沒有遺漏反思類的 HC?像 #self awareness 跟 #meta knowledge,能讓你知道自己什麼時候在亂想。`);
-  } else if (hcs.length >= 4) {
-    const competencies = new Set(hcs.map(h => h.comp_zh));
-    const tagList = hcs.map(h => '#' + h.tag).join('、');
-    lines.push(`你選了 ${hcs.length} 個 HC,跨 ${competencies.size} 個競能。`);
-    lines.push(`這已經是 broad framing 了。Minerva 設計上每次重點 1-3 個 HC 才有效,${hcs.length} 個太分散可能反而稀釋焦點。`);
-    lines.push(`建議:挑出最核心的 3 個,把其他標 ○ 取消。深度大於廣度。內化幾個比知道很多重要。`);
-  } else if (paradigms.length > 0) {
-    lines.push(`你已經把 ${paradigms.length} 個範式加進組合,但還沒選具體的 HC 工具。`);
-    lines.push(`滑到下方,toggle 你正在用或想練的 HC,組合就會即時更新。Minerva 的精髓是用具體 HC,不是用「Minerva」這個名字。`);
+    lines.push('');
   }
 
-  // Cross-paradigm note
-  const others = paradigms.filter(p => p !== 'minerva');
-  if (others.length > 0) {
+  // === SESSION layer ===
+  if (sessTags.length > 0) {
+    const sessTagList = sessHCs.map(h => '#' + h.tag).join('、');
+    const sessCompetencies = new Set(sessHCs.map(h => h.comp_zh));
+    if (sessTags.length === 1) {
+      const hc = sessHCs[0];
+      const typeLabel = hc.type === 'H' ? 'Habit of Mind(認知技能,要練到自動)' : 'Foundational Concept(基礎知識,理解結構)';
+      lines.push(`● 這次任務(Session)聚焦在 #${hc.tag}(${hc.name_zh})。`);
+      lines.push(`屬於「${hc.comp_zh}」下「${hc.section_zh}」,類型是 ${typeLabel}。`);
+    } else if (sessTags.length <= 3) {
+      lines.push(`● 這次任務(Session)用 ${sessTags.length} 個 HC:${sessTagList}。`);
+      lines.push(`跨 ${sessCompetencies.size} 個競能 — cross-competency 的合成性思考。`);
+      lines.push(`適合多角度判斷:NGO 治理、跨領域寫作、複雜利害關係人協商。`);
+    } else {
+      lines.push(`● 這次任務用了 ${sessTags.length} 個 HC,跨 ${sessCompetencies.size} 個競能。`);
+      lines.push(`Minerva 設計上每次重點 1-3 個才有效,${sessTags.length} 個太分散可能稀釋焦點。考慮 prune 到核心 3 個。`);
+    }
     lines.push('');
+  } else if (kitTags.length === 0 && paradigms.length > 0) {
+    lines.push(`你加了 ${paradigms.length} 個範式進組合,但還沒選具體的 HC。`);
+    lines.push(`滑到下方,☆ 標星 = 加進你的常用組合(永久),○ 圓圈 = 標記這次任務(暫時)。`);
+    lines.push('');
+  }
+
+  // Kit-vs-Session relationship insight
+  if (kitTags.length > 0 && sessTags.length > 0) {
+    const sessNotInKit = sessTags.filter(t => !hcInKit.has(t));
+    const kitInSession = sessTags.filter(t => hcInKit.has(t));
+    if (sessNotInKit.length > 0 && kitInSession.length > 0) {
+      lines.push(`這次任務裡,${kitInSession.length} 個來自你的 Kit(熟悉),${sessNotInKit.length} 個是 Kit 外的(在試新的 — ${sessNotInKit.map(t => '#' + t).join('、')})。健康比例:大部分熟悉 + 少量探索。`);
+    } else if (sessNotInKit.length === 0) {
+      lines.push(`這次任務全部從你的 Kit 出來 — 純內化操作,效率高。`);
+    } else {
+      lines.push(`這次任務全部是 Kit 外的 HC — 你在試新工具。可以,但完成後考慮把用得順手的加進 Kit。`);
+    }
+    lines.push('');
+  }
+
+  // Cross-paradigm
+  const others = paradigms.filter(p => p !== PARADIGM_ID);
+  if (others.length > 0) {
     lines.push(`你還疊加了:${others.join('、')}。`);
     if (others.includes('cynefin')) {
-      lines.push('Minerva HC + Cynefin 是經典 NGO governance 組合 — 先用 Cynefin 判斷情境是 Complex,再用 Minerva 的系統思考類 HC(像 #emergent properties、#networks)分析湧現效果。');
+      lines.push('Minerva HC + Cynefin 是經典 NGO governance 組合 — 先用 Cynefin 判斷情境是 Complex,再用 Minerva 的系統思考類 HC 分析湧現效果。');
     }
     if (others.includes('munger')) {
       lines.push('Munger latticework 補上跨學科廣度,Minerva 補上學術嚴謹性 — 適合寫深度評論。');
     }
     if (others.includes('toulmin')) {
-      lines.push('Toulmin 提供論證骨架(claim / grounds / warrant),Minerva HC 提供論證的素材跟反思。寫評論的標準配。');
+      lines.push('Toulmin 提供論證骨架,Minerva HC 提供論證的素材跟反思 — 寫評論的標準配。');
     }
     if (others.includes('spiral')) {
-      lines.push('Spiral Dynamics 提供跨文化 vMeme 校準,Minerva 提供工具,組合用在 APAC 跨國 NGO 協作很對位。');
+      lines.push('Spiral Dynamics 提供跨文化 vMeme 校準,Minerva 提供工具 — 用在 APAC 跨國 NGO 協作很對位。');
     }
   }
 
-  return lines.join('\n');
+  return lines.join('\n').trim();
 }
 
 function renderSynthChips() {
   const el = document.getElementById('synth-chips');
   el.textContent = '';
   const paradigms = [...combo];
-  const hcs = [...hcInUse];
+  const kitTags = [...hcInKit];
+  const sessTags = [...hcInSession];
 
-  if (paradigms.length === 0 && hcs.length === 0) {
+  if (paradigms.length === 0 && kitTags.length === 0 && sessTags.length === 0) {
     const empty = document.createElement('span');
     empty.style.fontFamily = 'var(--serif)';
     empty.style.fontStyle = 'italic';
@@ -1012,29 +1178,79 @@ function renderSynthChips() {
     el.appendChild(empty);
     return;
   }
-  paradigms.forEach(p => {
-    const chip = document.createElement('span');
-    chip.className = 'synth-chip paradigm';
-    chip.textContent = p;
-    el.appendChild(chip);
-  });
-  hcs.forEach(t => {
-    const chip = document.createElement('span');
-    chip.className = 'synth-chip hc';
-    chip.textContent = t;
-    el.appendChild(chip);
+
+  // Collapsible per-paradigm group
+  paradigms.forEach(pid => {
+    const isMinerva = pid === PARADIGM_ID;
+    const group = document.createElement('details');
+    group.className = 'synth-group';
+    group.open = true;
+
+    const summary = document.createElement('summary');
+    const heading = document.createElement('span');
+    heading.className = 'synth-group-name';
+    heading.textContent = isMinerva ? 'Minerva HCs' : pid;
+    summary.appendChild(heading);
+
+    if (isMinerva) {
+      const counts = document.createElement('span');
+      counts.className = 'synth-group-counts';
+      counts.textContent = `★ ${kitTags.length} kit · ● ${sessTags.length} session`;
+      summary.appendChild(counts);
+    }
+    group.appendChild(summary);
+
+    if (isMinerva) {
+      if (kitTags.length > 0) {
+        const kitWrap = document.createElement('div');
+        kitWrap.className = 'synth-group-row';
+        const lab = document.createElement('span');
+        lab.className = 'synth-row-label';
+        lab.textContent = '★ Kit';
+        kitWrap.appendChild(lab);
+        kitTags.forEach(t => {
+          const chip = document.createElement('span');
+          chip.className = 'synth-chip hc kit';
+          chip.textContent = t;
+          kitWrap.appendChild(chip);
+        });
+        group.appendChild(kitWrap);
+      }
+      if (sessTags.length > 0) {
+        const sessWrap = document.createElement('div');
+        sessWrap.className = 'synth-group-row';
+        const lab = document.createElement('span');
+        lab.className = 'synth-row-label';
+        lab.textContent = '● Session';
+        sessWrap.appendChild(lab);
+        sessTags.forEach(t => {
+          const chip = document.createElement('span');
+          chip.className = 'synth-chip hc';
+          chip.textContent = t;
+          sessWrap.appendChild(chip);
+        });
+        group.appendChild(sessWrap);
+      }
+      if (kitTags.length === 0 && sessTags.length === 0) {
+        const note = document.createElement('div');
+        note.className = 'synth-row-note';
+        note.textContent = '已加入此範式但尚未挑 HC';
+        group.appendChild(note);
+      }
+    }
+
+    el.appendChild(group);
   });
 }
 
 function refreshSynthesis() {
-  const total = combo.size + hcInUse.size;
+  const total = combo.size + hcInKit.size + hcInSession.size;
   const trigger = document.getElementById('synth-trigger');
   const count = document.getElementById('synth-count');
   count.textContent = String(total);
   const disabled = total === 0;
   trigger.setAttribute('aria-disabled', disabled ? 'true' : 'false');
 
-  // Update panel content (in case it's open)
   const narr = document.getElementById('synth-narrative');
   narr.textContent = buildSynthesisText();
   renderSynthChips();
@@ -1115,7 +1331,7 @@ function setTTSStatus(text) {
 // ========= Drawer open/close + focus management =========
 let lastFocus = null;
 function openSynthPanel() {
-  const total = combo.size + hcInUse.size;
+  const total = combo.size + hcInKit.size + hcInSession.size;
   if (total === 0) return;
   refreshSynthesis();
   lastFocus = document.activeElement;
@@ -1196,6 +1412,7 @@ renderTree();
 renderComboStrip();
 refreshAddButton();
 updateInUseCount();
+updateKitCount();
 updateSummaryFromData();
 refreshSynthesis();
 </script>
