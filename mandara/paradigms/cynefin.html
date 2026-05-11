@@ -1,0 +1,948 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cynefin · Mandara · 工房</title>
+<meta name="description" content="Dave Snowden 的 5 域決策框架:Clear / Complicated / Complex / Chaotic / Confusion。情境路由型範式,先判斷你在哪個情境,再選方法論。Mandara atlas 範式深探頁。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Noto+Serif+TC:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Source+Sans+3:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="_atlas-shared.css">
+<style>
+/* ===== Cynefin-specific overrides (cat-3 green) ===== */
+.paradigm-head[data-cat="3"] { color: var(--cat-3); }
+.competency .roman { color: var(--cat-3); }
+.competency .course-tag { color: var(--cat-3); border-color: var(--cat-3); }
+
+/* ===== Intro lede ===== */
+.intro-lede {
+  padding: 36px 0 28px 0;
+  border-bottom: 1px solid var(--hairline-soft);
+  display: grid;
+  grid-template-columns: 1fr 360px;
+  gap: 56px;
+}
+.intro-lede .lede-body p {
+  font-size: 15px;
+  line-height: 1.7;
+  color: var(--ink-soft);
+  margin: 0 0 14px 0;
+  max-width: 64ch;
+}
+.intro-lede .lede-body p:last-child { margin-bottom: 0; }
+.intro-lede .lede-aside {
+  background: var(--card-bg);
+  border: 1px solid var(--hairline);
+  padding: 18px 22px;
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--ink-soft);
+}
+.intro-lede .lede-aside h3 {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink);
+  margin: 0 0 10px 0;
+  font-weight: 500;
+}
+.intro-lede .lede-aside ul {
+  margin: 0;
+  padding-left: 18px;
+}
+.intro-lede .lede-aside li { margin-bottom: 6px; }
+.intro-lede .lede-aside strong { color: var(--ink); }
+
+/* ===== Selector section ===== */
+.selector-section {
+  padding: 48px 0 32px 0;
+  border-bottom: 1px solid var(--hairline-soft);
+}
+.selector-section > h2 {
+  font-family: var(--serif);
+  font-weight: 500;
+  font-size: 32px;
+  letter-spacing: -0.01em;
+  margin: 0 0 4px 0;
+  color: var(--ink);
+}
+.selector-section > .h2-en {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 17px;
+  color: var(--ink-mute);
+  margin-bottom: 22px;
+}
+.selector-section > .selector-help {
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--ink-mute);
+  margin: 0 0 24px 0;
+  max-width: 64ch;
+}
+
+/* ===== Domain map (2x2 + center) ===== */
+.domain-selector {
+  border: none;
+  padding: 0;
+  margin: 0 0 24px 0;
+}
+.domain-selector > legend {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  margin-bottom: 12px;
+  padding: 0;
+}
+.domain-map {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  gap: 14px;
+  max-width: 880px;
+  margin: 0 0 16px 0;
+}
+.domain-map::before {
+  content: 'UNORDERED';
+  position: absolute;
+  top: -22px;
+  left: 0;
+  width: 50%;
+  text-align: center;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  color: var(--ink-faint);
+}
+.domain-map::after {
+  content: 'ORDERED';
+  position: absolute;
+  top: -22px;
+  right: 0;
+  width: 50%;
+  text-align: center;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  color: var(--ink-faint);
+}
+.domain {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 20px 22px 22px 22px;
+  background: var(--card-bg);
+  border: 2px solid var(--hairline);
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.18s ease;
+  min-height: 168px;
+}
+.domain:hover {
+  border-color: var(--cat-3);
+  background: var(--paper-deep);
+}
+.domain:focus-within {
+  outline: 3px solid var(--cat-3);
+  outline-offset: 3px;
+}
+.domain input[type="radio"] {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  width: 18px;
+  height: 18px;
+  accent-color: var(--cat-3);
+  cursor: pointer;
+  margin: 0;
+}
+.domain:has(input:checked) {
+  border-color: var(--cat-3);
+  background: #E2EBD8;
+  box-shadow: 0 2px 0 var(--cat-3);
+}
+.domain .domain-coord {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  color: var(--ink-faint);
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+.domain .domain-name {
+  font-family: var(--serif);
+  font-weight: 600;
+  font-size: 22px;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+  margin: 0;
+}
+.domain .domain-name-zh {
+  font-family: var(--serif);
+  font-size: 15px;
+  color: var(--ink-soft);
+  margin-bottom: 6px;
+}
+.domain .domain-flow {
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--cat-3);
+  letter-spacing: 0.04em;
+  margin-top: auto;
+}
+.domain .domain-tagline {
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--ink-soft);
+}
+
+.domain--complex { grid-area: 1 / 1; }
+.domain--complicated { grid-area: 1 / 2; }
+.domain--chaotic { grid-area: 2 / 1; }
+.domain--clear { grid-area: 2 / 2; }
+
+/* Center "Confusion" pocket */
+.domain--confusion {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 36%;
+  min-height: 120px;
+  background: var(--paper);
+  border-style: dashed;
+  border-color: var(--hairline);
+  z-index: 2;
+  padding: 14px 16px;
+}
+.domain--confusion .domain-name { font-size: 17px; }
+.domain--confusion .domain-name-zh { font-size: 13px; margin-bottom: 4px; }
+.domain--confusion .domain-tagline { font-size: 12px; }
+.domain--confusion .domain-flow { font-size: 10px; }
+
+/* Mobile fallback: single column, confusion goes below */
+@media (max-width: 720px) {
+  .domain-map {
+    grid-template-columns: 1fr;
+    grid-template-rows: repeat(5, auto);
+  }
+  .domain--complex, .domain--complicated, .domain--chaotic, .domain--clear { grid-area: auto; }
+  .domain--confusion {
+    position: relative;
+    top: auto; left: auto;
+    transform: none;
+    width: 100%;
+  }
+  .domain-map::before, .domain-map::after { display: none; }
+}
+
+.reset-row {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 8px;
+}
+.btn-reset {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+  background: transparent;
+  border: 1px solid var(--hairline);
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.18s ease;
+}
+.btn-reset:hover { background: var(--paper-deep); border-color: var(--ink-mute); color: var(--ink); }
+.btn-reset:focus-visible { outline: 2px solid var(--cat-3); outline-offset: 2px; }
+
+/* ===== Detail panel ===== */
+.domain-detail {
+  margin-top: 28px;
+  padding: 28px 32px;
+  background: var(--card-bg);
+  border: 1px solid var(--hairline);
+  border-left: 4px solid var(--cat-3);
+  border-radius: 4px;
+  min-height: 220px;
+}
+.domain-detail .panel { display: none; }
+.domain-detail .panel--intro { display: block; }
+/* When a radio is checked, hide intro and show matching panel */
+body:has(#d-clear:checked) .panel--intro,
+body:has(#d-complicated:checked) .panel--intro,
+body:has(#d-complex:checked) .panel--intro,
+body:has(#d-chaotic:checked) .panel--intro,
+body:has(#d-confusion:checked) .panel--intro { display: none; }
+
+body:has(#d-clear:checked) .panel--clear,
+body:has(#d-complicated:checked) .panel--complicated,
+body:has(#d-complex:checked) .panel--complex,
+body:has(#d-chaotic:checked) .panel--chaotic,
+body:has(#d-confusion:checked) .panel--confusion { display: block; }
+
+.panel h3 {
+  font-family: var(--serif);
+  font-weight: 500;
+  font-size: 26px;
+  letter-spacing: -0.01em;
+  margin: 0 0 4px 0;
+  color: var(--ink);
+}
+.panel h3 .panel-en {
+  font-family: var(--serif);
+  font-style: italic;
+  font-weight: 400;
+  font-size: 18px;
+  color: var(--ink-mute);
+  margin-left: 10px;
+}
+.panel .panel-flow {
+  display: inline-block;
+  font-family: var(--mono);
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  color: var(--paper);
+  background: var(--cat-3);
+  padding: 3px 10px;
+  border-radius: 3px;
+  margin: 0 0 18px 0;
+}
+.panel .panel-summary {
+  font-family: var(--serif);
+  font-size: 17px;
+  line-height: 1.65;
+  color: var(--ink-soft);
+  margin: 0 0 22px 0;
+  max-width: 64ch;
+}
+.panel .panel-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(280px, 100%), 1fr));
+  gap: 18px 28px;
+  margin-bottom: 22px;
+}
+.panel .panel-block h4 {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  margin: 0 0 6px 0;
+  font-weight: 500;
+}
+.panel .panel-block p,
+.panel .panel-block ul {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--ink-soft);
+}
+.panel .panel-block ul { padding-left: 18px; }
+.panel .panel-block li { margin-bottom: 4px; }
+.panel .panel-block.failure h4 { color: var(--cat-1); }
+.panel .panel-block.failure { border-left: 2px solid var(--cat-1); padding-left: 14px; }
+
+/* ===== Catastrophic fold callout ===== */
+.fold-section {
+  padding: 48px 0 32px 0;
+  border-bottom: 1px solid var(--hairline-soft);
+}
+.fold-section h2 {
+  font-family: var(--serif);
+  font-weight: 500;
+  font-size: 28px;
+  letter-spacing: -0.01em;
+  margin: 0 0 4px 0;
+}
+.fold-section .h2-en {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 16px;
+  color: var(--ink-mute);
+  margin-bottom: 18px;
+}
+.fold-section .fold-body {
+  display: grid;
+  grid-template-columns: 1fr 320px;
+  gap: 48px;
+  align-items: start;
+}
+.fold-section .fold-body p {
+  font-size: 14.5px;
+  line-height: 1.7;
+  color: var(--ink-soft);
+  margin: 0 0 12px 0;
+  max-width: 64ch;
+}
+.fold-section .fold-examples {
+  background: var(--paper-deep);
+  border: 1px dashed var(--cat-1);
+  padding: 18px 22px;
+  font-size: 13.5px;
+  line-height: 1.6;
+}
+.fold-section .fold-examples h3 {
+  font-family: var(--mono);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--cat-1);
+  margin: 0 0 10px 0;
+  font-weight: 500;
+}
+.fold-section .fold-examples ul {
+  margin: 0;
+  padding-left: 18px;
+}
+.fold-section .fold-examples li { margin-bottom: 6px; color: var(--ink-soft); }
+.fold-section .fold-examples li strong { color: var(--ink); font-weight: 600; }
+
+/* ===== Transitions ===== */
+.transitions-section { padding: 48px 0 32px 0; border-bottom: 1px solid var(--hairline-soft); }
+.transitions-section h2 { font-family: var(--serif); font-weight: 500; font-size: 28px; letter-spacing: -0.01em; margin: 0 0 4px 0; }
+.transitions-section .h2-en { font-family: var(--serif); font-style: italic; font-size: 16px; color: var(--ink-mute); margin-bottom: 18px; }
+.transition-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr)); gap: 14px; }
+.transition {
+  background: var(--card-bg);
+  border: 1px solid var(--hairline-soft);
+  padding: 14px 16px;
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--ink-soft);
+}
+.transition .arrow {
+  font-family: var(--mono);
+  font-size: 13px;
+  color: var(--cat-3);
+  letter-spacing: 0.04em;
+  margin-bottom: 6px;
+  display: block;
+  font-weight: 500;
+}
+.transition .arrow.danger { color: var(--cat-1); }
+
+/* ===== Synergies + anti-patterns + recent (shared) ===== */
+.misc-section {
+  padding: 48px 0 32px 0;
+  border-bottom: 1px solid var(--hairline-soft);
+}
+.misc-section h2 { font-family: var(--serif); font-weight: 500; font-size: 28px; letter-spacing: -0.01em; margin: 0 0 14px 0; }
+.misc-section .h2-en { font-family: var(--serif); font-style: italic; font-size: 16px; color: var(--ink-mute); margin: -12px 0 18px 0; }
+.synergy-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(280px, 100%), 1fr)); gap: 14px; }
+.synergy {
+  border: 1px solid var(--hairline-soft);
+  background: var(--card-bg);
+  padding: 16px 18px;
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--ink-soft);
+}
+.synergy strong { font-family: var(--serif); font-size: 16px; font-weight: 600; color: var(--ink); display: block; margin-bottom: 4px; }
+.anti-list { list-style: none; padding: 0; margin: 0; display: grid; gap: 10px; }
+.anti-list li {
+  background: var(--card-bg);
+  border-left: 3px solid var(--cat-1);
+  padding: 12px 16px;
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--ink-soft);
+}
+.anti-list li strong { color: var(--ink); font-weight: 600; }
+
+.recent-note {
+  background: var(--card-bg);
+  border: 1px solid var(--hairline-soft);
+  padding: 20px 24px;
+  font-size: 14px;
+  line-height: 1.65;
+  color: var(--ink-soft);
+  max-width: 64ch;
+}
+.recent-note h3 { font-family: var(--mono); font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--ink); margin: 0 0 10px 0; font-weight: 500; }
+
+/* Override shared .provenance h4 styling to apply to h3 (a11y hierarchy fix) */
+.provenance h3 {
+  font-family: var(--mono);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--ink);
+  font-weight: 500;
+  margin: 0 0 10px 0;
+}
+
+@media (max-width: 900px) {
+  .intro-lede { grid-template-columns: 1fr; gap: 24px; }
+  .fold-section .fold-body { grid-template-columns: 1fr; gap: 24px; }
+}
+</style>
+</head>
+<body>
+
+<a class="skip-link" href="#main-content" style="position:absolute;left:-9999px;top:0;background:var(--ink);color:var(--paper);padding:8px 14px;z-index:100;text-decoration:none;font-family:var(--mono);font-size:12px;" onfocus="this.style.left='12px'" onblur="this.style.left='-9999px'">跳到主要內容</a>
+
+<nav class="paradigm-nav" aria-label="範式導覽">
+  <a href="../thinking-routing-atlas-v0.3.html" class="back-link">← Atlas</a>
+  <div class="breadcrumb">Mandara · <strong>Cynefin</strong></div>
+  <div class="nav-chips" aria-label="目前選擇">
+    <span class="label">情境:</span>
+    <span class="nav-empty" id="nav-current">未選擇</span>
+  </div>
+</nav>
+
+<header class="paradigm-head" data-cat="3">
+  <div class="cat-stripe" aria-hidden="true"></div>
+  <div class="cat-label">範式 03 · CAT III · 情境路由型</div>
+  <h1>Cynefin</h1>
+  <p class="name-en">Sense-Making Framework</p>
+  <div class="meta">
+    Dave Snowden <span class="dot">·</span> 1999 IBM <span class="dot">·</span> Cognitive Edge <span class="dot">·</span> 4-5 區
+  </div>
+  <p class="philosophy">
+    Clear / Complicated / Complex / Chaotic 四區 + 中央 Confusion(失序)。每區的因果關係不同,所以每區用不同方法論。<strong>誤把 Complex 當 Complicated</strong> 是組織失敗的常見原因。
+  </p>
+  <div class="actions">
+    <a href="../thinking-routing-atlas-v0.3.html#cynefin" class="btn-secondary">← 回到 Atlas Cynefin 卡</a>
+  </div>
+</header>
+
+<main id="main-content" tabindex="-1">
+
+  <section class="intro-lede" aria-labelledby="intro-heading">
+    <div class="lede-body">
+      <h2 id="intro-heading" style="font-family:var(--serif);font-weight:500;font-size:24px;margin:0 0 14px 0;letter-spacing:-0.01em;">什麼是 Cynefin</h2>
+      <p>Cynefin(發音 /kə-NEV-in/,威爾斯語「habitat、棲地」)是 Dave Snowden 1999 年在 IBM Global Services 提出的 sense-making 框架。它不是分類器,而是<strong>路由器</strong>:面對任何議題,先判斷它落在哪個域,再從該域對應的方法論池裡取工具。</p>
+      <p>5 個域不是 5 種「問題類型」,而是 5 種「因果關係的本質」。在 Clear 域因果穩定且重複,所以套 best practice;在 Complex 域因果只在事後可見,所以做 safe-to-fail 實驗。混淆兩者就是用錯藥。</p>
+      <p>2014 年 Snowden 把「Obvious / Simple」改名為「Clear」,因為「Obvious」隱含「你應該看得出來」的語氣,但身在其中的人往往看不出來自己在 Clear 域(被慣性吞掉)。這次改名是 Cynefin 演化軌跡上的重要校準。</p>
+    </div>
+    <aside class="lede-aside" aria-label="本頁設計筆記">
+      <h3>本頁怎麼用</h3>
+      <ul>
+        <li>下方 5 域選擇器是 <strong>單選</strong>,跟 Minerva 的累加式 Kit/Session 不同 — 同一時刻你只在一個域。</li>
+        <li>每個域附 NGO / 個人品牌 / 危機 三個情境的應用例,選下去後右側展開細節。</li>
+        <li>看完選擇器後,再讀「懸崖」「域間轉換」「協同範式」三節,理解 Cynefin 的時間維度。</li>
+        <li>用鍵盤:<kbd>Tab</kbd> 進入選擇器,<kbd>↑↓←→</kbd> 切換域,<kbd>空白鍵</kbd>確認。</li>
+      </ul>
+    </aside>
+  </section>
+
+  <section class="selector-section" aria-labelledby="selector-heading">
+    <h2 id="selector-heading">5 域選擇器</h2>
+    <p class="h2-en">The Five Domains</p>
+    <p class="selector-help">先想一個你目前面對的議題(NGO 治理問題、寫作主題、職涯抉擇皆可),選下方對應的域。選擇後右側面板會展開該域的決策模式、典型應用、常見失誤。可隨時切換或清除。</p>
+
+    <fieldset class="domain-selector">
+      <legend>選擇你目前面對的情境域</legend>
+      <div class="domain-map">
+        <label class="domain domain--complex" for="d-complex">
+          <input type="radio" name="cynefin-domain" id="d-complex" value="complex">
+          <span class="domain-coord">NW · 左上</span>
+          <span class="domain-name">Complex</span>
+          <span class="domain-name-zh">複雜域</span>
+          <span class="domain-tagline">因果只在事後可見,系統 emergent。多數 NGO 治理、跨文化、社群建立都在此域。</span>
+          <span class="domain-flow">PROBE → SENSE → RESPOND</span>
+        </label>
+
+        <label class="domain domain--complicated" for="d-complicated">
+          <input type="radio" name="cynefin-domain" id="d-complicated" value="complicated">
+          <span class="domain-coord">NE · 右上</span>
+          <span class="domain-name">Complicated</span>
+          <span class="domain-name-zh">繁難域</span>
+          <span class="domain-tagline">因果可知但需要專家分析。多數工程、法律、會計問題在此域。</span>
+          <span class="domain-flow">SENSE → ANALYZE → RESPOND</span>
+        </label>
+
+        <label class="domain domain--chaotic" for="d-chaotic">
+          <input type="radio" name="cynefin-domain" id="d-chaotic" value="chaotic">
+          <span class="domain-coord">SW · 左下</span>
+          <span class="domain-name">Chaotic</span>
+          <span class="domain-name-zh">混亂域</span>
+          <span class="domain-tagline">因果關係斷裂,事態失控。重大事故開頭幾分鐘、品牌突發危機。</span>
+          <span class="domain-flow">ACT → SENSE → RESPOND</span>
+        </label>
+
+        <label class="domain domain--clear" for="d-clear">
+          <input type="radio" name="cynefin-domain" id="d-clear" value="clear">
+          <span class="domain-coord">SE · 右下</span>
+          <span class="domain-name">Clear</span>
+          <span class="domain-name-zh">清晰域(原稱 Obvious)</span>
+          <span class="domain-tagline">因果穩定且重複。SOP、檢查表、合規流程都在此域。</span>
+          <span class="domain-flow">SENSE → CATEGORIZE → RESPOND</span>
+        </label>
+
+        <label class="domain domain--confusion" for="d-confusion">
+          <input type="radio" name="cynefin-domain" id="d-confusion" value="confusion">
+          <span class="domain-coord">中央</span>
+          <span class="domain-name">Confusion</span>
+          <span class="domain-name-zh">失序(原稱 Disorder)</span>
+          <span class="domain-tagline">不知道自己在哪一域。每個人此時退回各自的舒適域。</span>
+          <span class="domain-flow">退回舒適域 → 危險</span>
+        </label>
+      </div>
+    </fieldset>
+
+    <div class="reset-row">
+      <button type="button" class="btn-reset" id="btn-reset">清除選擇</button>
+    </div>
+
+    <div class="domain-detail" id="domain-detail" aria-live="polite" aria-atomic="false">
+
+      <div class="panel panel--intro">
+        <h3>還沒選擇</h3>
+        <p class="panel-summary">選一個域,這裡會展開該域的決策模式、NGO/品牌/危機三情境的應用例,以及最常見的失誤類型。多數實際議題會橫跨 2-3 域,但同一時刻你能處理的只有一個域 — 先選最主要的那個。</p>
+        <div class="panel-grid">
+          <div class="panel-block">
+            <h4>5 域口訣</h4>
+            <ul>
+              <li><strong>Clear</strong> — 已知的已知,套 SOP</li>
+              <li><strong>Complicated</strong> — 已知的未知,找專家</li>
+              <li><strong>Complex</strong> — 未知的未知,跑實驗</li>
+              <li><strong>Chaotic</strong> — 不可知,先穩住</li>
+              <li><strong>Confusion</strong> — 不知道自己不知道</li>
+            </ul>
+          </div>
+          <div class="panel-block">
+            <h4>Snowden 原話</h4>
+            <p style="font-family:var(--serif);font-style:italic;">「You can manage in Complicated, but you have to manage <em>through</em> Complex.」<br><span style="font-style:normal;font-size:12px;color:var(--ink-faint);">— Cognitive Edge,2010</span></p>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel panel--clear">
+        <h3>Clear<span class="panel-en">清晰域 · The Realm of Best Practice</span></h3>
+        <span class="panel-flow">SENSE → CATEGORIZE → RESPOND</span>
+        <p class="panel-summary">因果關係穩定、可重複、人人可見。歸類後直接套 best practice。這是 SOP、檢查表、合規流程的家。</p>
+        <div class="panel-grid">
+          <div class="panel-block">
+            <h4>典型場景</h4>
+            <ul>
+              <li>NGO 年度報告繳交(法規要求固定)</li>
+              <li>網站 a11y 基本檢查(alt text、heading 階層)</li>
+              <li>急救流程(CPR 30:2 規則)</li>
+              <li>會議室預約、報帳、人事打卡</li>
+            </ul>
+          </div>
+          <div class="panel-block">
+            <h4>決策模式</h4>
+            <p>套既有規則。不需要創意,也不需要爭辯。把規則寫清楚、訓練好、稽核到位即可。</p>
+          </div>
+          <div class="panel-block failure">
+            <h4>常見失誤</h4>
+            <ul>
+              <li><strong>複雜化簡單問題</strong> — 把 Clear 議題當 Complicated,找外部顧問來分析「該怎麼填報帳單」。浪費資源、削弱組織自信。</li>
+              <li><strong>慣性盲區</strong> — 在 Clear 域待太久,把世界變動的訊號當雜訊。下一節「懸崖」就是這個故事。</li>
+            </ul>
+          </div>
+          <div class="panel-block">
+            <h4>Minerva HC 搭配</h4>
+            <p><code>#algorithms</code> <code>#decisiontree</code> — 規則化、可重複的決策工具。</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel panel--complicated">
+        <h3>Complicated<span class="panel-en">繁難域 · The Realm of Experts</span></h3>
+        <span class="panel-flow">SENSE → ANALYZE → RESPOND</span>
+        <p class="panel-summary">因果可知,但需要專家分析才能看清。多種正解並存(「good practice」而非「best practice」)。診斷時間 ≫ 執行時間。</p>
+        <div class="panel-grid">
+          <div class="panel-block">
+            <h4>典型場景</h4>
+            <ul>
+              <li>NGO 跨境合規(各國法規各異,需各地律師)</li>
+              <li>個人品牌跨國收入的稅務結構</li>
+              <li>系統架構設計(多種可行解,各有 trade-off)</li>
+              <li>心臟病急救後的診斷與介入</li>
+            </ul>
+          </div>
+          <div class="panel-block">
+            <h4>決策模式</h4>
+            <p>找專家、分析資料、評估選項、選一個方案。允許辯論,但要在資料上辯,不要在情緒上辯。</p>
+          </div>
+          <div class="panel-block failure">
+            <h4>常見失誤</h4>
+            <ul>
+              <li><strong>把 Complex 當 Complicated</strong> — 對 emergent 系統做過度分析,等專家給「正解」時系統已經演化過了。Snowden 認為這是組織失敗最常見原因。</li>
+              <li><strong>專家自負</strong> — 專家的工具箱在自己領域好用,跨域時容易把所有問題當 Complicated。</li>
+            </ul>
+          </div>
+          <div class="panel-block">
+            <h4>Minerva HC 搭配</h4>
+            <p><code>#expertise</code> <code>#breakitdown</code> <code>#optimization</code> — 拆解、分析、最佳化。</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel panel--complex">
+        <h3>Complex<span class="panel-en">複雜域 · The Realm of Emergence</span></h3>
+        <span class="panel-flow">PROBE → SENSE → RESPOND</span>
+        <p class="panel-summary">因果只在事後可見。系統參與者本身會因觀察而改變(reflexive)。多數人類組織、文化、社群、生態都是 Complex。</p>
+        <div class="panel-grid">
+          <div class="panel-block">
+            <h4>典型場景</h4>
+            <ul>
+              <li>NGO 多利害關係人治理(理事會、會員、捐款人、政府)</li>
+              <li>個人品牌經營(讀者迴響不可預測,核心讀者群 emergent)</li>
+              <li>跨文化團隊協作(行為規範湧現,非規劃)</li>
+              <li>疫情前期應對(模式尚未穩定)</li>
+            </ul>
+          </div>
+          <div class="panel-block">
+            <h4>決策模式</h4>
+            <p>跑 safe-to-fail 實驗(多個並行、各自小規模、失敗可逆)。觀察哪些 emergent pattern 浮現,放大有效的、收掉失效的。<strong>不要做大型計劃</strong>。</p>
+          </div>
+          <div class="panel-block failure">
+            <h4>常見失誤</h4>
+            <ul>
+              <li><strong>硬套 best practice</strong> — Complex 域沒有 best practice,因為每次系統狀態都不一樣。模仿成功案例的「步驟」,通常只複製到 cargo cult。</li>
+              <li><strong>過早放棄</strong> — emergence 是慢的,小實驗要跑幾個月才能看出模式。要求 6 週內看到 ROI 的 Complex 案子幾乎全會失敗。</li>
+            </ul>
+          </div>
+          <div class="panel-block">
+            <h4>Minerva HC 搭配</h4>
+            <p><code>#emergentproperties</code> <code>#networks</code> <code>#systemmapping</code> <code>#multipleagentproblems</code> — Cynefin 跟 Minerva 的最強協同點。</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel panel--chaotic">
+        <h3>Chaotic<span class="panel-en">混亂域 · The Realm of the Novel</span></h3>
+        <span class="panel-flow">ACT → SENSE → RESPOND</span>
+        <p class="panel-summary">因果關係斷裂,等待分析就完蛋。先做任何「合理」動作把系統穩住,讓它從 Chaotic 退到 Complex 或 Complicated,再開始思考。</p>
+        <div class="panel-grid">
+          <div class="panel-block">
+            <h4>典型場景</h4>
+            <ul>
+              <li>NGO 理事長突然辭職的最初 48 小時</li>
+              <li>個人品牌遭 deepfake 或惡意爆料的當下</li>
+              <li>大規模事故開頭幾分鐘(地震、大火、踩踏)</li>
+              <li>關鍵伺服器掛掉,網站全站 down</li>
+            </ul>
+          </div>
+          <div class="panel-block">
+            <h4>決策模式</h4>
+            <p>有決策權的人馬上行動。動作不必最佳,要「足夠合理」+「能穩住事態」。穩住後立刻換腦袋進 Complex(觀察 emergent)或 Complicated(分析根因)。</p>
+          </div>
+          <div class="panel-block failure">
+            <h4>常見失誤</h4>
+            <ul>
+              <li><strong>停下來分析</strong> — 在 Chaotic 域思考 = 損失擴大。事後檢討時才分析。</li>
+              <li><strong>留在 Chaotic 太久</strong> — 危機處理者會上癮,事態穩了還繼續用 Chaotic 模式 micromanage。要主動退出。</li>
+              <li><strong>誤判 Complex 為 Chaotic</strong> — 緩慢的系統失靈被當成緊急事故,做出過激反應(例如裁員)。</li>
+            </ul>
+          </div>
+          <div class="panel-block">
+            <h4>Minerva HC 搭配</h4>
+            <p>無直接對應(Chaotic 不容分析)。事後復盤時用 <code>#decisiveness</code> <code>#critique</code>。</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel panel--confusion">
+        <h3>Confusion<span class="panel-en">失序 · The Central Trap</span></h3>
+        <span class="panel-flow">退回各自舒適域 → 衝突</span>
+        <p class="panel-summary">不知道自己在哪一域時的狀態。Snowden 觀察:此時每個人退回自己職業的舒適域。工程師當 Complicated 處理,軍人當 Chaotic 行動,官僚當 Clear 套規則,科學家當 Complex 探索 — 結果是內部衝突而非外部問題的解。</p>
+        <div class="panel-grid">
+          <div class="panel-block">
+            <h4>怎麼脫困</h4>
+            <ul>
+              <li><strong>拆問題</strong> — 整體說不清,就拆成子問題,每個子問題試著定位到一個域。</li>
+              <li><strong>命名你的退路</strong> — 「我此時想用 X 方法,因為這是我熟悉的」自覺後再評估這個方法是否真的適合。</li>
+              <li><strong>找跨域的人對話</strong> — 別只跟同職業的人討論,他們會跟你一起退回同個域。</li>
+            </ul>
+          </div>
+          <div class="panel-block">
+            <h4>2024+ 版本拆分</h4>
+            <p>Snowden 近年把 Disorder 拆兩塊:<strong>Aporetic</strong>(刻意停留在不知道,探索狀態)跟 <strong>Confused</strong>(不知道自己不知道)。前者是研究模式的正當狀態,後者是危險訊號。</p>
+          </div>
+          <div class="panel-block failure">
+            <h4>常見失誤</h4>
+            <ul>
+              <li><strong>拒絕承認 Confusion</strong> — 為了維持權威感,硬把議題強行歸入熟悉域。下游決策全錯。</li>
+              <li><strong>把 Aporetic 當 Confused</strong> — 把研究員的「我還在想」當成「他亂掉了」,催著要結論 — 扼殺探索。</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <section class="fold-section" aria-labelledby="fold-heading">
+    <h2 id="fold-heading">懸崖(Catastrophic Fold)</h2>
+    <p class="h2-en">The cliff between Clear and Chaotic</p>
+    <div class="fold-body">
+      <div>
+        <p>Snowden 給 Cynefin 的視覺加了一個容易被忽略的細節:Clear 域跟 Chaotic 域之間有一道<strong>懸崖</strong>,而不是平緩的邊界。「Best practice」用久了,組織會默認 Clear 域是穩定的,於是裁掉冗餘、簡化監控、信任慣例。當外部條件改變,Clear 的根基塌陷,系統不會退到 Complicated,而是<strong>直接掉進 Chaotic</strong>。</p>
+        <p>這是 Cynefin 最常被誤讀的部分。多數人把 5 個域當對稱的格子,實際上 Clear → Chaotic 是不對稱的單向懸崖,爬回來必須繞經 Complex 域(慢、痛、貴)。</p>
+        <p>對個人品牌、NGO、產品線都成立:<strong>讓某個流程「乾淨好用」越久,離懸崖越近</strong>。定期注入小擾動(輪調、紅隊演習、財務壓力測試)是 Cynefin 建議的反熵動作。</p>
+      </div>
+      <aside class="fold-examples" aria-labelledby="fold-examples-heading">
+        <h3 id="fold-examples-heading">歷史案例</h3>
+        <ul>
+          <li><strong>2008 金融危機</strong> — 監管假設市場是 Clear(資產評價穩定),實際是 Complex(系統性關聯),掉進 Chaotic。</li>
+          <li><strong>Boeing 737 MAX</strong> — MCAS 系統被當 Clear(常規軟體更新),實際引入 Complex 行為(操控介面隱性改變),兩起空難。</li>
+          <li><strong>NGO 財務內控鬆綁</strong> — 連續多年內帳整齊,理事會放寬監督,挪用案爆發後組織信用直接 Chaotic。</li>
+          <li><strong>個人品牌單一平台依賴</strong> — Twitter 演算法穩定 5 年的 Clear,規則一夕變更,流量歸零變 Chaotic。</li>
+        </ul>
+      </aside>
+    </div>
+  </section>
+
+  <section class="transitions-section" aria-labelledby="transitions-heading">
+    <h2 id="transitions-heading">域間轉換</h2>
+    <p class="h2-en">Domain Transitions</p>
+    <p style="font-size:14px;line-height:1.6;color:var(--ink-mute);margin:0 0 18px 0;max-width:64ch;">域不是固定的標籤,而是議題在時間軸上的狀態。常見的轉換路徑:</p>
+    <div class="transition-list">
+      <div class="transition">
+        <span class="arrow">Complex → Complicated</span>
+        模式逐漸穩定,emergent 行為變成可分析的因果。新產品 PMF 後的成熟期、社群運作初期穩定後。
+      </div>
+      <div class="transition">
+        <span class="arrow">Complicated → Clear</span>
+        專家知識被流程化,變成 SOP。專業認證、檢查表、自動化都在做這件事。
+      </div>
+      <div class="transition">
+        <span class="arrow danger">Clear → Chaotic(懸崖)</span>
+        慣性 + 外部變動,直接掉下去。不會經 Complicated 過渡。是上一節的故事。
+      </div>
+      <div class="transition">
+        <span class="arrow">Chaotic → Complex</span>
+        穩住後的正常路徑。不要直接跳到 Clear(沒爬回來,只是新的盲區)。
+      </div>
+      <div class="transition">
+        <span class="arrow">Complex → Chaotic(刻意)</span>
+        Shock therapy / 顛覆式改革。Snowden 警告慎用,事後恢復成本高。
+      </div>
+      <div class="transition">
+        <span class="arrow">任何域 → Confusion</span>
+        參與者增多、跨文化、跨世代時最容易發生。需主動命名才能脫困。
+      </div>
+    </div>
+  </section>
+
+  <section class="misc-section" aria-labelledby="synergies-heading">
+    <h2 id="synergies-heading">協同範式</h2>
+    <p class="h2-en">Synergies with other paradigms</p>
+    <div class="synergy-list">
+      <div class="synergy">
+        <strong>Wardley Mapping</strong>
+        互補。Cynefin 看「問題本質」(因果結構),Wardley 看「演化階段」(從 Genesis 到 Commodity)。一個議題的完整策略觀需要兩個座標 — 例:Complex × Genesis = 純探索,Clear × Commodity = 全力自動化。
+      </div>
+      <div class="synergy">
+        <strong>Minerva HC</strong>
+        Complex 域是 Minerva 系統思考 HC 的家:<code>#emergentproperties</code> <code>#networks</code> <code>#systemmapping</code> <code>#multipleagentproblems</code>。Complicated 域則對應 <code>#expertise</code> <code>#breakitdown</code> <code>#optimization</code>。
+      </div>
+      <div class="synergy">
+        <strong>Theory U</strong>
+        Complex 域的深層改變需要 Theory U 的 presencing 階段 — 不是分析也不是行動,而是讓未來從當下浮現的觀察狀態。
+      </div>
+      <div class="synergy">
+        <strong>Munger Latticework</strong>
+        Latticework 是 Cynefin 各域的工具庫。Cynefin 告訴你「現在該用哪一格」,Latticework 告訴你「那一格裡有哪些工具」。
+      </div>
+    </div>
+
+    <h2 id="anti-heading" style="margin-top:42px;">反模式</h2>
+    <p class="h2-en">Anti-patterns</p>
+    <ul class="anti-list" aria-labelledby="anti-heading">
+      <li><strong>「萬物皆 Complex」</strong> — 過度用會失去差異化能力,任何議題都拿 probe-sense-respond 處理,變成迴避決斷的藉口。對 Clear 跟 Complicated 域要敢於套規則、信專家。</li>
+      <li><strong>初學者誤判</strong> — Cynefin 需要訓練。最常見錯誤是把 Complex 當 Complicated(以為找專家就能解),或把 Complicated 當 Clear(以為照 SOP 就能解)。誤判越底層的域,代價越大。</li>
+      <li><strong>留在 Chaotic 不退出</strong> — 危機處理者上癮。事態穩了還用 Chaotic 模式 micromanage,組織學不會自治。</li>
+      <li><strong>拒絕承認 Confusion</strong> — 為了表現「掌握感」,硬把不確定的議題歸入熟悉域。下游決策全錯。</li>
+      <li><strong>把 Cynefin 當分類遊戲</strong> — 給每個議題貼個標籤就走人。Cynefin 的價值在於「貼標籤後的方法論差異」,不是標籤本身。</li>
+    </ul>
+
+    <div class="recent-note" style="margin-top:36px;">
+      <h3>2024+ Snowden 演化</h3>
+      <p>近年 Snowden 持續修正 Cynefin:Disorder 拆成 Aporetic / Confused 兩態;域邊界加入「liminal」過渡帶(Complex-Liminal-Complicated 是常見路徑);提出 estuarine framework 處理「域內的 constraints 動態」。本頁仍用 1999-2014 經典 5 域版本作為入口,進階學習者建議讀 <em>Cynefin: Weaving Sense-Making into the Fabric of Our World</em>(2020 文集)及 Cognitive Edge 官方部落格。</p>
+    </div>
+  </section>
+
+  <aside class="provenance" aria-labelledby="prov-heading">
+    <h3 id="prov-heading">出處與校準</h3>
+    <p>核心定義來自 Dave Snowden &amp; Mary Boone, <em>“A Leader's Framework for Decision Making”</em>, Harvard Business Review, November 2007。1999 原始 IBM 內部文件較少流通,HBR 版本是公認的標準入口。2014 年「Obvious → Clear」改名來自 Snowden 個人部落格。本頁所有 NGO / 個人品牌 / 危機應用例由 Mandara atlas 作者改寫自身語境,非 Snowden 原文。歷史案例(2008 金融危機、Boeing 737 MAX)為公開報導素材,Cynefin 套用為作者詮釋。</p>
+    <p>進一步閱讀:<a href="https://thecynefin.co/" target="_blank" rel="noopener noreferrer">The Cynefin Co.(官方)</a> · <a href="https://hbr.org/2007/11/a-leaders-framework-for-decision-making" target="_blank" rel="noopener noreferrer">HBR 2007</a>。</p>
+  </aside>
+
+  <nav class="page-footer-nav" aria-label="範式間導覽">
+    <a href="minerva.html" class="nav-link">← Minerva</a>
+    <a href="../thinking-routing-atlas-v0.3.html" class="nav-link">Atlas</a>
+    <span class="nav-link disabled" aria-disabled="true">Munger →(待寫)</span>
+  </nav>
+
+</main>
+
+<script>
+// Nav chip mirror + reset button + localStorage persistence.
+// Pure progressive enhancement — page is fully functional without JS via CSS :has.
+(function() {
+  const NAV_LABELS = {
+    clear: 'Clear · 套規則',
+    complicated: 'Complicated · 找專家',
+    complex: 'Complex · 跑實驗',
+    chaotic: 'Chaotic · 先穩住',
+    confusion: 'Confusion · 命名退路',
+  };
+  const STORAGE_KEY = 'cynefin-current-domain';
+  const navCurrent = document.getElementById('nav-current');
+  const resetBtn = document.getElementById('btn-reset');
+  const radios = document.querySelectorAll('input[name="cynefin-domain"]');
+
+  function updateNav(value) {
+    if (!navCurrent) return;
+    if (value && NAV_LABELS[value]) {
+      navCurrent.textContent = NAV_LABELS[value];
+      navCurrent.classList.remove('nav-empty');
+      navCurrent.classList.add('nav-chip');
+    } else {
+      navCurrent.textContent = '未選擇';
+      navCurrent.classList.add('nav-empty');
+      navCurrent.classList.remove('nav-chip');
+    }
+  }
+
+  // Restore from localStorage
+  try {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    if (saved && NAV_LABELS[saved]) {
+      const radio = document.getElementById('d-' + saved);
+      if (radio) {
+        radio.checked = true;
+        updateNav(saved);
+      }
+    }
+  } catch (e) { /* localStorage may be disabled */ }
+
+  radios.forEach(r => {
+    r.addEventListener('change', e => {
+      if (e.target.checked) {
+        updateNav(e.target.value);
+        try { localStorage.setItem(STORAGE_KEY, e.target.value); } catch (_) {}
+      }
+    });
+  });
+
+  if (resetBtn) {
+    resetBtn.addEventListener('click', () => {
+      radios.forEach(r => { r.checked = false; });
+      updateNav(null);
+      try { localStorage.removeItem(STORAGE_KEY); } catch (_) {}
+      // Move focus back to legend for SR
+      const firstRadio = radios[0];
+      if (firstRadio) firstRadio.focus();
+    });
+  }
+})();
+</script>
+
+</body>
+</html>

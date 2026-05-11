@@ -31,6 +31,38 @@
   text-transform: uppercase;
   padding-top: 2px;
 }
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  margin-top: 18px;
+  padding: 12px 16px;
+  background: var(--card-bg);
+  border: 1px solid var(--hairline-soft);
+  border-radius: 4px;
+  font-size: 13px;
+  color: var(--ink-soft);
+  line-height: 1.5;
+}
+.legend-row { display: inline-flex; align-items: center; gap: 8px; }
+.legend-row strong { font-family: var(--serif); font-weight: 600; color: var(--ink); margin-right: 2px; }
+.legend-row em { font-style: italic; color: var(--cat-1); }
+.legend-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border: 1px solid var(--hairline);
+  border-radius: 3px;
+  font-family: var(--mono);
+  font-size: 12px;
+  font-weight: 600;
+  flex-shrink: 0;
+}
+.legend-icon.kit { background: var(--cat-2); color: var(--paper); border-color: var(--cat-2); }
+.legend-icon.session { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+
 .summary-strip {
   display: flex;
   flex-wrap: wrap;
@@ -441,6 +473,10 @@
     <button class="btn-primary" id="paradigm-add" type="button">加入 Mandara 組合</button>
     <a class="btn-secondary" href="https://www.minerva.edu/public/media/enrollment-center/Minerva-HCs-Intro.pdf" target="_blank" rel="noopener">📄 Official intro PDF</a>
   </div>
+  <div class="legend" aria-label="HC 卡片右上角兩個按鈕的意義">
+    <span class="legend-row"><span class="legend-icon kit">★</span> <strong>Kit</strong> · 你內化的 HC subset(<em>永久保存</em>,目標 12-15 個變思考習慣)</span>
+    <span class="legend-row"><span class="legend-icon session">●</span> <strong>Session</strong> · 這次任務在用的 HC(<em>暫時</em>,可隨時清空重來)</span>
+  </div>
   <div class="summary-strip">
     <span><strong id="sum-total">109</strong> 全部</span>
     <span><strong id="sum-h">49</strong> Habits</span>
@@ -479,7 +515,7 @@
 
   <nav class="page-footer-nav" aria-label="Cross-paradigm navigation">
     <a href="../" class="nav-link">← 回 mandara atlas</a>
-    <span class="nav-link disabled">下一個範式: Munger Latticework → (尚未撰寫)</span>
+    <a href="cynefin.html" class="nav-link">下一個範式: Cynefin →</a>
   </nav>
 </main>
 
@@ -848,9 +884,11 @@ function applyKitState(btn, card, tag) {
   const inKit = hcInKit.has(tag);
   btn.textContent = inKit ? '★' : '☆';
   btn.setAttribute('aria-pressed', inKit ? 'true' : 'false');
-  btn.setAttribute('aria-label', inKit
+  const label = inKit
     ? `已在常用組合 #${tag},點擊移除`
-    : `加入常用組合 #${tag}(永久 · 你內化的 HC subset)`);
+    : `加入常用組合 #${tag}(Kit · 永久 · 你內化的 HC subset)`;
+  btn.setAttribute('aria-label', label);
+  btn.setAttribute('title', `Kit · ${inKit ? '已在常用組合' : '加入常用組合'}\n#${tag}\n永久保存,目標 12-15 個內化 HC`);
   card.classList.toggle('in-kit', inKit);
 }
 
@@ -858,9 +896,11 @@ function applySessionState(btn, card, tag) {
   const inSession = hcInSession.has(tag);
   btn.textContent = inSession ? '●' : '○';
   btn.setAttribute('aria-pressed', inSession ? 'true' : 'false');
-  btn.setAttribute('aria-label', inSession
+  const label = inSession
     ? `已標記 #${tag} 用於這次任務,點擊取消`
-    : `標記 #${tag} 用於這次任務(暫時 · 當前思考用)`);
+    : `標記 #${tag} 用於這次任務(Session · 暫時 · 當前思考用)`;
+  btn.setAttribute('aria-label', label);
+  btn.setAttribute('title', `Session · ${inSession ? '已在這次任務' : '加入這次任務'}\n#${tag}\n暫時 · 可隨時清空重來`);
   card.classList.toggle('in-session', inSession);
 }
 
