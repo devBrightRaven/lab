@@ -63,6 +63,171 @@
 .legend-icon.kit { background: var(--cat-2); color: var(--paper); border-color: var(--cat-2); }
 .legend-icon.session { background: var(--ink); color: var(--paper); border-color: var(--ink); }
 
+/* Onboarding help button + dialog (D task — first-time popover) */
+.legend-help-btn {
+  margin-left: auto;
+  width: 28px; height: 28px;
+  border: 1px solid var(--hairline);
+  background: var(--card-bg);
+  border-radius: 50%;
+  font-family: var(--serif);
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--ink-mute);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.18s ease;
+}
+.legend-help-btn:hover { border-color: var(--cat-2); color: var(--cat-2); background: var(--paper-deep); }
+.legend-help-btn:focus-visible { outline: 2px solid var(--cat-2); outline-offset: 2px; }
+
+.onboarding-dialog {
+  border: 1px solid var(--hairline);
+  border-radius: 6px;
+  padding: 0;
+  max-width: 720px;
+  width: calc(100vw - 32px);
+  background: var(--paper);
+  color: var(--ink);
+  box-shadow: 0 16px 48px rgba(0,0,0,0.18);
+}
+.onboarding-dialog::backdrop {
+  background: rgba(26,26,26,0.55);
+  backdrop-filter: blur(2px);
+}
+.onboarding-body {
+  position: relative;
+  padding: 32px 36px 28px 36px;
+}
+.onboarding-x {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 32px; height: 32px;
+  border: 1px solid transparent;
+  background: transparent;
+  font-family: var(--mono);
+  font-size: 14px;
+  color: var(--ink-mute);
+  cursor: pointer;
+  border-radius: 4px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.onboarding-x:hover { background: var(--paper-deep); color: var(--ink); }
+.onboarding-x:focus-visible { outline: 2px solid var(--cat-2); outline-offset: 1px; }
+.onboarding-body > h2 {
+  font-family: var(--serif);
+  font-weight: 500;
+  font-size: 26px;
+  letter-spacing: -0.01em;
+  margin: 0 0 8px 0;
+  color: var(--ink);
+}
+.onboarding-lede {
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--ink-soft);
+  margin: 0 0 22px 0;
+  max-width: 60ch;
+}
+.onboarding-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+  margin-bottom: 22px;
+}
+.onboarding-card {
+  background: var(--card-bg);
+  border: 1px solid var(--hairline-soft);
+  padding: 18px 20px;
+  border-radius: 4px;
+  font-size: 13.5px;
+  line-height: 1.6;
+  color: var(--ink-soft);
+}
+.onboarding-card-kit { border-left: 4px solid var(--cat-2); }
+.onboarding-card-session { border-left: 4px solid var(--ink); }
+.onboarding-card .onboarding-icon {
+  font-family: var(--mono);
+  font-size: 24px;
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+.onboarding-card-kit .onboarding-icon { color: var(--cat-2); }
+.onboarding-card-session .onboarding-icon { color: var(--ink); }
+.onboarding-card h3 {
+  font-family: var(--serif);
+  font-weight: 600;
+  font-size: 16px;
+  margin: 0 0 8px 0;
+  color: var(--ink);
+}
+.onboarding-card p { margin: 0 0 8px 0; }
+.onboarding-card .onboarding-eg {
+  font-size: 12.5px;
+  color: var(--ink-mute);
+  border-top: 1px solid var(--hairline-soft);
+  padding-top: 8px;
+  margin-top: 8px;
+  margin-bottom: 0;
+}
+.onboarding-card code {
+  font-family: var(--mono);
+  font-size: 12px;
+  background: var(--paper-deep);
+  padding: 1px 5px;
+  border-radius: 2px;
+}
+.onboarding-overlap {
+  background: var(--paper-deep);
+  border: 1px dashed var(--hairline);
+  padding: 14px 18px;
+  margin-bottom: 22px;
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--ink-soft);
+}
+.onboarding-overlap h4 {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin: 0 0 8px 0;
+  color: var(--ink);
+  font-weight: 500;
+}
+.onboarding-overlap p { margin: 0; }
+.onboarding-actions {
+  display: flex;
+  justify-content: flex-end;
+}
+.onboarding-close {
+  background: var(--ink);
+  color: var(--paper);
+  border: 1px solid var(--ink);
+  padding: 10px 22px;
+  font-family: var(--sans);
+  font-weight: 600;
+  font-size: 14px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.18s ease;
+}
+.onboarding-close:hover { background: var(--cat-2); border-color: var(--cat-2); }
+.onboarding-close:focus-visible { outline: 3px solid var(--cat-2); outline-offset: 2px; }
+@media (max-width: 720px) {
+  .onboarding-grid { grid-template-columns: 1fr; }
+  .onboarding-body { padding: 28px 22px 22px 22px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .legend-help-btn, .onboarding-x, .onboarding-close { transition: none; }
+  .onboarding-dialog::backdrop { backdrop-filter: none; }
+}
+
 .summary-strip {
   display: flex;
   flex-wrap: wrap;
@@ -476,7 +641,43 @@
   <div class="legend" aria-label="HC 卡片右上角兩個按鈕的意義">
     <span class="legend-row"><span class="legend-icon kit">★</span> <strong>Kit</strong> · 你內化的 HC subset(<em>永久保存</em>,目標 12-15 個變思考習慣)</span>
     <span class="legend-row"><span class="legend-icon session">●</span> <strong>Session</strong> · 這次任務在用的 HC(<em>暫時</em>,可隨時清空重來)</span>
+    <button type="button" class="legend-help-btn" data-action="open-onboarding" aria-label="開啟 Kit 跟 Session 詳細說明">?</button>
   </div>
+
+  <dialog id="onboarding-dialog" aria-labelledby="onboarding-title" class="onboarding-dialog">
+    <div class="onboarding-body">
+      <button type="button" class="onboarding-x" data-action="close-onboarding" aria-label="關閉說明">✕</button>
+      <h2 id="onboarding-title">Kit · Session · 怎麼用?</h2>
+      <p class="onboarding-lede">右上角兩個按鈕看似一樣其實意義不同。一個是你內化的「身份」,一個是當前任務的「工作區」。</p>
+
+      <div class="onboarding-grid">
+        <section class="onboarding-card onboarding-card-kit">
+          <div class="onboarding-icon" aria-hidden="true">★</div>
+          <h3>Kit · 思考簽名</h3>
+          <p><strong>永久</strong>(存進 localStorage,跨 session 保留)。Minerva 建議 12-15 個 sweet spot — 不是要全會,是要這 12-15 個內化成本能。</p>
+          <p>標進 Kit 等於說「這個工具我會 retreatable, on-demand」。久了之後,你的 Kit 就是你的<strong>思考簽名</strong>:看別人寫的東西,你會自動套用 #criticalthinking 跟 #emergentproperties,別人套 #scarcity 跟 #optimization。</p>
+          <p class="onboarding-eg">例:常常拆解論證 → 標 <code>#assertions</code> 跟 <code>#critique</code> 進 Kit。</p>
+        </section>
+
+        <section class="onboarding-card onboarding-card-session">
+          <div class="onboarding-icon" aria-hidden="true">●</div>
+          <h3>Session · 任務工作區</h3>
+          <p><strong>暫時</strong>(也存 localStorage,但語意是「現在的任務」,清掉重來無感)。對應某個具體任務:寫這篇文章、評估這個決策、開這場會。</p>
+          <p>Session 可以跟 Kit 重疊(熟悉的工具用在當前任務 → 雙標 ★●)或<strong>超出 Kit</strong>(這次嘗試新 HC,如果好用就之後標進 Kit)。</p>
+          <p class="onboarding-eg">例:寫 NGO governance 文章 → Session 加 <code>#multipleagentproblems</code>(可能還沒在 Kit 裡)。</p>
+        </section>
+      </div>
+
+      <div class="onboarding-overlap">
+        <h4>當 Kit ∩ Session 浮現一個 pattern</h4>
+        <p>Synthesis Panel(右下角 ⌘ 鈕)會分析你選的組合:<strong>全在 Kit 裡</strong> = 純內化操作,效率高;<strong>全在 Kit 外</strong> = 探索模式,有發現要 promote 進 Kit;<strong>混合</strong> = 健康比例,1-2 個新工具搭穩固骨架。</p>
+      </div>
+
+      <div class="onboarding-actions">
+        <button type="button" class="onboarding-close" data-action="close-onboarding" autofocus>我明白了</button>
+      </div>
+    </div>
+  </dialog>
   <div class="summary-strip">
     <span><strong id="sum-total">109</strong> 全部</span>
     <span><strong id="sum-h">49</strong> Habits</span>
@@ -1455,6 +1656,38 @@ updateInUseCount();
 updateKitCount();
 updateSummaryFromData();
 refreshSynthesis();
+
+// ========= Onboarding dialog (D task) =========
+(function() {
+  const dialog = document.getElementById('onboarding-dialog');
+  if (!dialog || typeof dialog.showModal !== 'function') return;
+  const SEEN_KEY = 'minerva-onboarding-seen-v1';
+
+  function open() {
+    try { dialog.showModal(); } catch (_) {}
+  }
+  function close() {
+    try { dialog.close(); } catch (_) {}
+    try { localStorage.setItem(SEEN_KEY, '1'); } catch (_) {}
+  }
+
+  document.querySelectorAll('[data-action="open-onboarding"]').forEach(btn => btn.addEventListener('click', open));
+  document.querySelectorAll('[data-action="close-onboarding"]').forEach(btn => btn.addEventListener('click', close));
+
+  // Esc handled natively by <dialog>, but also mark as seen on cancel
+  dialog.addEventListener('close', () => {
+    try { localStorage.setItem(SEEN_KEY, '1'); } catch (_) {}
+  });
+
+  // Auto-show once
+  try {
+    const seen = localStorage.getItem(SEEN_KEY);
+    if (!seen) {
+      // small delay so it doesn't feel intrusive on first paint
+      setTimeout(open, 400);
+    }
+  } catch (_) {}
+})();
 </script>
 </body>
 </html>
