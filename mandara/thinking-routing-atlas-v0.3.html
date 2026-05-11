@@ -927,9 +927,42 @@ main {
   outline: 2px solid var(--cat-1);
   outline-offset: 2px;
 }
+
+/* Skip link + screen-reader-only utility (a11y P1 fix) */
+.skip-link {
+  position: absolute;
+  top: 0;
+  left: 12px;
+  transform: translateY(-200%);
+  background: var(--ink);
+  color: var(--paper);
+  padding: 10px 16px;
+  z-index: 100;
+  text-decoration: none;
+  font-family: var(--mono);
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  border-radius: 0 0 4px 4px;
+  transition: transform 0.18s ease;
+}
+.skip-link:focus { transform: translateY(0); outline: 3px solid var(--cat-1); outline-offset: 2px; }
+.visually-hidden {
+  position: absolute;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden;
+  clip: rect(0,0,0,0);
+  white-space: nowrap;
+  border: 0;
+}
+@media (prefers-reduced-motion: reduce) {
+  .skip-link { transition: none; }
+}
 </style>
 </head>
 <body>
+
+<a class="skip-link" href="#workbench">跳到主要內容</a>
 
 <header class="atlas-head">
   <div class="head-row">
@@ -971,7 +1004,8 @@ main {
   </button>
 </section>
 
-<section class="workbench" id="workbench">
+<section class="workbench" id="workbench" aria-labelledby="workbench-heading">
+  <h2 id="workbench-heading" class="visually-hidden">Combo Workbench · 組合工作台</h2>
   <div class="workbench-grid">
     <div class="wb-section">
       <h3>你的組合 · Current Combo</h3>
@@ -995,62 +1029,62 @@ main {
 
 <main>
   <section class="category" data-cat="1">
-    <aside class="cat-meta">
+    <header class="cat-meta">
       <div class="cat-num">範式 01 / Cat. I</div>
       <h2 class="cat-name-zh">Latticework 收集型</h2>
       <div class="cat-name-en">The Latticework Approach</div>
       <p class="cat-tagline">多多益善,跨學科連網,case-by-case 召喚。沒有正式結構,廣度優先。</p>
-    </aside>
+    </header>
     <div class="cards" id="cards-cat1"></div>
   </section>
 
   <section class="category" data-cat="2">
-    <aside class="cat-meta">
+    <header class="cat-meta">
       <div class="cat-num">範式 02 / Cat. II</div>
       <h2 class="cat-name-zh">Curriculum 課程型</h2>
       <div class="cat-name-en">The Curricular Approach</div>
       <p class="cat-tagline">精選工具集,有定義 + 應用範例 + 評估標準,反覆練習到內化成思考習慣。</p>
-    </aside>
+    </header>
     <div class="cards" id="cards-cat2"></div>
   </section>
 
   <section class="category" data-cat="3">
-    <aside class="cat-meta">
+    <header class="cat-meta">
       <div class="cat-num">範式 03 / Cat. III</div>
       <h2 class="cat-name-zh">Cynefin 情境路由型</h2>
       <div class="cat-name-en">The Sense-Making Approach</div>
       <p class="cat-tagline">先判斷你在哪個情境,再決定方法論。本身是 router 而不是 toolkit。</p>
-    </aside>
+    </header>
     <div class="cards" id="cards-cat3"></div>
   </section>
 
   <section class="category" data-cat="4">
-    <aside class="cat-meta">
+    <header class="cat-meta">
       <div class="cat-num">範式 04 / Cat. IV</div>
       <h2 class="cat-name-zh">Loop 迴路型</h2>
       <div class="cat-name-en">The Cyclic Approach</div>
       <p class="cat-tagline">不是工具庫,是動作節奏。觀察、定向、決策、行動的迭代循環。</p>
-    </aside>
+    </header>
     <div class="cards" id="cards-cat4"></div>
   </section>
 
   <section class="category" data-cat="5">
-    <aside class="cat-meta">
+    <header class="cat-meta">
       <div class="cat-num">範式 05 / Cat. V</div>
       <h2 class="cat-name-zh">Anti-Bias 反思型</h2>
       <div class="cat-name-en">The Reflective Approach</div>
       <p class="cat-tagline">不給你新觀點,讓你避開現有思考的陷阱。校準判斷力,適合決策後 retrospective。</p>
-    </aside>
+    </header>
     <div class="cards" id="cards-cat5"></div>
   </section>
 
   <section class="category" data-cat="6">
-    <aside class="cat-meta">
+    <header class="cat-meta">
       <div class="cat-num">範式 06 / Cat. VI</div>
       <h2 class="cat-name-zh">Container/Frame 容器框架型</h2>
       <div class="cat-name-en">The Structural Approach</div>
       <p class="cat-tagline">工具的「家」,或角色/論證/影響/世界觀的舞台。提供結構,不直接給內容。</p>
-    </aside>
+    </header>
     <div class="cards" id="cards-cat6"></div>
   </section>
 
