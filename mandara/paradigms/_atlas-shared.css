@@ -1,27 +1,39 @@
 /* Shared styles for paradigm deep-dive pages. Sister files: _atlas-shared.js, individual <paradigm>.html */
 
+/* ========= Theme: cyber / Tron-Legacy-meets-tech-doc =========
+   Deep cool palette + neon accents in restraint. Tokens keep
+   semantic names (paper/ink/cat) so existing classes keep working —
+   only the values change.
+*/
 :root {
-  --paper: #F2EEDF;
-  --paper-deep: #E5DCC4;
-  --paper-edge: #D6CBA8;
-  --card-bg: #FBFAF4;
-  --ink: #1A1A1A;
-  --ink-soft: #2E2E2E;
-  --ink-mute: #5C5C5C;
-  --ink-faint: #6B6655;
-  --hairline: #8C8170;
-  --hairline-soft: #BDB39A;
+  /* Surfaces — deep navy graphite, ascending elevation */
+  --paper: #0F1923;          /* base bg, deepest */
+  --paper-deep: #18222E;     /* sticky nav, header gradient stop */
+  --paper-edge: #243447;     /* elevated bands, callouts */
+  --card-bg: #1A2532;        /* cards stand on base */
 
-  --cat-1: #A04F33;
-  --cat-2: #8A6E1F;
-  --cat-3: #5C7A4F;
-  --cat-4: #3D5C8C;
-  --cat-5: #4A4A4A;
-  --cat-6: #7A4A6A;
+  /* Text — light off-white scale (all pass WCAG 1.4.3 on --paper) */
+  --ink: #E8ECF0;            /* primary text · 15:1 */
+  --ink-soft: #C5CDD6;       /* body soft · 10:1 */
+  --ink-mute: #8A95A3;       /* secondary · 6:1 */
+  --ink-faint: #7A8694;      /* tertiary, meta · 4.9:1 (was #5F6B7A 3.1:1 — bumped) */
 
-  --serif: 'Newsreader', 'Noto Serif TC', Georgia, serif;
-  --sans: 'Source Sans 3', -apple-system, system-ui, "Segoe UI", "Microsoft JhengHei", sans-serif;
-  --mono: 'JetBrains Mono', "SF Mono", Consolas, Menlo, monospace;
+  /* Borders (UI components require 3:1 per WCAG 1.4.11) */
+  --hairline: #4F6985;       /* visible separators · 3.2:1 (was #3A4F65 2.1:1 — bumped) */
+  --hairline-soft: #2D3F54;  /* subtle dividers (decorative, exempt from 3:1) */
+
+  /* Cat accents — cyberpunk-tinted */
+  --cat-1: #FF6B47;          /* laser coral · Latticework (collection) */
+  --cat-2: #FFB627;          /* amber · Curriculum */
+  --cat-3: #00E699;          /* neon mint · Cynefin / route */
+  --cat-4: #00BCD4;          /* electric cyan · Loop */
+  --cat-5: #B0BEC5;          /* silver chrome · Anti-Bias / reflection */
+  --cat-6: #FF2E92;          /* magenta · Container / Frame */
+
+  /* Typography — Inter body + Space Grotesk display + JetBrains Mono labels */
+  --serif: 'Space Grotesk', 'Inter', 'Noto Sans TC', system-ui, sans-serif;
+  --sans: 'Inter', 'Noto Sans TC', -apple-system, system-ui, "Segoe UI", "Microsoft JhengHei", sans-serif;
+  --mono: 'JetBrains Mono', 'Fira Code', "SF Mono", Consolas, Menlo, monospace;
 }
 
 * { box-sizing: border-box; }
@@ -30,11 +42,59 @@ body {
   background: var(--paper);
   color: var(--ink);
   font-family: var(--sans);
-  font-size: 15px;
-  line-height: 1.6;
+  font-size: 16px;            /* was 15 — bigger, easier reading */
+  line-height: 1.65;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  /* Subtle scanline / grid feel — very low contrast, off by default in reduced-motion */
+  background-image:
+    linear-gradient(180deg, rgba(0, 217, 255, 0.025) 0%, rgba(0, 0, 0, 0) 60%),
+    radial-gradient(ellipse at 50% 0%, rgba(255, 46, 146, 0.04) 0%, rgba(0, 0, 0, 0) 50%);
+  background-attachment: fixed;
 }
+
+@media (prefers-reduced-motion: reduce) {
+  body { background-image: none; }
+}
+
+/* High-contrast boost — punch up borders + faint text */
+@media (prefers-contrast: more) {
+  :root {
+    --hairline: #6F8AAB;       /* ~4.5:1 against --paper */
+    --hairline-soft: #4A6280;
+    --ink-faint: #9AA5B3;      /* ~6:1 */
+    --ink-mute: #B0BCCB;       /* ~8:1 */
+  }
+}
+
+/* Light-mode fallback — user explicitly prefers light despite cyber theme.
+   Map cyber tokens back to paper aesthetic so the page remains usable.
+   Maintains all class names; only token values flip. */
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="cyber"]) {
+    --paper: #F2EEDF;
+    --paper-deep: #E5DCC4;
+    --paper-edge: #D6CBA8;
+    --card-bg: #FBFAF4;
+    --ink: #1A1A1A;
+    --ink-soft: #2E2E2E;
+    --ink-mute: #5C5C5C;
+    --ink-faint: #6B6655;
+    --hairline: #8C8170;
+    --hairline-soft: #BDB39A;
+    --cat-1: #A04F33;
+    --cat-2: #8A6E1F;
+    --cat-3: #5C7A4F;
+    --cat-4: #3D5C8C;
+    --cat-5: #4A4A4A;
+    --cat-6: #7A4A6A;
+  }
+  :root:not([data-theme="cyber"]) body { background-image: none; }
+}
+
+/* Custom selection color — cyan tint */
+::selection { background: rgba(0, 188, 212, 0.35); color: var(--ink); }
 
 /* ========= Top nav (replaces atlas's heavy header) ========= */
 .paradigm-nav {
