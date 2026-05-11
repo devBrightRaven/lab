@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Munger Latticework · Mandara · 工房</title>
+<meta name="description" content="Charlie Munger 跨學科 mental models 收集型範式。48 個 model 橫跨 8 學科,~22 個 Munger 親自命名。Mandara atlas 範式深探頁。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Noto+Serif+TC:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Source+Sans+3:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="_atlas-shared.css">
+<style>
+/* ===== Munger-specific overrides (cat-1 orange) ===== */
+.paradigm-head[data-cat="1"] { color: var(--cat-1); }
+.competency .roman { color: var(--cat-1); }
+.competency .course-tag { color: var(--cat-1); border-color: var(--cat-1); }
+.hc-card[data-source="munger"] { background: var(--paper-deep); border-color: var(--cat-1); }
+.hc-card[data-source="munger"] .hc-tag,
+.hc-card .hc-tag { color: var(--cat-1); }
+.hc-meta .official-badge { background: var(--cat-1); }
+
+/* Match Minerva structure: Kit/Session toggle cluster */
+.hc-card .toggle-cluster {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  display: flex;
+  gap: 4px;
+}
+.hc-card .toggle-cluster button {
+  width: 30px;
+  height: 30px;
+  border: 1px solid var(--hairline);
+  background: var(--card-bg);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--mono);
+  font-size: 13px;
+  color: var(--ink-faint);
+  border-radius: 3px;
+  transition: all 0.18s ease;
+}
+.hc-card .toggle-cluster button:hover { background: var(--paper-deep); border-color: var(--ink-mute); color: var(--ink); }
+.hc-card .toggle-cluster button:focus-visible { outline: 2px solid var(--cat-1); outline-offset: 1px; }
+.hc-card .kit-toggle[aria-pressed="true"] { background: var(--cat-1); color: var(--paper); border-color: var(--cat-1); }
+.hc-card .use-toggle[aria-pressed="true"] { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+.hc-card.in-kit { border-color: var(--cat-1); box-shadow: inset 3px 0 0 var(--cat-1); }
+.hc-card.in-session { background: #F4E8D8; }
+.hc-card.in-kit.in-session { background: #EDD9B8; box-shadow: inset 3px 0 0 var(--cat-1); }
+.hc-card[data-source="munger"].in-session { background: #E8D5B0; }
+.hc-card-head { padding-right: 76px; }
+
+@media (prefers-reduced-motion: reduce) {
+  .hc-card .toggle-cluster button { transition: none; }
+}
+
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  margin-top: 18px;
+  padding: 12px 16px;
+  background: var(--card-bg);
+  border: 1px solid var(--hairline-soft);
+  border-radius: 4px;
+  font-size: 13px;
+  color: var(--ink-soft);
+  line-height: 1.5;
+}
+.legend-row { display: inline-flex; align-items: center; gap: 8px; }
+.legend-row strong { font-family: var(--serif); font-weight: 600; color: var(--ink); margin-right: 2px; }
+.legend-row em { font-style: italic; color: var(--cat-1); }
+.legend-icon {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 24px; height: 24px;
+  border: 1px solid var(--hairline);
+  border-radius: 3px;
+  font-family: var(--mono);
+  font-size: 12px; font-weight: 600;
+  flex-shrink: 0;
+}
+.legend-icon.kit { background: var(--cat-1); color: var(--paper); border-color: var(--cat-1); }
+.legend-icon.session { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+
+.summary-strip {
+  display: flex; flex-wrap: wrap; gap: 18px;
+  margin: 18px 0 0 0;
+  font-family: var(--mono);
+  font-size: 11px; letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+}
+.summary-strip strong {
+  font-family: var(--serif); font-size: 16px;
+  color: var(--ink); font-weight: 600;
+  letter-spacing: 0; text-transform: none;
+  margin-right: 4px;
+}
+
+.discipline-desc {
+  font-size: 14px; line-height: 1.6;
+  color: var(--ink-soft);
+  max-width: 64ch;
+  margin: 0 0 18px 0;
+}
+
+.hc-card .l2-only {
+  font-style: italic;
+  color: var(--ink-faint);
+  font-size: 12px;
+}
+.hc-card .l2-marker {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--ink-faint);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding-top: 2px;
+}
+
+.philosophy-quote {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 17px;
+  line-height: 1.65;
+  color: var(--ink-soft);
+  border-left: 3px solid var(--cat-1);
+  padding: 6px 0 6px 18px;
+  margin: 18px 0;
+  max-width: 64ch;
+}
+.philosophy-quote cite {
+  display: block;
+  font-style: normal;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  margin-top: 8px;
+}
+</style>
+</head>
+<body>
+
+<nav class="paradigm-nav" aria-label="範式導覽">
+  <a href="../thinking-routing-atlas-v0.3.html" class="back-link">← Atlas</a>
+  <div class="breadcrumb">Mandara · <strong>Munger Latticework</strong></div>
+  <div class="nav-chips" aria-label="Kit / Session 計數">
+    <span class="label">Kit:</span>
+    <span class="nav-chip" id="kit-count">0</span>
+    <span class="nav-sub-label">Session:</span>
+    <span class="nav-chip nav-chip-sub" id="session-count">0</span>
+  </div>
+</nav>
+
+<header class="paradigm-head" data-cat="1">
+  <div class="cat-stripe" aria-hidden="true"></div>
+  <div class="cat-label">範式 01 · CAT I · 跨學科收集型</div>
+  <h1>Munger Latticework</h1>
+  <p class="name-en">A Latticework of Mental Models</p>
+  <div class="meta">
+    Charlie Munger <span class="dot">·</span> 1994 USC speech <span class="dot">·</span> Poor Charlie's Almanack <span class="dot">·</span> 48 收錄 / ~76-100 全集
+  </div>
+  <p class="philosophy">
+    從心理學、物理、生物、化學、經濟、數學、哲學、系統論跨學科收集 mental models,組成互相交織的「網」(latticework)。Munger 主張:真實問題通常需要 <strong>2-3 個模型疊加</strong>才看清,單一學科背景的人會把所有問題塞進自己的工具箱(「拿錘子看什麼都像釘子」),產生 systematic blind spots。
+  </p>
+  <div class="actions">
+    <a href="../thinking-routing-atlas-v0.3.html#munger" class="btn-secondary">← 回到 Atlas Munger 卡</a>
+  </div>
+  <div class="legend" aria-label="圖示說明">
+    <span class="legend-row"><span class="legend-icon kit">★</span><strong>Kit</strong> 你長期內化的模型(永久 · 個人 lattice · 50-100 sweet spot)</span>
+    <span class="legend-row"><span class="legend-icon session">●</span><strong>Session</strong> 目前任務在思考的模型(暫時 · 可清空)</span>
+    <span class="legend-row"><em>✓ MUNGER</em> Munger 親自命名(USC 1994 / Wesco 2005 / Almanack 25 biases)</span>
+  </div>
+  <div class="summary-strip" aria-label="收錄統計">
+    <span><strong>48</strong> 收錄 models</span>
+    <span><strong>22</strong> ✓ MUNGER verified</span>
+    <span><strong>8</strong> 學科</span>
+  </div>
+</header>
+
+<main>
+
+  <section style="padding: 36px 0 12px 0;" aria-labelledby="philosophy-h">
+    <h2 id="philosophy-h" style="font-family:var(--serif);font-weight:500;font-size:28px;letter-spacing:-0.01em;margin:0 0 12px 0;">為什麼 latticework</h2>
+    <blockquote class="philosophy-quote">
+      You've got to have models in your head. And you've got to array your experience — both vicarious and direct — on this latticework of models. You may have noticed students who just try to remember and pound back what is remembered. Well, they fail in school and in life. You've got to hang experience on a latticework of models in your head.
+      <cite>— Charlie Munger, USC Law School 1994</cite>
+    </blockquote>
+    <p style="font-size:15px;line-height:1.7;color:var(--ink-soft);max-width:64ch;margin:0 0 14px 0;">
+      Munger 把跨學科 mental models 比喻成<strong>網狀骨架</strong>(latticework,英文原指建築的格子框架):你的具體經驗、讀過的書、見過的人,都掛在這個骨架上,才不會散落消失。沒骨架的人讀再多書也只是把資訊堆積,遇到新問題時還是只能靠本能反應。
+    </p>
+    <p style="font-size:15px;line-height:1.7;color:var(--ink-soft);max-width:64ch;margin:0 0 14px 0;">
+      他特別警告 <strong>「Man with a Hammer」現象</strong>:某個學科出身的人會把所有問題用該學科的模型解,經濟學家把人都當理性 actor,心理學家把組織問題當人格問題,程式設計師把治理當技術設計。跨學科 lattice 是解藥 — 同一個問題同時跑 2-3 個模型,差異浮現處就是洞見。
+    </p>
+    <p style="font-size:15px;line-height:1.7;color:var(--ink-soft);max-width:64ch;margin:0 0 14px 0;">
+      使用 latticework 不是一次學完所有模型。Munger 建議:<strong>維護個人 Kit 50-100 個</strong>(本頁本作 12-15 個 sweet spot 太緊,Munger 路線目標更廣),每週新增 1-2 個,寫作 / 決策前翻清單問「哪 2-3 個適用?疊加會看到什麼?」。
+    </p>
+  </section>
+
+  <section class="competency" data-disc="psy">
+    <div class="competency-head">
+      <div class="roman">I</div>
+      <div>
+        <h2>心理學 · Psychology of Misjudgment</h2>
+        <div class="competency-en">Charlie Munger's 25 Tendencies (subset)</div>
+        <div class="course-tag">Munger 親寫</div>
+        <p class="competency-desc">Munger 在 Almanack 列了 25 條人類認知偏誤,本表收錄最常觸發誤判的 14 條。每條都有「為什麼演化讓我們這樣 + 如何被廣告/銷售/政治利用 + 修正路徑」三段。比起學院心理學教科書,Munger 版的價值在「決策現場可立刻喚出」。</p>
+      </div>
+    </div>
+    <div class="hc-grid" data-grid="psy"></div>
+  </section>
+
+  <section class="competency" data-disc="math">
+    <div class="competency-head">
+      <div class="roman">II</div>
+      <div>
+        <h2>數學 / 統計 · Mathematics & Statistics</h2>
+        <div class="competency-en">Probabilistic thinking & quantitative reasoning</div>
+        <div class="course-tag">部分 Munger 命名</div>
+        <p class="competency-desc">Munger 視數學素養為「不可妥協」的基礎工具。複利、機率、決策樹這幾個他反覆引用。其他像 power law、normal distribution 是 FS / Bevelin 補充。實務上不需要會計算,只需要會用語言描述「這是 X 模型」並識別何時該用。</p>
+      </div>
+    </div>
+    <div class="hc-grid" data-grid="math"></div>
+  </section>
+
+  <section class="competency" data-disc="eng">
+    <div class="competency-head">
+      <div class="roman">III</div>
+      <div>
+        <h2>物理 / 工程 · Physics & Engineering</h2>
+        <div class="competency-en">Margin of safety, redundancy, breakpoints</div>
+        <div class="course-tag">部分 Munger 命名</div>
+        <p class="competency-desc">Munger 認為工程思維最被低估 — 它教你「假設會失敗,所以留 buffer」。Margin of safety 從橋梁設計借到投資,redundancy 從航空借到組織。物理直覺(critical mass / breakpoint)解釋非線性現象,比商學院的線性 ROI 模型誠實。</p>
+      </div>
+    </div>
+    <div class="hc-grid" data-grid="eng"></div>
+  </section>
+
+  <section class="competency" data-disc="bio">
+    <div class="competency-head">
+      <div class="roman">IV</div>
+      <div>
+        <h2>生物 / 演化 · Biology & Evolution</h2>
+        <div class="competency-en">Selection pressure, fitness, co-evolution</div>
+        <div class="course-tag">部分 Munger 命名</div>
+        <p class="competency-desc">演化邏輯解釋為什麼某些做法在生態系統(產業、組織、社群)會勝出 — 不是因為「對」,而是因為適應當前壓力。Munger 多次引用 Darwin 的「願意推翻自己最愛的點子」作為理性榜樣。</p>
+      </div>
+    </div>
+    <div class="hc-grid" data-grid="bio"></div>
+  </section>
+
+  <section class="competency" data-disc="chem">
+    <div class="competency-head">
+      <div class="roman">V</div>
+      <div>
+        <h2>化學 · Chemistry</h2>
+        <div class="competency-en">Autocatalysis, activation energy, equilibrium</div>
+        <div class="course-tag">部分 Munger 命名</div>
+        <p class="competency-desc">化學的價值不在反應式,而在「非線性的時序」。一個系統可能長期不動,直到 activation energy 跨過才劇烈變化(臨界點);某些過程一啟動就自我強化(autocatalysis)。商業 trend 跟社會運動都有這種化學節奏。</p>
+      </div>
+    </div>
+    <div class="hc-grid" data-grid="chem"></div>
+  </section>
+
+  <section class="competency" data-disc="econ">
+    <div class="competency-head">
+      <div class="roman">VI</div>
+      <div>
+        <h2>經濟 / 賽局 · Economics & Game theory</h2>
+        <div class="competency-en">Scale, network effects, moats, dilemmas</div>
+        <div class="course-tag">部分 Munger 命名</div>
+        <p class="competency-desc">Munger 重視「微觀經濟」 — 不是 GDP / 失業率那種 macro,而是「企業層級的競爭結構」。Scale economies、network effects 是他談 Berkshire 投資原則時的核心詞彙。賽局論補充人際互動的策略性質。</p>
+      </div>
+    </div>
+    <div class="hc-grid" data-grid="econ"></div>
+  </section>
+
+  <section class="competency" data-disc="logic">
+    <div class="competency-head">
+      <div class="roman">VII</div>
+      <div>
+        <h2>邏輯 / 哲學 · Logic & Philosophy</h2>
+        <div class="competency-en">Inversion, first principles, falsifiability</div>
+        <div class="course-tag">部分 Munger 命名</div>
+        <p class="competency-desc">Munger 最常引用的方法論工具 — Inversion(「反過來想,永遠反過來想」)。其他 first principles、Occam's razor、falsifiability 來自希臘哲學跟 Popper,是西方知識論的底層約定。</p>
+      </div>
+    </div>
+    <div class="hc-grid" data-grid="logic"></div>
+  </section>
+
+  <section class="competency" data-disc="sys">
+    <div class="competency-head">
+      <div class="roman">VIII</div>
+      <div>
+        <h2>系統 · Systems Thinking</h2>
+        <div class="competency-en">Feedback loops, emergence, path dependence</div>
+        <div class="course-tag">後人補充</div>
+        <p class="competency-desc">這個學科在 Munger 1994 時代尚未成熟(Donella Meadows 1999 才出版),但跟 latticework 邏輯高度相容。Feedback loops 解釋系統為什麼會自我強化或自我修正,emergence 解釋為什麼整體 ≠ 部分加總。</p>
+      </div>
+    </div>
+    <div class="hc-grid" data-grid="sys"></div>
+  </section>
+
+  <aside class="provenance" aria-labelledby="prov-heading">
+    <h3 id="prov-heading">出處與校準</h3>
+    <p><strong>Munger 親自命名</strong>(✓ MUNGER badge):來自 Charlie Munger 1994 年 USC Law School Commencement 講稿(收錄於 <em>Poor Charlie's Almanack</em>)、1995 年 Harvard "The Psychology of Human Misjudgment" 演講、2005 年 Wesco Annual Meeting 致詞。「25 條 standard causes」確切清單見 <em>Almanack</em> 第 11 章。</p>
+    <p><strong>後人補充模型</strong>:Farnam Street(Shane Parrish)<em>The Great Mental Models</em> 4 冊系列(2019-2023)、Peter Bevelin <em>Seeking Wisdom</em>(2007)、Gabriel Weinberg <em>Super Thinking</em>(2019)。這些書把 Munger 散落的引用系統化,但每個模型的原始出處(物理 / 數學 / 哲學)都早於 Munger 數十年至數百年。</p>
+    <p><strong>本頁取捨</strong>:Munger 親命名約 35 個,FS / Bevelin 補約 60-100 個,本頁挑 48 個對個人品牌寫作 + 反思學習軌道最相關的。略過了純投資場景模型(internal rate of return、float、accounting limits 等),保留通用思考工具。NGO governance 軌道有些模型適用(scale、feedback loops),但 Munger 整體偏向「個體決策」而非「組織治理」。</p>
+    <p>進一步閱讀:<a href="https://fs.blog/mental-models/" target="_blank" rel="noopener noreferrer">Farnam Street Mental Models</a> · <a href="https://www.farnamstreetblog.com/2013/04/mental-models/" target="_blank" rel="noopener noreferrer">Shane Parrish 113 條清單</a> · <em>Poor Charlie's Almanack</em>(2005, ISBN 978-1578645015)</p>
+  </aside>
+
+  <nav class="page-footer-nav" aria-label="範式間導覽">
+    <a href="cynefin.html" class="nav-link">← Cynefin</a>
+    <a href="../thinking-routing-atlas-v0.3.html" class="nav-link">Atlas</a>
+    <a href="minerva.html" class="nav-link">Minerva →</a>
+  </nav>
+
+</main>
+
+<script>
+const LATTICEWORK_DATA = {
+  disciplines: [
+    {
+      key: 'psy',
+      models: [
+        { tag: 'incentive', verified: true, name_en: 'Reward & Punishment Superresponse', name_zh: '誘因超反應', def: '人對誘因的反應遠強於對「應該」或「合理」的反應。設計激勵時,誘因會大於倫理勸告。', apps: { brand: '寫評論前先問「這個議題的決策者面對什麼誘因?」常比意圖更解釋行為', reflective: '懷疑某人行為時:「他面對什麼誘因?」比「他人格怎樣」更可靠' } },
+        { tag: 'inconsistency-avoidance', verified: true, name_en: 'Inconsistency-Avoidance Tendency', name_zh: '避免不一致', def: '一旦表態,就會合理化既有立場 — 即使新證據出現也不易改口。先表態的人很難轉向。', apps: { brand: '寫公開觀點前要想清楚 — 一旦發出,自己也會被困在那個位置' } },
+        { tag: 'doubt-avoidance', verified: true, name_en: 'Doubt-Avoidance Tendency', name_zh: '避免懷疑', def: '面對不確定時大腦傾向迅速給出答案以解除焦慮 — 即使答案是錯的也比懸置好。' },
+        { tag: 'denial', verified: true, name_en: 'Simple Pain-Avoiding Denial', name_zh: '簡單迴避痛苦的否認', def: '事實如果太痛(失去親人、財務崩壞),大腦會自動修改記憶或扭曲詮釋,讓痛苦變得可承受。' },
+        { tag: 'reciprocation', verified: true, name_en: 'Reciprocation Tendency', name_zh: '互惠傾向', def: '收到禮物 / 服務後產生強烈回報壓力 — 銷售、政治、贈品行銷大量利用。', apps: { brand: '小心「免費試用」「免費贈書」— 觸發互惠後客觀判斷會偏移' } },
+        { tag: 'mere-association', verified: true, name_en: 'Influence from Mere Association', name_zh: '聯想影響(Pavlov)', def: '反覆把 A 跟 B 放一起,即使無因果連結,大腦也會建立關聯 — 廣告核心機制。' },
+        { tag: 'self-regard', verified: true, name_en: 'Excessive Self-Regard', name_zh: '過度自信', def: '90% 人覺得自己駕駛技術在中位數以上 — 數學上不可能。自我評價系統性高估。', apps: { reflective: '寫作前自問「我這個觀點如果是別人說的我會怎麼看?」校準自我評估' } },
+        { tag: 'optimism', verified: true, name_en: 'Overoptimism', name_zh: '過度樂觀', def: '專案完成時間、計劃成功率、預期收入,人通常高估 30-50%。' },
+        { tag: 'deprival', verified: true, name_en: 'Deprival Superreaction', name_zh: '剝奪超反應(loss aversion)', def: '失去 100 元的痛 ≈ 得到 200 元的爽 — 反應不對稱。Kahneman 證實 2-2.5 倍。', apps: { brand: '寫議題時「正在失去 X」的 framing 比「可以得到 X」動員力強很多', reflective: '檢視自己是否因為「不想損失既有的」而做次優選擇' } },
+        { tag: 'social-proof', verified: true, name_en: 'Social-Proof Tendency', name_zh: '社會認同', def: '不確定時看周圍人怎麼做 — 演化遺產(部落共識通常是對的),但現代行銷大量利用。', apps: { brand: '寫主流共識的反面前,要有更扎實的證據 — 對抗 social proof 需要強論證' } },
+        { tag: 'contrast', verified: true, name_en: 'Contrast-Misreaction', name_zh: '對比錯讀', def: '相對比較常壓過絕對判斷 — 看完豪宅買普通房感覺很差。Sales 技巧長期利用。' },
+        { tag: 'availability', verified: true, name_en: 'Availability-Misweighing', name_zh: '可得性誤判', def: '容易想起來的事件感覺機率高 — 媒體報導頻率扭曲風險認知(空難 vs 車禍)。', apps: { reflective: '自己擔心的事是不是只是「最近看到」?查實際數據而非靠記憶' } },
+        { tag: 'authority', verified: true, name_en: 'Authority-Misinfluence', name_zh: '權威誤導', def: '對權威過度信任 — Milgram 實驗證明人會聽從專家造成傷害的指令。' },
+        { tag: 'lollapalooza', verified: true, name_en: 'Lollapalooza Effect', name_zh: 'Lollapalooza 效應', def: 'Munger 自創詞。多種偏誤同時觸發時,效應 ≫ 各偏誤總和 — 邪教 / 多層次傳銷 / 賭場都依賴。', apps: { brand: '寫議題分析時看「同時觸發了幾個偏誤?」單一偏誤可抗,組合偏誤難抗' } },
+      ],
+    },
+    {
+      key: 'math',
+      models: [
+        { tag: 'compound', verified: true, name_en: 'Compound Interest', name_zh: '複利', def: 'r% 連續成長 N 期後不是 r×N,是 (1+r)^N。指數曲線在前期幾乎平坦,後期暴漲 — 直覺低估。', apps: { brand: '寫作累積:每篇連結到既有讀者 + 新讀者,讀者群幾何增長而非加法' } },
+        { tag: 'permutations', verified: true, name_en: 'Permutations & Combinations', name_zh: '排列與組合', def: 'N! / k! 的差距驚人 — 8 個變數的組合空間早就超過大腦可窮舉範圍,直覺會壓縮。' },
+        { tag: 'decision-tree', verified: true, name_en: 'Decision Tree', name_zh: '決策樹', def: '把選擇拆成樹狀:每個節點寫機率 + 結果。逼自己把含糊「我覺得」變成可比較的期望值。' },
+        { tag: 'bayes', verified: true, name_en: 'Bayesian Updating', name_zh: '貝氏更新', def: '新證據出現時,後驗 = 先驗 × likelihood / 證據機率。不丟舊資訊,只更新權重。', apps: { reflective: '看到新訊息問「這該讓我把信念往哪邊推幾分?」而非「全信或全棄」' } },
+        { tag: 'large-numbers', name_en: 'Law of Large Numbers', name_zh: '大數法則', def: '樣本量大時,觀察值會回歸真實機率 — 小樣本的極端不代表趨勢。' },
+        { tag: 'power-law', name_en: 'Power Law / Pareto', name_zh: '冪律 / 帕雷托', def: '少數佔絕大多數 — 80/20 原則的數學基礎。常態分布的世界外還有冪律世界(收入、城市大小、地震)。', apps: { brand: '寫作影響力:20% 的文章帶來 80% 的讀者增長 — 不是每篇都該追求完美' } },
+      ],
+    },
+    {
+      key: 'eng',
+      models: [
+        { tag: 'margin-safety', verified: true, name_en: 'Margin of Safety', name_zh: '安全邊際', def: '從橋梁設計借來:預期最大載重 ×2 才設計。投資 / 決策 / 計劃都該留 buffer,因為「未知的未知」必然存在。', apps: { brand: '寫作 deadline 排程預留 30%,因為靈感斷流跟突發事件難避免', reflective: '財務:應急金 6 個月,不是 1 個月 — 留 buffer 給黑天鵝' } },
+        { tag: 'redundancy', verified: true, name_en: 'Redundancy / Backup', name_zh: '冗餘 / 備援', def: '航空業:雙引擎不是因為一個夠用,是因為一個故障時還能飛。組織關鍵職能要備援人員。' },
+        { tag: 'critical-mass', verified: true, name_en: 'Critical Mass', name_zh: '臨界質量', def: '核反應:鈾低於臨界量不會自持。社群、運動、產品 launch 都有臨界點 — 之前怎麼努力都沒反應,之後自走。', apps: { brand: '寫作初期讀者增長慢是 normal — 不要在臨界點之前放棄' } },
+        { tag: 'breakpoint', verified: true, name_en: 'Breakpoint', name_zh: '崩潰點', def: '系統可承受 buffer 是有限的。看似「還好」可能已經接近崩潰點 — 超過後反應非線性。' },
+        { tag: 'leverage', name_en: 'Leverage', name_zh: '槓桿', def: '機械:小力 + 長臂可舉重物。商業 / 寫作:選對切入點,小投入有大產出。' },
+        { tag: 'equilibrium', name_en: 'Equilibrium', name_zh: '平衡', def: '系統會傾向穩定狀態 — 推一下會反彈回去。改變需要持續施力直到 lock-in 新狀態。' },
+      ],
+    },
+    {
+      key: 'bio',
+      models: [
+        { tag: 'selection', verified: true, name_en: 'Natural Selection', name_zh: '天擇', def: '生物 / 公司 / 想法 / 文化都被環境選擇。「適者生存」不是道德判斷,是統計現象。', apps: { brand: '寫作風格演化:讓多種風格在讀者群中跑,留下迴響強的,淘汰沒人讀的' } },
+        { tag: 'adaptation', name_en: 'Adaptation / Niche', name_zh: '適應 / 生態位', def: '物種在特定 niche 演化出專長 — 通才在通用環境輸給專才,但 niche 消失時通才生存。' },
+        { tag: 'red-queen', name_en: 'Red Queen Effect', name_zh: '紅皇后效應', def: '在持續變化的環境中,你必須持續演化才能維持相對位置 — 不進則退,不只是不變。', apps: { brand: '個人品牌領域競爭者也在進化,維持「就這樣」三年後相對位置會掉' } },
+        { tag: 'hormesis', name_en: 'Hormesis', name_zh: '毒物興奮效應', def: '少量毒素 / 壓力 / 運動 → 適應後變強。完全無壓力的系統反而脆弱。' },
+      ],
+    },
+    {
+      key: 'chem',
+      models: [
+        { tag: 'autocatalysis', verified: true, name_en: 'Autocatalysis', name_zh: '自催化', def: '化學:產物本身催化下一輪反應 → 指數加速。社運 / 病毒擴散 / 信任崩盤都有自催化結構。', apps: { brand: '寫作冷啟動:前 10 個鐵粉如果開始介紹給朋友,就進 autocatalytic phase' } },
+        { tag: 'activation-energy', name_en: 'Activation Energy', name_zh: '活化能', def: '反應需要跨過能量門檻才能啟動。改變習慣 / 推動議題 / 開始寫作都有類似門檻。' },
+        { tag: 'le-chatelier', name_en: "Le Chatelier's Principle", name_zh: '勒沙特列原理', def: '系統受到外部擾動時,會自我調整以對抗擾動。組織抵抗變革的「免疫反應」也是這個。' },
+      ],
+    },
+    {
+      key: 'econ',
+      models: [
+        { tag: 'scale', verified: true, name_en: 'Scale Economies', name_zh: '規模經濟', def: '固定成本攤平 + 採購力增強 + 學習曲線 → 規模大者單位成本低。Berkshire 投資邏輯核心。' },
+        { tag: 'network-effects', verified: true, name_en: 'Network Effects', name_zh: '網絡效應', def: '每個新使用者讓服務對所有人更有價值 — 電話 / 社群網絡 / 平台都靠這個。winner-take-all 結構。', apps: { brand: '社群平台寫作:留在大平台跟讀者一起,離開到小平台需要 critical mass' } },
+        { tag: 'opportunity-cost', verified: true, name_en: 'Opportunity Cost', name_zh: '機會成本', def: '選 A = 放棄 B 的最高收益。Munger 的「沒投資的 = 投資錯誤」思考。', apps: { reflective: '把「不做 X」改寫成「做 Y(機會成本最高的選項)」,決策更清楚' } },
+        { tag: 'moat', name_en: 'Economic Moat', name_zh: '護城河', def: '保護企業不被競爭者攻陷的結構性優勢 — 品牌、規模、轉換成本、網絡效應、專利。' },
+        { tag: 'switching-cost', name_en: 'Switching Cost', name_zh: '轉換成本', def: '使用者要換 vendor 的總成本(學習、資料遷移、整合斷裂)— 越高鎖住越緊。' },
+        { tag: 'prisoners-dilemma', name_en: "Prisoner's Dilemma", name_zh: '囚徒困境', def: '個別理性 → 群體次優。重複賽局中合作會浮現(Tit-for-Tat)— 但一次性互動容易雙輸。' },
+      ],
+    },
+    {
+      key: 'logic',
+      models: [
+        { tag: 'inversion', verified: true, name_en: 'Inversion', name_zh: '反向思考', def: 'Munger 最常用:不問「怎麼做好 X」,問「怎麼會做爛 X?」反向避開的清單常比正向追求的清單更可行。', apps: { brand: '寫作策略:「怎麼讓讀者退訂?」清單比「怎麼吸引讀者?」清單實用', reflective: '人生規劃:列「我絕對不要的生活」比列「我想要的」更可執行' } },
+        { tag: 'first-principles', name_en: 'First Principles', name_zh: '第一性原理', def: '從根本前提推導,不依賴既有「大家都這樣」的類比 — Aristotle / Musk 共用。' },
+        { tag: 'occam', name_en: "Occam's Razor", name_zh: '奧卡姆剃刀', def: '同樣解釋力下選最簡單的假設 — 複雜的解釋需要更強證據。' },
+        { tag: 'falsifiability', name_en: 'Falsifiability', name_zh: '可證偽性(Popper)', def: '科學陳述必須允許被證偽 — 「永遠對」的陳述沒科學意義(可能仍有其他意義)。' },
+        { tag: 'map-territory', name_en: 'Map vs Territory', name_zh: '地圖非疆域', def: '模型 / 描述 / 概念都是 map,不是真實本身。Munger:「拿你的 map 撞 territory 才會發現 map 哪裡錯」。' },
+      ],
+    },
+    {
+      key: 'sys',
+      models: [
+        { tag: 'feedback-loop', name_en: 'Feedback Loops', name_zh: '回饋迴路', def: '正回饋放大輸出 → 走向極端(信用泡沫、社群極化);負回饋抑制輸出 → 趨於穩定(體溫調節、市場供需)。', apps: { brand: '寫作:讀者反饋若全是正向,可能進入 echo chamber — 主動找負回饋校準' } },
+        { tag: 'emergence', name_en: 'Emergence', name_zh: '湧現', def: '整體性質不能從部分推出 — 蟻群智慧、市場價格、語言文法都是湧現現象。' },
+        { tag: 'path-dependence', name_en: 'Path Dependence', name_zh: '路徑依賴', def: '歷史路徑限制當前可能選項 — QWERTY 鍵盤、英文不規則動詞、組織官僚。理解現況常需追歷史。' },
+        { tag: 'commons', name_en: 'Tragedy of the Commons', name_zh: '共有財悲劇', def: '無界公共資源 + 個人短期理性 → 集體耗盡。漁業 / 共有牧場 / 大氣層 / 公共注意力都是常見案例。' },
+      ],
+    },
+  ],
+};
+
+const PARADIGM_ID = 'munger';
+const STORAGE_KEY = 'minerva-shortlist-v0.3';  // shared with atlas
+const KIT_KEY = 'munger-models-kit';
+const SESSION_KEY = 'munger-models-in-use';
+
+function loadJSON(key, fallback) {
+  try { const v = localStorage.getItem(key); return v ? JSON.parse(v) : fallback; }
+  catch (_) { return fallback; }
+}
+function saveJSON(key, val) {
+  try { localStorage.setItem(key, JSON.stringify(val)); } catch (_) {}
+}
+
+const modelsInKit = new Set(loadJSON(KIT_KEY, []));
+const modelsInSession = new Set(loadJSON(SESSION_KEY, []));
+
+function persistKit() { saveJSON(KIT_KEY, [...modelsInKit]); }
+function persistSession() { saveJSON(SESSION_KEY, [...modelsInSession]); }
+
+function buildAppRow(label, text) {
+  const row = document.createElement('div');
+  row.className = 'app-row';
+  const l = document.createElement('div'); l.className = 'app-label'; l.textContent = label;
+  const t = document.createElement('div'); t.className = 'app-text'; t.textContent = text;
+  row.append(l, t);
+  return row;
+}
+
+function buildModelCard(m) {
+  const card = document.createElement('div');
+  card.className = 'hc-card';
+  if (m.verified) card.dataset.source = 'munger';
+  card.dataset.tag = m.tag;
+
+  const head = document.createElement('div'); head.className = 'hc-card-head';
+  const tagEl = document.createElement('div'); tagEl.className = 'hc-tag';
+  tagEl.textContent = '#' + m.tag;
+  const meta = document.createElement('div'); meta.className = 'hc-meta';
+  if (m.verified) {
+    const badge = document.createElement('span'); badge.className = 'official-badge';
+    badge.textContent = '✓ MUNGER';
+    meta.appendChild(badge);
+  } else {
+    const fs = document.createElement('span'); fs.textContent = 'FS / Bevelin';
+    meta.appendChild(fs);
+  }
+  head.append(tagEl, meta);
+
+  const cluster = document.createElement('div'); cluster.className = 'toggle-cluster';
+  const kitBtn = document.createElement('button');
+  kitBtn.type = 'button';
+  kitBtn.className = 'kit-toggle';
+  kitBtn.setAttribute('aria-label', `加入 / 移除 Kit:${m.name_en}`);
+  kitBtn.setAttribute('aria-pressed', modelsInKit.has(m.tag) ? 'true' : 'false');
+  kitBtn.textContent = modelsInKit.has(m.tag) ? '★' : '☆';
+  kitBtn.addEventListener('click', () => toggleKit(m.tag, card, kitBtn));
+
+  const useBtn = document.createElement('button');
+  useBtn.type = 'button';
+  useBtn.className = 'use-toggle';
+  useBtn.setAttribute('aria-label', `加入 / 移除 Session:${m.name_en}`);
+  useBtn.setAttribute('aria-pressed', modelsInSession.has(m.tag) ? 'true' : 'false');
+  useBtn.textContent = modelsInSession.has(m.tag) ? '●' : '○';
+  useBtn.addEventListener('click', () => toggleSession(m.tag, card, useBtn));
+
+  cluster.append(kitBtn, useBtn);
+  card.appendChild(head);
+  card.appendChild(cluster);
+
+  const nameEn = document.createElement('h3'); nameEn.className = 'hc-name-en'; nameEn.textContent = m.name_en;
+  const nameZh = document.createElement('div'); nameZh.className = 'hc-name-zh'; nameZh.textContent = m.name_zh;
+  card.append(nameEn, nameZh);
+
+  const def = document.createElement('div'); def.className = 'hc-definition'; def.textContent = m.def;
+  card.appendChild(def);
+
+  const apps = document.createElement('div'); apps.className = 'hc-applications';
+  if (m.apps) {
+    if (m.apps.brand) apps.appendChild(buildAppRow('個人品牌', m.apps.brand));
+    if (m.apps.reflective) apps.appendChild(buildAppRow('反思學習', m.apps.reflective));
+    if (m.apps.ngo) apps.appendChild(buildAppRow('NGO', m.apps.ngo));
+  } else {
+    const row = document.createElement('div'); row.className = 'app-row';
+    const l = document.createElement('div'); l.className = 'l2-marker'; l.textContent = 'L2 only';
+    const t = document.createElement('div'); t.className = 'app-text l2-only';
+    t.textContent = '定義已足;若進 Kit 後想加應用例,自己寫進個人 vault 連結。';
+    row.append(l, t);
+    apps.appendChild(row);
+  }
+  card.appendChild(apps);
+
+  if (modelsInKit.has(m.tag)) card.classList.add('in-kit');
+  if (modelsInSession.has(m.tag)) card.classList.add('in-session');
+
+  return card;
+}
+
+function toggleKit(tag, card, btn) {
+  if (modelsInKit.has(tag)) {
+    modelsInKit.delete(tag);
+    card.classList.remove('in-kit');
+    btn.setAttribute('aria-pressed', 'false');
+    btn.textContent = '☆';
+  } else {
+    modelsInKit.add(tag);
+    card.classList.add('in-kit');
+    btn.setAttribute('aria-pressed', 'true');
+    btn.textContent = '★';
+  }
+  persistKit();
+  updateCounts();
+}
+function toggleSession(tag, card, btn) {
+  if (modelsInSession.has(tag)) {
+    modelsInSession.delete(tag);
+    card.classList.remove('in-session');
+    btn.setAttribute('aria-pressed', 'false');
+    btn.textContent = '○';
+  } else {
+    modelsInSession.add(tag);
+    card.classList.add('in-session');
+    btn.setAttribute('aria-pressed', 'true');
+    btn.textContent = '●';
+  }
+  persistSession();
+  updateCounts();
+}
+
+function updateCounts() {
+  const kitEl = document.getElementById('kit-count');
+  const sessionEl = document.getElementById('session-count');
+  if (kitEl) kitEl.textContent = String(modelsInKit.size);
+  if (sessionEl) sessionEl.textContent = String(modelsInSession.size);
+}
+
+function render() {
+  LATTICEWORK_DATA.disciplines.forEach(disc => {
+    const grid = document.querySelector(`.hc-grid[data-grid="${disc.key}"]`);
+    if (!grid) return;
+    disc.models.forEach(m => grid.appendChild(buildModelCard(m)));
+  });
+  updateCounts();
+}
+
+render();
+</script>
+
+</body>
+</html>
