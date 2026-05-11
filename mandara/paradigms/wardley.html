@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wardley Mapping · Mandara · 工房</title>
+<meta name="description" content="Simon Wardley 三鏡頭策略框架:Mapping(地圖)/ Doctrine(原則)/ Climate(氣候)。Mandara atlas 範式深探頁。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Noto+Serif+TC:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Source+Sans+3:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="_atlas-shared.css">
+<style>
+/* ===== Wardley-specific overrides (cat-3 green, but with stronger visual identity vs Cynefin) ===== */
+.paradigm-head[data-cat="3"] { color: var(--cat-3); }
+
+/* Lens picker — tabs styled */
+.lens-picker {
+  margin: 28px 0 0 0;
+  padding: 0;
+  border: none;
+}
+.lens-picker > legend {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  padding: 0;
+  margin-bottom: 10px;
+}
+.lens-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0;
+  border-bottom: 2px solid var(--hairline);
+  margin-bottom: 0;
+}
+.lens-tabs label {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 22px;
+  cursor: pointer;
+  border: 1px solid transparent;
+  border-bottom: none;
+  margin-bottom: -2px;
+  font-family: var(--serif);
+  font-weight: 500;
+  font-size: 16px;
+  color: var(--ink-mute);
+  background: transparent;
+  transition: all 0.18s ease;
+  min-height: 44px;
+}
+.lens-tabs label:hover { color: var(--ink); background: var(--paper-deep); }
+.lens-tabs label:focus-within { outline: 2px solid var(--cat-3); outline-offset: -2px; }
+.lens-tabs input[type="radio"] {
+  width: 14px; height: 14px;
+  accent-color: var(--cat-3);
+  margin: 0;
+}
+.lens-tabs label:has(input:checked) {
+  color: var(--ink);
+  background: var(--card-bg);
+  border-color: var(--hairline);
+  border-bottom: 2px solid var(--card-bg);
+  font-weight: 600;
+}
+.lens-tabs .lens-name-zh {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--ink-faint);
+  letter-spacing: 0.04em;
+}
+.lens-tabs label:has(input:checked) .lens-name-zh { color: var(--cat-3); }
+
+.lens-panel { display: none; padding: 28px 0; }
+body:has(#lens-mapping:checked) .lens-panel-mapping,
+body:has(#lens-doctrine:checked) .lens-panel-doctrine,
+body:has(#lens-climate:checked) .lens-panel-climate { display: block; }
+body:not(:has(input[name="wardley-lens"]:checked)) .lens-panel-mapping { display: block; }
+
+.lens-panel h3 {
+  font-family: var(--serif);
+  font-weight: 500;
+  font-size: 24px;
+  letter-spacing: -0.01em;
+  margin: 0 0 8px 0;
+}
+.lens-panel .lens-summary {
+  font-family: var(--serif);
+  font-size: 17px;
+  line-height: 1.65;
+  color: var(--ink-soft);
+  margin: 0 0 24px 0;
+  max-width: 64ch;
+}
+
+/* ===== Mapping lens: visual 4x4 grid ===== */
+.wardley-grid {
+  position: relative;
+  display: grid;
+  grid-template-columns: 140px 1fr;
+  grid-template-rows: auto 1fr auto;
+  gap: 0;
+  margin: 24px 0;
+  background: var(--card-bg);
+  border: 1px solid var(--hairline);
+  border-radius: 4px;
+  overflow: hidden;
+}
+.wardley-y-axis-label {
+  grid-column: 1;
+  grid-row: 2;
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+  padding: 20px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--paper-deep);
+  text-align: center;
+}
+.wardley-x-axis-label {
+  grid-column: 2;
+  grid-row: 3;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+  padding: 10px 16px;
+  background: var(--paper-deep);
+  text-align: center;
+}
+.wardley-corner {
+  grid-column: 1;
+  grid-row: 3;
+  background: var(--paper-deep);
+}
+.wardley-y-ticks {
+  grid-column: 1;
+  grid-row: 1;
+  background: var(--paper-deep);
+}
+.wardley-plot {
+  grid-column: 2;
+  grid-row: 1 / 3;
+  position: relative;
+  background:
+    linear-gradient(to right, transparent 0%, transparent 24%, var(--hairline-soft) 24%, var(--hairline-soft) 25%, transparent 25%, transparent 49%, var(--hairline-soft) 49%, var(--hairline-soft) 50%, transparent 50%, transparent 74%, var(--hairline-soft) 74%, var(--hairline-soft) 75%, transparent 75%),
+    linear-gradient(to bottom, transparent 0%, transparent 24%, var(--hairline-soft) 24%, var(--hairline-soft) 25%, transparent 25%, transparent 49%, var(--hairline-soft) 49%, var(--hairline-soft) 50%, transparent 50%, transparent 74%, var(--hairline-soft) 74%, var(--hairline-soft) 75%, transparent 75%);
+  background-size: 100% 100%, 100% 100%;
+  min-height: 360px;
+  padding: 0;
+}
+.wardley-x-stages {
+  position: absolute;
+  bottom: -28px;
+  left: 0;
+  right: 0;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--ink-faint);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.wardley-x-stages span { text-align: center; padding: 6px 0; border-left: 1px solid var(--hairline-soft); }
+.wardley-x-stages span:first-child { border-left: none; }
+.wardley-y-stages {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: -120px;
+  width: 110px;
+  display: grid;
+  grid-template-rows: repeat(4, 1fr);
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--ink-faint);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.wardley-y-stages span { display: flex; align-items: center; justify-content: flex-end; padding: 4px 8px; border-bottom: 1px solid var(--hairline-soft); }
+.wardley-y-stages span:last-child { border-bottom: none; }
+
+.wardley-component {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  transform: translate(-50%, -50%);
+  max-width: 140px;
+}
+.wardley-component .dot {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--cat-3);
+  border: 2px solid var(--ink);
+}
+.wardley-component .label {
+  font-family: var(--sans);
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--ink);
+  background: rgba(251, 250, 244, 0.92);
+  padding: 2px 6px;
+  border-radius: 3px;
+  text-align: center;
+  line-height: 1.3;
+}
+.wardley-component .label .zh {
+  display: block;
+  font-size: 10px;
+  color: var(--ink-mute);
+  font-weight: 400;
+}
+/* Movement arrow */
+.wardley-arrow {
+  position: absolute;
+  height: 2px;
+  background: var(--cat-1);
+  transform-origin: 0 0;
+}
+.wardley-arrow::after {
+  content: '▶';
+  position: absolute;
+  right: -8px;
+  top: -8px;
+  color: var(--cat-1);
+  font-size: 12px;
+}
+
+.wardley-legend {
+  margin: 48px 0 0 0;
+  padding: 14px 18px;
+  background: var(--paper-deep);
+  border: 1px dashed var(--hairline);
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--ink-soft);
+}
+.wardley-legend h4 {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin: 0 0 8px 0;
+  color: var(--ink);
+  font-weight: 500;
+}
+.wardley-legend ul { margin: 0; padding-left: 20px; }
+.wardley-legend li { margin-bottom: 4px; }
+.wardley-legend strong { color: var(--cat-1); font-weight: 600; }
+
+/* ===== Doctrine + Climate lens: card grids ===== */
+.principle-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(320px, 100%), 1fr));
+  gap: 14px;
+  margin-bottom: 24px;
+}
+.principle-card {
+  background: var(--card-bg);
+  border: 1px solid var(--hairline-soft);
+  border-left: 3px solid var(--cat-3);
+  padding: 16px 18px;
+  display: flex;
+  flex-direction: column;
+}
+.principle-card .num {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  margin-bottom: 4px;
+}
+.principle-card h3,
+.principle-card h4 {
+  font-family: var(--serif);
+  font-weight: 600;
+  font-size: 16px;
+  margin: 0 0 4px 0;
+  color: var(--ink);
+  letter-spacing: -0.005em;
+}
+.principle-card .name-zh {
+  font-family: var(--serif);
+  font-size: 13px;
+  color: var(--ink-mute);
+  margin-bottom: 10px;
+}
+.principle-card .def {
+  font-size: 13.5px;
+  line-height: 1.55;
+  color: var(--ink-soft);
+  margin-bottom: 10px;
+  flex: 1;
+}
+.principle-card .app {
+  font-size: 12.5px;
+  line-height: 1.5;
+  color: var(--ink-mute);
+  padding-top: 8px;
+  border-top: 1px solid var(--hairline-soft);
+}
+.principle-card .app strong {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--cat-3);
+  margin-right: 6px;
+}
+
+.doctrine-group {
+  margin-bottom: 28px;
+}
+.doctrine-group h3 {
+  font-family: var(--serif);
+  font-weight: 500;
+  font-size: 19px;
+  margin: 0 0 12px 0;
+  color: var(--ink);
+  letter-spacing: -0.01em;
+}
+.doctrine-group .group-desc {
+  font-size: 13px;
+  color: var(--ink-mute);
+  margin: -8px 0 14px 0;
+}
+
+/* Philosophy quote */
+.philosophy-quote {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 16px;
+  line-height: 1.65;
+  color: var(--ink-soft);
+  border-left: 3px solid var(--cat-3);
+  padding: 6px 0 6px 18px;
+  margin: 18px 0;
+  max-width: 64ch;
+}
+.philosophy-quote cite {
+  display: block;
+  font-style: normal;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  margin-top: 8px;
+}
+
+@media (max-width: 900px) {
+  .wardley-grid { grid-template-columns: 100px 1fr; }
+  .wardley-y-axis-label { padding: 12px 8px; font-size: 9px; }
+  .wardley-y-stages { left: -90px; width: 84px; }
+  .wardley-plot { min-height: 280px; }
+}
+@media (max-width: 600px) {
+  .wardley-grid { grid-template-columns: 70px 1fr; }
+  .wardley-y-axis-label { padding: 8px 4px; }
+  .wardley-y-stages { left: -64px; width: 58px; }
+  .wardley-y-stages span { padding: 4px 2px; font-size: 9px; }
+}
+</style>
+</head>
+<body>
+
+<nav class="paradigm-nav" aria-label="範式導覽">
+  <a href="../thinking-routing-atlas-v0.3.html" class="back-link">← Atlas</a>
+  <div class="breadcrumb">Mandara · <strong>Wardley Mapping</strong></div>
+  <div class="nav-chips" aria-label="當前鏡頭">
+    <span class="label">鏡頭:</span>
+    <span class="nav-chip" id="nav-current-lens">Mapping</span>
+  </div>
+</nav>
+
+<header class="paradigm-head" data-cat="3">
+  <div class="cat-stripe" aria-hidden="true"></div>
+  <div class="cat-label">範式 02 · CAT III · 鏡頭型 / 情境路由家族</div>
+  <h1>Wardley Mapping</h1>
+  <p class="name-en">Strategy as Visual Map</p>
+  <div class="meta">
+    Simon Wardley <span class="dot">·</span> 2005 Fotango <span class="dot">·</span> "On being lost" (Medium) <span class="dot">·</span> 3 鏡頭(Mapping / Doctrine / Climate)
+  </div>
+  <p class="philosophy">
+    把策略畫成「<strong>用戶可見性</strong>(Y 軸)× <strong>演化階段</strong>(X 軸)」的地圖。看到自己跟競爭者落在演化光譜的哪裡,決定該創新 / 標準化 / 外包還是淘汰。誤判演化階段是組織燒錢主因。
+  </p>
+  <div class="actions">
+    <a href="../thinking-routing-atlas-v0.3.html#wardley" class="btn-secondary">← 回到 Atlas Wardley 卡</a>
+  </div>
+</header>
+
+<main>
+
+  <section style="padding: 36px 0 18px 0;" aria-labelledby="why-h">
+    <h2 id="why-h" style="font-family:var(--serif);font-weight:500;font-size:26px;letter-spacing:-0.01em;margin:0 0 12px 0;">為什麼三鏡頭</h2>
+    <blockquote class="philosophy-quote">
+      Without a map, you're navigating by gut. With a map, you can argue about where you are.
+      <cite>— Simon Wardley(改寫自多次 X / Medium 表述)</cite>
+    </blockquote>
+    <p style="font-size:14.5px;line-height:1.7;color:var(--ink-soft);max-width:64ch;margin:0 0 12px 0;">
+      Wardley 的三層架構不是步驟,是<strong>三個鏡頭</strong>看同一張策略圖。從哪個鏡頭看由你的當下任務決定:不知道現況 → 用 Mapping;不知道組織該守什麼 → 用 Doctrine;不知道未來會怎麼變 → 用 Climate。三個都熟才算完整策略觀。
+    </p>
+    <p style="font-size:14.5px;line-height:1.7;color:var(--ink-soft);max-width:64ch;margin:0 0 12px 0;">
+      Wardley 的學習曲線陡(2014 才公開系統化,2024 才出第一本書 <em>Wardley Maps</em>)。本頁是入口導覽,不是替代品 — 認真用要讀原書 + 自己畫過 10+ 張圖才會有 fluency。
+    </p>
+  </section>
+
+  <fieldset class="lens-picker" aria-labelledby="lens-picker-heading">
+    <legend id="lens-picker-heading">選一個鏡頭(三選一)</legend>
+    <div class="lens-tabs">
+      <label for="lens-mapping">
+        <input type="radio" name="wardley-lens" id="lens-mapping" value="mapping" checked>
+        Mapping
+        <span class="lens-name-zh">地圖</span>
+      </label>
+      <label for="lens-doctrine">
+        <input type="radio" name="wardley-lens" id="lens-doctrine" value="doctrine">
+        Doctrine
+        <span class="lens-name-zh">原則</span>
+      </label>
+      <label for="lens-climate">
+        <input type="radio" name="wardley-lens" id="lens-climate" value="climate">
+        Climate
+        <span class="lens-name-zh">氣候</span>
+      </label>
+    </div>
+  </fieldset>
+
+  <section class="lens-panel lens-panel-mapping" aria-labelledby="mapping-h">
+    <h3 id="mapping-h">Mapping · 地圖鏡頭</h3>
+    <p class="lens-summary">
+      把你的服務 / 產品 / 個人工作鏈拆成 components,放到「用戶可見性 × 演化階段」的 2D 地圖上。地圖<strong>不解問題</strong> — 它讓你跟同事 / 競爭者爭論「我們究竟在哪」,而不是憑感覺。
+    </p>
+
+    <p style="font-size:13.5px;color:var(--ink-mute);line-height:1.55;margin:0 0 16px 0;max-width:64ch;">下圖是個人品牌寫作者的價值鏈示意:從 Reader(最頂層用戶可見)往下到 Hosting infrastructure(底層 commodity),沿橫軸看每個 component 演化階段。橙色箭頭 = 該 component 預期向右(commodity 方向)移動。</p>
+
+    <div class="wardley-grid" role="img" aria-label="個人品牌寫作者的 Wardley map 示意:Reader 在 Genesis 階段、Quality writing 在 Custom-built、Audience-building tools 在 Product、Hosting 在 Commodity">
+      <div class="wardley-y-axis-label">用戶可見性<br>(Value Chain Visibility)</div>
+      <div class="wardley-y-stages" aria-hidden="true">
+        <span>User</span>
+        <span>Service</span>
+        <span>Component</span>
+        <span>Infra</span>
+      </div>
+      <div class="wardley-corner"></div>
+      <div class="wardley-y-ticks"></div>
+      <div class="wardley-x-axis-label">演化階段 → Evolution(Genesis → Commodity)</div>
+      <div class="wardley-plot" aria-hidden="true">
+        <!-- Components placed via top/left % -->
+        <div class="wardley-component" style="top: 12%; left: 18%;">
+          <div class="dot"></div>
+          <div class="label">Reader<span class="zh">讀者(感受)</span></div>
+        </div>
+        <div class="wardley-component" style="top: 36%; left: 38%;">
+          <div class="dot"></div>
+          <div class="label">Quality writing<span class="zh">優質寫作</span></div>
+        </div>
+        <div class="wardley-component" style="top: 58%; left: 62%;">
+          <div class="dot"></div>
+          <div class="label">Audience tools<span class="zh">受眾經營工具</span></div>
+        </div>
+        <div class="wardley-component" style="top: 82%; left: 88%;">
+          <div class="dot"></div>
+          <div class="label">Hosting<span class="zh">主機/CDN</span></div>
+        </div>
+        <!-- X-axis stage labels overlaid -->
+        <div class="wardley-x-stages">
+          <span>Genesis</span>
+          <span>Custom-built</span>
+          <span>Product</span>
+          <span>Commodity</span>
+        </div>
+      </div>
+    </div>
+
+    <aside class="wardley-legend" aria-labelledby="map-legend-h">
+      <h4 id="map-legend-h">怎麼讀這張地圖</h4>
+      <ul>
+        <li><strong>左上(Genesis × User)</strong>:創新空間。寫作的「讀者真正需要什麼」永遠在這裡 — 你不能用既有公式直接交付,要原創。</li>
+        <li><strong>右上(Commodity × User)</strong>:標準化體驗。如 email newsletter 服務 — 對讀者直接,但實現方式已是商品。</li>
+        <li><strong>左下(Genesis × Infra)</strong>:基礎研發。如「全新類型的內容呈現方式」,投入大但很可能失敗。</li>
+        <li><strong>右下(Commodity × Infra)</strong>:標準基礎設施。如 AWS / Cloudflare — 不該自建,該外包。</li>
+        <li><strong>橙色箭頭</strong>:該 component 必然往 commodity 方向移動。差別只在多快。寫作領域的 AI 工具正在快速從 Custom-built 進 Product 階段,個人寫作者要決定:跟著用 / 抗拒用 / 創造下一代。</li>
+      </ul>
+    </aside>
+
+    <p style="font-size:13.5px;color:var(--ink-mute);line-height:1.6;margin:18px 0 0 0;max-width:64ch;">
+      <strong>練習</strong>:畫你自己的圖。先列 5-7 個 components(你的工作流程或商業模式的關鍵元件),為每個決定「用戶感受到嗎?」位置 Y,「跟競爭者一樣嗎?」位置 X。畫完跟一個同行討論,差異處就是學習機會。Atlas v0.4+ 可能會做互動式繪圖 widget。
+    </p>
+  </section>
+
+  <section class="lens-panel lens-panel-doctrine" aria-labelledby="doctrine-h">
+    <h3 id="doctrine-h">Doctrine · 原則鏡頭</h3>
+    <p class="lens-summary">
+      Wardley 列了 40 條「不管你做哪行都該守的組織原則」,稱為 doctrine。本頁挑 12 條最常用 + 對個人品牌 / NGO 軌道相關性最高的,分 3 組。
+    </p>
+
+    <div class="doctrine-group">
+      <h3>溝通 · Communication</h3>
+      <p class="group-desc">沒有共同地圖,所有討論都是各說各話。</p>
+      <div class="principle-grid">
+        <article class="principle-card">
+          <div class="num">D-01</div>
+          <h4>Use a common language</h4>
+          <div class="name-zh">建立共同語言</div>
+          <div class="def">同一個 component 不同部門叫不同名 → 開會時各說各的。先統一名稱再討論策略。</div>
+          <div class="app"><strong>NGO</strong>「使用者 / 服務對象 / 受益人」混用,先選一個再對話</div>
+        </article>
+        <article class="principle-card">
+          <div class="num">D-02</div>
+          <h4>Be transparent</h4>
+          <div class="name-zh">透明</div>
+          <div class="def">畫好的地圖要分享 — 不公開的地圖只服務權力,公開的地圖才能被挑戰跟修正。</div>
+          <div class="app"><strong>品牌</strong>把你的學習路徑公開寫出來,讀者會幫你找到盲點</div>
+        </article>
+        <article class="principle-card">
+          <div class="num">D-03</div>
+          <h4>Challenge assumptions</h4>
+          <div class="name-zh">挑戰假設</div>
+          <div class="def">每個 component 的位置都基於假設。定期問:這假設還對嗎?演化階段是否已經變了?</div>
+        </article>
+      </div>
+    </div>
+
+    <div class="doctrine-group">
+      <h3>開發 · Development</h3>
+      <p class="group-desc">同一個團隊不該同時做 Genesis 跟 Commodity。</p>
+      <div class="principle-grid">
+        <article class="principle-card">
+          <div class="num">D-04</div>
+          <h4>Use appropriate methods</h4>
+          <div class="name-zh">用對方法</div>
+          <div class="def">Genesis 階段用 agile / 探索;Custom-built 用 lean;Product 用 six sigma;Commodity 用 ITIL。錯配方法是常見失敗。</div>
+          <div class="app"><strong>品牌</strong>寫新題材用 agile(快發、看反應、調整);成熟題材像「年度回顧」可標準化</div>
+        </article>
+        <article class="principle-card">
+          <div class="num">D-05</div>
+          <h4>Think small (as in teams)</h4>
+          <div class="name-zh">小團隊</div>
+          <div class="def">大團隊處理不了 Genesis 級別不確定性。Amazon 兩個披薩規則來自 Wardley。</div>
+        </article>
+        <article class="principle-card">
+          <div class="num">D-06</div>
+          <h4>Distribute power & decision-making</h4>
+          <div class="name-zh">分散決策權</div>
+          <div class="def">中央集權適合 Commodity 階段的高度標準化執行,不適合 Genesis 的快速試錯。</div>
+          <div class="app"><strong>NGO</strong>新計劃 (Genesis) 給執行小組決策權,例行運作 (Commodity) 才回中央</div>
+        </article>
+        <article class="principle-card">
+          <div class="num">D-07</div>
+          <h4>Focus on user needs</h4>
+          <div class="name-zh">聚焦使用者需求</div>
+          <div class="def">地圖的最頂層永遠是 user。任何 component 都要能 trace 到「這如何服務 user」否則該刪。</div>
+        </article>
+      </div>
+    </div>
+
+    <div class="doctrine-group">
+      <h3>運營 · Operations</h3>
+      <p class="group-desc">演化階段決定你該自建還是該外包。</p>
+      <div class="principle-grid">
+        <article class="principle-card">
+          <div class="num">D-08</div>
+          <h4>Bias towards action</h4>
+          <div class="name-zh">傾向行動</div>
+          <div class="def">地圖是輔助決策不是替代決策。畫完要動手,不要陷在 mapping 上完美主義。</div>
+        </article>
+        <article class="principle-card">
+          <div class="num">D-09</div>
+          <h4>Manage inertia</h4>
+          <div class="name-zh">管理慣性</div>
+          <div class="def">人會抗拒 component 的演化移動(因為威脅既有技能 / 地位 / 投資)。識別、命名、處理慣性,而非假裝它不存在。</div>
+          <div class="app"><strong>品牌</strong>「我的舊文章風格」就是 inertia — 演化階段變了你的風格也該變</div>
+        </article>
+        <article class="principle-card">
+          <div class="num">D-10</div>
+          <h4>Outsource the commodity</h4>
+          <div class="name-zh">外包 commodity</div>
+          <div class="def">已演化到 Commodity 的 component 該外包(用 SaaS / 外部服務)。自建 = 燒錢做別人已標準化的事。</div>
+          <div class="app"><strong>NGO</strong>會計 / HR / 網站不該自建,該用 SaaS,把資源留給只能自己做的部分</div>
+        </article>
+        <article class="principle-card">
+          <div class="num">D-11</div>
+          <h4>Optimize flow</h4>
+          <div class="name-zh">優化價值流</div>
+          <div class="def">看整條鏈,找瓶頸點。優化非瓶頸是浪費。</div>
+        </article>
+        <article class="principle-card">
+          <div class="num">D-12</div>
+          <h4>Strategy is iterative</h4>
+          <div class="name-zh">策略是迭代</div>
+          <div class="def">每張地圖都是當下版本,環境變了就重畫。把策略當靜態文件就死了。</div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="lens-panel lens-panel-climate" aria-labelledby="climate-h">
+    <h3 id="climate-h">Climate · 氣候鏡頭</h3>
+    <p class="lens-summary">
+      Climate 是「不管你做什麼都會發生的趨勢」 — 像天氣,你可以準備,不能改變。Wardley 列了 16+ 條,本頁選 8 條最重要的。
+    </p>
+
+    <div class="principle-grid">
+      <article class="principle-card">
+        <div class="num">C-01</div>
+        <h4>Everything evolves</h4>
+        <div class="name-zh">一切都會演化</div>
+        <div class="def">所有 component 都會從 Genesis 往 Commodity 移動 — 不會停。差別只在多快。今天的差異化明天是基本款。</div>
+        <div class="app"><strong>品牌</strong>個人寫作風格 5 年前的差異化,今天可能已被 AI 工具 commodity 化</div>
+      </article>
+      <article class="principle-card">
+        <div class="num">C-02</div>
+        <h4>Inertia exists at every stage transition</h4>
+        <div class="name-zh">每個階段轉換都有慣性</div>
+        <div class="def">Custom-built → Product 時投資的人會抗拒;Product → Commodity 時運營的人會抗拒。慣性可預測,可對沖。</div>
+      </article>
+      <article class="principle-card">
+        <div class="num">C-03</div>
+        <h4>Co-evolution of practice</h4>
+        <div class="name-zh">實踐共同演化</div>
+        <div class="def">component 演化會帶動相關 practice 演化。雲端 commodity 化 → DevOps 實踐成形。AI commodity 化 → 寫作實踐正在重塑。</div>
+        <div class="app"><strong>品牌</strong>AI 寫作工具的 commodity 化正在催生新的「人寫 + AI 校」分工實踐</div>
+      </article>
+      <article class="principle-card">
+        <div class="num">C-04</div>
+        <h4>Red Queen effect</h4>
+        <div class="name-zh">紅皇后效應</div>
+        <div class="def">你必須持續演化才能維持<strong>相對</strong>位置 — 因為所有人都在演化。不變 ≠ 穩定,等於相對退步。</div>
+      </article>
+      <article class="principle-card">
+        <div class="num">C-05</div>
+        <h4>Capital flows to genesis</h4>
+        <div class="name-zh">資金流向 Genesis</div>
+        <div class="def">VC / 創新預算永遠追 Genesis 階段,因為差異化空間最大。商品化階段資金不來 — 那是現金牛分配的地方。</div>
+      </article>
+      <article class="principle-card">
+        <div class="num">C-06</div>
+        <h4>No choice on evolution</h4>
+        <div class="name-zh">演化無選擇</div>
+        <div class="def">你不能決定 component 該不該演化 — 只能決定你的位置(領先 / 跟隨 / 棄守)。「我不要它演化」不是選項。</div>
+      </article>
+      <article class="principle-card">
+        <div class="num">C-07</div>
+        <h4>Componentization enables novelty</h4>
+        <div class="name-zh">元件化使新事物可能</div>
+        <div class="def">下層 component commodity 化 → 釋放資源做上層 Genesis。電力標準化才有電冰箱;雲端標準化才有 SaaS。</div>
+        <div class="app"><strong>NGO</strong>HR / 會計外包到 SaaS 釋放的人力,可投入真正的 Genesis 工作</div>
+      </article>
+      <article class="principle-card">
+        <div class="num">C-08</div>
+        <h4>Past success breeds inertia</h4>
+        <div class="name-zh">過去的成功養出慣性</div>
+        <div class="def">越成功的組織越難演化 — 既有模式贏過所以強化,環境變了就重摔。Kodak / Nokia / BlackBerry 都是這個故事。</div>
+      </article>
+    </div>
+  </section>
+
+  <section style="padding: 36px 0;" aria-labelledby="synergies-h">
+    <h2 id="synergies-h" style="font-family:var(--serif);font-weight:500;font-size:24px;margin:0 0 16px 0;">協同範式</h2>
+    <div class="principle-grid">
+      <article class="principle-card">
+        <h3>Cynefin</h3>
+        <div class="def">空間(Wardley)+ 問題本質(Cynefin)= 完整策略觀。同一個 component 在 Wardley 上的位置,跟它在 Cynefin 哪個域,是<strong>正交</strong>軸 — Genesis × Complex 是純探索,Commodity × Clear 是全力自動化。</div>
+      </article>
+      <article class="principle-card">
+        <h3>Effectuation</h3>
+        <div class="def">Wardley 看現況、Effectuation 從現況出發找行動。先 map 再 act,避免「該做但不知怎開始」的癱瘓。</div>
+      </article>
+      <article class="principle-card">
+        <h3>Meadows 12 槓桿點</h3>
+        <div class="def">Doctrine 鏡頭跟 Meadows 槓桿點是同一個思維家族 — 都在問「動哪一點最有效?」Wardley 偏向空間定位,Meadows 偏向因果強度。</div>
+      </article>
+    </div>
+
+    <h2 style="font-family:var(--serif);font-weight:500;font-size:24px;margin:28px 0 14px 0;">反模式</h2>
+    <ul style="list-style:none;padding:0;margin:0;display:grid;gap:10px;">
+      <li style="background:var(--card-bg);border-left:3px solid var(--cat-1);padding:12px 16px;font-size:14px;line-height:1.55;color:var(--ink-soft);"><strong style="color:var(--ink);font-weight:600;">學習曲線陡</strong> — Wardley 不是隨手畫的。沒讀過原書直接畫的圖通常 component 位置全錯,但作者不自知,反而強化錯誤判斷。建議讀 Simon 的 Medium 文章後再開始。</li>
+      <li style="background:var(--card-bg);border-left:3px solid var(--cat-1);padding:12px 16px;font-size:14px;line-height:1.55;color:var(--ink-soft);"><strong style="color:var(--ink);font-weight:600;">需要時間蒸餾</strong> — Wardley 適合戰略決策(年度 / 重大轉型),不適合每日決策。日常用 OODA / Cynefin。</li>
+      <li style="background:var(--card-bg);border-left:3px solid var(--cat-1);padding:12px 16px;font-size:14px;line-height:1.55;color:var(--ink-soft);"><strong style="color:var(--ink);font-weight:600;">把地圖當答案</strong> — 地圖只是討論基礎,不是答案。畫完地圖以為「策略做完了」是常見錯誤。地圖是讓你跟同事爭論「我們究竟在哪 + 該往哪去」的工具。</li>
+      <li style="background:var(--card-bg);border-left:3px solid var(--cat-1);padding:12px 16px;font-size:14px;line-height:1.55;color:var(--ink-soft);"><strong style="color:var(--ink);font-weight:600;">把演化階段當成熟度評分</strong> — Genesis 不是「不成熟」,Commodity 不是「優秀」。它們只是<strong>時間軸位置</strong>。Genesis 階段的 component 對組織價值不一定低於 Commodity 階段的 component。</li>
+    </ul>
+  </section>
+
+  <aside class="provenance" aria-labelledby="prov-heading">
+    <h3 id="prov-heading">出處與校準</h3>
+    <p>Wardley Mapping 由 Simon Wardley 2005 年在英國雲端服務商 Fotango 任 CEO 時發展,2007 起在 LEF(Leading Edge Forum)系統化,2014 公開化(Medium 系列文章),2024 正式出版書籍 <em>Wardley Maps</em>。本頁的 Mapping / Doctrine / Climate 三鏡頭分法來自 Simon 的 LEF 訓練教材 + 個人 Medium 講解。</p>
+    <p>40 條 Doctrine 完整清單見 <a href="https://medium.com/wardleymaps/" target="_blank" rel="noopener noreferrer">Simon Wardley Medium 專欄</a>;本頁挑 12 條時偏向個人品牌寫作 / NGO governance 軌道相關性,略過了純企業 IT 場景的(例如 "Strategy is complex" / "Pivot")。Climate 16+ 條同樣有取捨。互動式地圖繪製工具見 <a href="https://onlinewardleymaps.com/" target="_blank" rel="noopener noreferrer">OnlineWardleyMaps</a>(Damon Skelton 開發,非 Simon 官方)。</p>
+    <p>本頁示意地圖(個人品牌寫作者價值鏈)是作者改寫範例,非 Simon 原版示範。Simon 原版示範多為英國政府 / 雲端服務 / 媒體業 case study。</p>
+  </aside>
+
+  <nav class="page-footer-nav" aria-label="範式間導覽">
+    <a href="munger.html" class="nav-link">← Munger</a>
+    <a href="../thinking-routing-atlas-v0.3.html" class="nav-link">Atlas</a>
+    <span class="nav-link disabled" aria-disabled="true">下一個 paradigm 待寫 →</span>
+  </nav>
+
+</main>
+
+<script>
+// Nav chip mirror + localStorage persistence for lens selection.
+(function() {
+  const LABELS = { mapping: 'Mapping · 地圖', doctrine: 'Doctrine · 原則', climate: 'Climate · 氣候' };
+  const STORAGE_KEY = 'wardley-current-lens';
+  const navEl = document.getElementById('nav-current-lens');
+  const radios = document.querySelectorAll('input[name="wardley-lens"]');
+
+  function update(value) {
+    if (navEl && LABELS[value]) navEl.textContent = LABELS[value];
+  }
+
+  try {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    if (saved && LABELS[saved]) {
+      const r = document.getElementById('lens-' + saved);
+      if (r) { r.checked = true; update(saved); }
+    }
+  } catch (_) {}
+
+  radios.forEach(r => {
+    r.addEventListener('change', e => {
+      if (e.target.checked) {
+        update(e.target.value);
+        try { localStorage.setItem(STORAGE_KEY, e.target.value); } catch (_) {}
+      }
+    });
+  });
+})();
+</script>
+
+</body>
+</html>
