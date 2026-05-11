@@ -913,11 +913,57 @@ main {
   transition: all 0.18s ease;
 }
 .btn-primary { background: var(--ink); color: var(--paper); }
-.btn-primary:hover { background: var(--cat-1); border-color: var(--cat-1); }
+.btn-primary:hover { background: var(--cat-4); color: var(--paper); border-color: var(--cat-4); }
 .btn-secondary { background: var(--paper); color: var(--ink); }
 .btn-secondary:hover { background: var(--paper-edge); }
 .btn-primary.is-in { background: var(--paper); color: var(--ink); }
-.btn-primary.is-in:hover { background: var(--cat-1); color: var(--paper); border-color: var(--cat-1); }
+.btn-primary.is-in:hover { background: var(--cat-4); color: var(--paper); border-color: var(--cat-4); }
+
+/* Kit toggle button — distinct from Session combo button */
+.btn-kit {
+  padding: 10px 18px;
+  font-family: var(--sans);
+  font-weight: 600;
+  font-size: 14px;
+  letter-spacing: 0.01em;
+  cursor: pointer;
+  border-radius: 4px;
+  border: 1px solid var(--cat-2);
+  background: transparent;
+  color: var(--cat-2);
+  transition: all 0.18s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+}
+.btn-kit:hover { background: rgba(255, 182, 39, 0.10); }
+.btn-kit:focus-visible { outline: 2px solid var(--cat-2); outline-offset: 2px; }
+.btn-kit.is-in {
+  background: var(--cat-2);
+  color: var(--paper);
+}
+.btn-kit.is-in:hover { background: var(--cat-1); border-color: var(--cat-1); }
+
+/* Kit ★ badge on cards (independent of in-combo) */
+.card.in-kit::after {
+  content: '★';
+  position: absolute;
+  top: 8px;
+  right: 10px;
+  font-family: var(--mono);
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--cat-2);
+  text-shadow: 0 0 6px rgba(255, 182, 39, 0.5);
+  z-index: 2;
+  pointer-events: none;
+}
+.card.in-combo.in-kit::after { color: var(--paper); text-shadow: 0 0 6px rgba(255, 182, 39, 0.8); }
+@media (prefers-reduced-motion: reduce) {
+  .btn-kit { transition: none; }
+  .card.in-kit::after { text-shadow: none; }
+}
 
 @media (max-width: 1100px) {
   header.atlas-head, .control-bar, .workbench, main { padding-left: 32px; padding-right: 32px; }
@@ -997,6 +1043,7 @@ main {
         <span class="stat"><strong>23</strong> 框架</span>
         <span class="stat"><strong>6</strong> 範式</span>
         <span class="stat"><strong>2</strong> 工作軌道</span>
+        <span class="stat" title="你的個人 Kit:長期內化的範式 subset(永久)"><strong id="head-kit-count">0</strong> ★ Kit</span>
       </div>
     </div>
   </div>
@@ -1167,7 +1214,8 @@ main {
   </div>
   <div class="detail-body" id="detail-body"></div>
   <div class="detail-actions">
-    <button class="btn-primary" id="detail-add">加入組合</button>
+    <button class="btn-primary" id="detail-add" title="把此範式加進當前的 Session(暫時 · 當前任務)">加入 Session</button>
+    <button class="btn-kit" id="detail-kit" aria-pressed="false" title="把此範式加進你的永久 Kit(內化的 lattice)">☆ Kit</button>
     <a class="btn-secondary" id="detail-deepdive" href="#" hidden>完整工具清單 →</a>
     <button class="btn-secondary" id="detail-close-btn">關閉</button>
   </div>
@@ -1612,12 +1660,26 @@ const CTX_FULL = {
 const PARADIGM_BY_ID = Object.fromEntries(PARADIGMS.map(p => [p.id, p]));
 
 // ========= Selection state =========
+// combo == Session (transient, current-task composition)
+// kit   == permanent personal lattice (cross-session, my go-to paradigms)
 const STORAGE_KEY = 'minerva-shortlist-v0.3';
-let combo;
+const KIT_KEY = 'mandara-paradigm-kit';
+let combo, kit;
 try { combo = new Set(JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]')); }
 catch (e) { combo = new Set(); }
+try { kit = new Set(JSON.parse(localStorage.getItem(KIT_KEY) || '[]')); }
+catch (e) { kit = new Set(); }
 
 function persistCombo() { localStorage.setItem(STORAGE_KEY, JSON.stringify([...combo])); }
+function persistKit() { localStorage.setItem(KIT_KEY, JSON.stringify([...kit])); }
+
+function toggleKit(id) {
+  if (kit.has(id)) kit.delete(id);
+  else kit.add(id);
+  persistKit();
+  refreshAll();
+}
+function clearKit() { kit.clear(); persistKit(); refreshAll(); }
 
 function toggleCombo(id) {
   if (combo.has(id)) combo.delete(id);
@@ -1789,7 +1851,9 @@ function renderCards() {
 
 function applyCardStates() {
   document.querySelectorAll('.card').forEach(card => {
-    card.classList.toggle('in-combo', combo.has(card.dataset.id));
+    const id = card.dataset.id;
+    card.classList.toggle('in-combo', combo.has(id));
+    card.classList.toggle('in-kit', kit.has(id));
     if (currentFilter === 'all') {
       card.classList.remove('dim');
     } else {
@@ -1973,8 +2037,20 @@ function updateAddBtnState() {
   const btn = document.getElementById('detail-add');
   const isIn = combo.has(currentDetailId);
   btn.classList.toggle('is-in', isIn);
-  btn.textContent = isIn ? '從組合移除' : '加入組合';
+  btn.textContent = isIn ? '從 Session 移除' : '加入 Session';
+
+  const kitBtn = document.getElementById('detail-kit');
+  const inKit = kit.has(currentDetailId);
+  kitBtn.setAttribute('aria-pressed', inKit ? 'true' : 'false');
+  kitBtn.classList.toggle('is-in', inKit);
+  kitBtn.textContent = inKit ? '★ 在 Kit 中' : '☆ Kit';
 }
+
+document.getElementById('detail-kit').addEventListener('click', () => {
+  if (!currentDetailId) return;
+  toggleKit(currentDetailId);
+  updateAddBtnState();
+});
 
 // ========= Workbench =========
 const wbToggle = document.getElementById('wb-toggle');
@@ -2249,6 +2325,8 @@ function refreshAll() {
   applyCardStates();
   renderWorkbench();
   if (currentDetailId) updateAddBtnState();
+  const headKit = document.getElementById('head-kit-count');
+  if (headKit) headKit.textContent = String(kit.size);
 }
 
 // ========= Init =========
