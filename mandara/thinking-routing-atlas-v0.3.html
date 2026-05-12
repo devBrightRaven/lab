@@ -240,6 +240,119 @@ header.atlas-head {
 .filter-pill:hover { background: var(--paper-deep); border-color: var(--ink-mute); }
 .filter-pill.active { background: var(--ink); color: var(--paper); border-color: var(--ink); }
 
+/* ========= Hero Prompt (v0.4 context-first onboarding) ========= */
+.hero-prompt {
+  background: linear-gradient(180deg, var(--paper-deep) 0%, var(--paper) 100%);
+  border-bottom: 1px solid var(--hairline-soft);
+  padding: 36px 64px 32px;
+}
+.hero-prompt .prompt-inner {
+  max-width: 1640px;
+  margin: 0 auto;
+}
+.hero-prompt .prompt-title {
+  font-family: var(--serif);
+  font-weight: 500;
+  font-size: 26px;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+  margin: 0 0 6px 0;
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+  flex-wrap: wrap;
+  line-height: 1.2;
+}
+.hero-prompt .prompt-title .prompt-en {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--cat-4);
+  font-weight: 600;
+  background: rgba(0, 188, 212, 0.08);
+  padding: 3px 8px;
+  border-radius: 3px;
+  border: 1px solid rgba(0, 188, 212, 0.25);
+}
+.hero-prompt .prompt-subtitle {
+  font-size: 14px;
+  color: var(--ink-mute);
+  margin: 0 0 22px 0;
+  max-width: 72ch;
+  line-height: 1.6;
+}
+.hero-prompt .prompt-chips {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(180px, 100%), 1fr));
+  gap: 10px;
+  max-width: 1100px;
+}
+/* Override base .filter-pill ONLY when inside hero-prompt — larger, two-line, cyber */
+.hero-prompt .filter-pill {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 3px;
+  padding: 12px 16px;
+  background: var(--card-bg);
+  border: 1px solid var(--hairline);
+  border-radius: 6px;
+  color: var(--ink-soft);
+  font-family: var(--sans);
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  min-height: 60px;
+  text-align: left;
+  letter-spacing: 0;
+  text-transform: none;
+}
+.hero-prompt .filter-pill:hover {
+  background: var(--paper-edge);
+  border-color: var(--cat-4);
+  color: var(--ink);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 188, 212, 0.10);
+}
+.hero-prompt .filter-pill:focus-visible {
+  outline: 2px solid var(--cat-4);
+  outline-offset: 2px;
+}
+.hero-prompt .filter-pill.active {
+  background: var(--cat-4);
+  color: #0F1923;
+  border-color: var(--cat-4);
+  box-shadow: 0 0 18px rgba(0, 188, 212, 0.25), inset 0 0 0 1px rgba(0, 0, 0, 0.2);
+}
+.hero-prompt .filter-pill .chip-label {
+  font-weight: 600;
+  font-size: 15px;
+  line-height: 1.2;
+}
+.hero-prompt .filter-pill .chip-meta {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.04em;
+  color: var(--ink-faint);
+  line-height: 1.3;
+}
+.hero-prompt .filter-pill:hover .chip-meta { color: var(--ink-mute); }
+.hero-prompt .filter-pill.active .chip-meta { color: rgba(15, 25, 35, 0.7); }
+@media (prefers-reduced-motion: reduce) {
+  .hero-prompt .filter-pill { transition: none; }
+  .hero-prompt .filter-pill:hover { transform: none; }
+}
+@media (max-width: 1100px) {
+  .hero-prompt { padding: 28px 32px 26px; }
+}
+@media (max-width: 480px) {
+  .hero-prompt { padding: 22px 16px 20px; }
+  .hero-prompt .prompt-title { font-size: 20px; gap: 10px; }
+  .hero-prompt .prompt-title .prompt-en { font-size: 9px; }
+}
+
 .workbench-toggle {
   font-family: var(--mono);
   font-size: 11px;
@@ -1094,17 +1207,17 @@ main {
 
 <nav class="atlas-back-nav" aria-label="Hierarchical navigation">
   <a class="back-link" href="../" aria-label="回到 Lab 工房首頁">← Lab</a>
-  <div class="back-breadcrumb"><strong lang="ja">マンダラ</strong> · ATLAS v0.3.1</div>
+  <div class="back-breadcrumb"><strong lang="ja">マンダラ</strong> · ATLAS v0.4.0</div>
 </nav>
 
 <header class="atlas-head">
   <div class="head-row">
     <div class="head-left">
       <h1>思維路由地圖</h1>
-      <p class="subtitle-en">Thinking Routing Atlas · v0.3.1</p>
+      <p class="subtitle-en">Thinking Routing Atlas · v0.4.0</p>
     </div>
     <div class="head-right">
-      <div>編譯版本 / Edition v0.3.1 · 2026-05-05</div>
+      <div>編譯版本 / Edition v0.4.0 · 2026-05-12</div>
       <div>
         <span class="stat"><strong>23</strong> 框架</span>
         <span class="stat"><strong>6</strong> 範式</span>
@@ -1118,20 +1231,47 @@ main {
   </p>
 </header>
 
+<section class="hero-prompt" aria-labelledby="prompt-title">
+  <div class="prompt-inner">
+    <h2 id="prompt-title" class="prompt-title">
+      你現在面對什麼?
+      <span class="prompt-en">WHAT ARE YOU WORKING ON RIGHT NOW</span>
+    </h2>
+    <p class="prompt-subtitle">選一個情境,Mandara 自動 highlight 該情境最常用的範式 — 從那邊開始,隨時可切換或回到「所有」看全景。</p>
+    <div class="prompt-chips" role="group" aria-label="情境選擇">
+      <button class="filter-pill active" data-filter="all" aria-pressed="true">
+        <span class="chip-label">所有 / All</span>
+        <span class="chip-meta">23 範式全展開</span>
+      </button>
+      <button class="filter-pill" data-filter="brand" aria-pressed="false">
+        <span class="chip-label">個人品牌</span>
+        <span class="chip-meta">寫作 · 內容 · 觀點建構</span>
+      </button>
+      <button class="filter-pill" data-filter="ngo" aria-pressed="false">
+        <span class="chip-label">NGO governance</span>
+        <span class="chip-meta">理事會 · 多利害關係人</span>
+      </button>
+      <button class="filter-pill" data-filter="cultural" aria-pressed="false">
+        <span class="chip-label">跨文化</span>
+        <span class="chip-meta">談判 · 世界觀對齊</span>
+      </button>
+      <button class="filter-pill" data-filter="crisis" aria-pressed="false">
+        <span class="chip-label">危機決策</span>
+        <span class="chip-meta">時間壓力 · 不確定性</span>
+      </button>
+      <button class="filter-pill" data-filter="reflective" aria-pressed="false">
+        <span class="chip-label">反思學習</span>
+        <span class="chip-meta">retrospective · 自我校準</span>
+      </button>
+    </div>
+  </div>
+</section>
+
 <div class="junior-note">
-  <strong>v0.3.1</strong>P0 a11y 修正(鍵盤/contrast/reflow)+ Workbench 改 2 階段:加東西預設 compact 條(只顯示 chips),點 Workbench 鈕展開看 synthesis / suggestions。Preset 載入仍直接展開。
+  <strong>v0.4.0</strong>Context-first entry — 「你現在面對什麼?」從 control-bar 升上來成 hero 主訴求。先選情境,範式自動篩。v0.3.1 的 a11y / Kit-Session / Workbench 全保留。
 </div>
 
 <section class="control-bar">
-  <div class="filter-group">
-    <span class="filter-label">情境 / Context</span>
-    <button class="filter-pill active" data-filter="all">所有</button>
-    <button class="filter-pill" data-filter="brand">個人品牌</button>
-    <button class="filter-pill" data-filter="ngo">NGO governance</button>
-    <button class="filter-pill" data-filter="cultural">跨文化</button>
-    <button class="filter-pill" data-filter="crisis">危機決策</button>
-    <button class="filter-pill" data-filter="reflective">反思學習</button>
-  </div>
   <button class="workbench-toggle" id="wb-toggle">
     <span>combo workbench</span>
     <span class="count" id="wb-count">0</span>
@@ -1934,7 +2074,11 @@ let currentFilter = 'all';
 document.querySelectorAll('.filter-pill').forEach(pill => {
   pill.addEventListener('click', () => {
     currentFilter = pill.dataset.filter;
-    document.querySelectorAll('.filter-pill').forEach(p => p.classList.toggle('active', p.dataset.filter === currentFilter));
+    document.querySelectorAll('.filter-pill').forEach(p => {
+      const isActive = p.dataset.filter === currentFilter;
+      p.classList.toggle('active', isActive);
+      if (p.hasAttribute('aria-pressed')) p.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+    });
     applyCardStates();
   });
 });
