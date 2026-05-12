@@ -3,82 +3,239 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>曼荼羅 · Mandara · 思維路由地圖</title>
+<title>マンダラ Mandara · Index · Lab</title>
+<meta name="description" content="マンダラ Mandara 曼陀羅 — 23 個思考典範的互動式地圖,4 個 paradigm deep-dive 完成,組織成 6 類範式,接到 5 種工作情境。">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Noto+Serif+TC:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Source+Sans+3:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Noto+Sans+JP:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
+/* Cyber theme — mirrors paradigms/_atlas-shared.css */
 :root {
-  --paper: #F2EEDF;
-  --paper-deep: #E5DCC4;
-  --card-bg: #FBFAF4;
-  --ink: #1A1A1A;
-  --ink-soft: #2E2E2E;
-  --ink-mute: #5C5C5C;
-  --ink-faint: #6B6655;
-  --hairline: #8C8170;
-  --cat-1: #A04F33;
-  --serif: 'Newsreader', 'Noto Serif TC', Georgia, serif;
-  --sans: 'Source Sans 3', -apple-system, system-ui, "Microsoft JhengHei", sans-serif;
+  --paper: #0F1923;
+  --paper-deep: #18222E;
+  --paper-edge: #243447;
+  --card-bg: #1A2532;
+  --ink: #E8ECF0;
+  --ink-soft: #C5CDD6;
+  --ink-mute: #8A95A3;
+  --ink-faint: #7A8694;
+  --hairline: #4F6985;
+  --hairline-soft: #2D3F54;
+
+  --cat-1: #FF6B47;       /* laser coral · Latticework */
+  --cat-2: #FFB627;       /* amber · Curriculum / Minerva */
+  --cat-3: #00E699;       /* neon mint · Cynefin / Wardley */
+  --cat-4: #00BCD4;       /* electric cyan · primary entry */
+  --cat-5: #B0BEC5;       /* silver · Anti-Bias */
+  --cat-6: #FF2E92;       /* magenta · Container/Frame */
+
+  --display: 'Space Grotesk', 'Inter', 'Noto Sans JP', 'Noto Sans TC', system-ui, sans-serif;
+  --sans: 'Inter', 'Noto Sans JP', 'Noto Sans TC', -apple-system, system-ui, "Microsoft JhengHei", sans-serif;
   --mono: 'JetBrains Mono', "SF Mono", Consolas, Menlo, monospace;
 }
+
+@media (prefers-contrast: more) {
+  :root {
+    --hairline: #6F8AAB;
+    --ink-faint: #9AA5B3;
+    --ink-mute: #B0BCCB;
+  }
+}
+
 * { box-sizing: border-box; }
 html, body { margin: 0; padding: 0; }
 body {
   background: var(--paper);
   color: var(--ink);
   font-family: var(--sans);
-  font-size: 15px;
-  line-height: 1.6;
-}
-.wrap {
-  max-width: 880px;
-  margin: 0 auto;
-  padding: 80px 48px 60px;
-}
-.kanji {
-  font-family: var(--serif);
-  font-size: 80px;
-  letter-spacing: -0.02em;
-  margin: 0 0 4px 0;
-  font-weight: 500;
-  color: var(--cat-1);
-  line-height: 1;
-}
-h1 {
-  font-family: var(--serif);
-  font-size: 44px;
-  font-weight: 500;
-  letter-spacing: -0.02em;
-  margin: 0 0 6px 0;
-  line-height: 1.1;
-}
-.subtitle {
-  font-family: var(--serif);
-  font-style: italic;
-  font-size: 22px;
-  color: var(--ink-mute);
-  margin: 0 0 36px 0;
-}
-.lede {
-  font-family: var(--serif);
-  font-size: 18px;
+  font-size: 16px;
   line-height: 1.65;
-  color: var(--ink-soft);
-  margin: 0 0 16px 0;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-image:
+    linear-gradient(180deg, rgba(0, 217, 255, 0.025) 0%, rgba(0, 0, 0, 0) 60%),
+    radial-gradient(ellipse at 50% 0%, rgba(255, 46, 146, 0.04) 0%, rgba(0, 0, 0, 0) 50%);
+  background-attachment: fixed;
 }
-.lede em { color: var(--cat-1); font-style: normal; font-weight: 500; }
+
+@media (prefers-reduced-motion: reduce) {
+  body { background-image: none; }
+}
+
+::selection { background: rgba(0, 188, 212, 0.35); color: var(--ink); }
+
+.skip-link {
+  position: absolute;
+  top: 0;
+  left: 12px;
+  transform: translateY(-200%);
+  background: var(--ink);
+  color: var(--paper);
+  padding: 10px 16px;
+  z-index: 100;
+  text-decoration: none;
+  font-family: var(--mono);
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  border-radius: 0 0 4px 4px;
+  transition: transform 0.18s ease;
+}
+.skip-link:focus { transform: translateY(0); outline: 3px solid var(--cat-4); outline-offset: 2px; }
+
+/* Top back nav */
+.top-nav {
+  position: sticky;
+  top: 0;
+  z-index: 30;
+  background: rgba(15, 25, 35, 0.85);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--hairline-soft);
+  padding: 12px 32px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+.top-nav .back-link {
+  font-family: var(--mono);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  color: var(--ink-mute);
+  text-decoration: none;
+  padding: 7px 13px;
+  border: 1px solid var(--hairline);
+  border-radius: 4px;
+  transition: all 0.15s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 36px;
+}
+.top-nav .back-link:hover { background: rgba(0, 188, 212, 0.08); border-color: var(--cat-4); color: var(--cat-4); }
+.top-nav .back-link:focus-visible { outline: 2px solid var(--cat-4); outline-offset: 2px; }
+.top-nav .breadcrumb {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+}
+.top-nav .breadcrumb strong { color: var(--ink); font-weight: 600; letter-spacing: 0.06em; }
+
+@media (prefers-reduced-motion: reduce) {
+  .top-nav { backdrop-filter: none; -webkit-backdrop-filter: none; background: var(--paper); }
+  .top-nav .back-link { transition: none; }
+}
+
+/* Main container */
+.wrap {
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 56px 32px 80px;
+}
+
+/* Hero — name showcase 3-lang stack */
+.hero {
+  padding-bottom: 32px;
+  border-bottom: 1px solid var(--hairline-soft);
+  margin-bottom: 40px;
+}
+.lab-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--cat-4);
+  background: rgba(0, 188, 212, 0.10);
+  padding: 6px 12px;
+  border-radius: 4px;
+  margin-bottom: 22px;
+  font-weight: 500;
+}
+.lab-tag::before {
+  content: "";
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--cat-4);
+  box-shadow: 0 0 8px var(--cat-4);
+  animation: pulse 2.2s ease-in-out infinite;
+}
+@keyframes pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(0, 188, 212, 0.6); }
+  50%      { box-shadow: 0 0 0 6px rgba(0, 188, 212, 0); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .lab-tag::before { animation: none; }
+}
+
+h1.name-jp {
+  font-family: var(--display);
+  font-weight: 600;
+  font-size: clamp(64px, 11vw, 104px);
+  letter-spacing: 0.04em;
+  margin: 0 0 6px 0;
+  line-height: 0.95;
+  color: var(--ink);
+}
+.name-meta {
+  font-family: var(--mono);
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  color: var(--ink-mute);
+  display: inline-flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 0 0 30px 0;
+}
+.name-meta .name-en { color: var(--ink); font-weight: 700; letter-spacing: 0.12em; }
+.name-meta .sep { color: var(--hairline); user-select: none; }
+.name-meta .name-zh { font-family: var(--sans); font-size: 15px; color: var(--ink-soft); font-weight: 500; letter-spacing: 0.02em; }
+
+.lede {
+  font-family: var(--sans);
+  font-size: 17px;
+  line-height: 1.7;
+  color: var(--ink-soft);
+  margin: 0 0 12px 0;
+  max-width: 64ch;
+}
+.lede em { color: var(--cat-4); font-style: normal; font-weight: 500; }
+
+/* Section labels */
 h2.section-label {
   font-family: var(--mono);
   font-size: 11px;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--ink-faint);
-  margin: 48px 0 12px 0;
-  padding-bottom: 8px;
-  border-bottom: 1px solid var(--hairline);
-  font-weight: 500;
+  color: var(--ink-mute);
+  margin: 48px 0 16px 0;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--hairline-soft);
+  font-weight: 600;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
 }
+h2.section-label .count {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.04em;
+  color: var(--ink-faint);
+  font-weight: 400;
+}
+
+/* Cards */
 .cards {
   display: grid;
   grid-template-columns: 1fr;
@@ -87,159 +244,310 @@ h2.section-label {
 .card {
   border: 1px solid var(--hairline);
   background: var(--card-bg);
-  padding: 18px 22px;
+  border-radius: 6px;
+  padding: 20px 24px;
   text-decoration: none;
   color: inherit;
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 16px;
-  transition: all 0.18s ease;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: 20px;
+  transition: all 0.15s ease;
   position: relative;
+  overflow: hidden;
 }
 .card::before {
   content: "";
   position: absolute;
   left: 0; top: 0; bottom: 0;
-  width: 3px;
-  background: var(--cat-1);
-  opacity: 0;
-  transition: opacity 0.18s ease;
+  width: 4px;
+  background: var(--cat-4);
+  transform: scaleY(0);
+  transform-origin: bottom;
+  transition: transform 0.2s ease;
 }
 .card:hover {
-  background: var(--paper-deep);
-  border-color: var(--ink-mute);
+  background: var(--paper-edge);
+  border-color: var(--cat-4);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 14px rgba(0, 188, 212, 0.10);
 }
-.card:hover::before { opacity: 1; }
-.card:focus-visible {
-  outline: 2px solid var(--cat-1);
-  outline-offset: 2px;
+.card:hover::before { transform: scaleY(1); transform-origin: top; }
+.card:focus-visible { outline: 2px solid var(--cat-4); outline-offset: 3px; }
+
+/* Per-category accent on paradigm cards */
+.card[data-cat="1"]::before, .card[data-cat="1"]:hover { border-color: var(--cat-1); }
+.card[data-cat="1"]::before { background: var(--cat-1); }
+.card[data-cat="1"]:hover { box-shadow: 0 4px 14px rgba(255, 107, 71, 0.12); }
+.card[data-cat="2"]::before, .card[data-cat="2"]:hover { border-color: var(--cat-2); }
+.card[data-cat="2"]::before { background: var(--cat-2); }
+.card[data-cat="2"]:hover { box-shadow: 0 4px 14px rgba(255, 182, 39, 0.12); }
+.card[data-cat="3"]::before, .card[data-cat="3"]:hover { border-color: var(--cat-3); }
+.card[data-cat="3"]::before { background: var(--cat-3); }
+.card[data-cat="3"]:hover { box-shadow: 0 4px 14px rgba(0, 230, 153, 0.12); }
+
+.card.primary {
+  background: rgba(0, 188, 212, 0.06);
+  border-color: var(--cat-4);
 }
-.card.primary { background: var(--paper-deep); border-color: var(--ink); }
-.card.primary::before { opacity: 1; }
-.card-main {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  flex: 1;
-}
-.card-title {
-  font-family: var(--serif);
+.card.primary::before { transform: scaleY(1); }
+
+.card-main { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+.card-id {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--cat-4);
   font-weight: 600;
-  font-size: 18px;
+  margin-bottom: 2px;
+}
+.card[data-cat="1"] .card-id { color: var(--cat-1); }
+.card[data-cat="2"] .card-id { color: var(--cat-2); }
+.card[data-cat="3"] .card-id { color: var(--cat-3); }
+
+.card-title {
+  font-family: var(--display);
+  font-weight: 600;
+  font-size: 21px;
   color: var(--ink);
-  letter-spacing: -0.01em;
+  letter-spacing: -0.005em;
+  line-height: 1.25;
 }
 .card-title .ver {
   font-family: var(--mono);
   font-size: 11px;
   font-weight: 500;
-  color: var(--cat-1);
-  margin-left: 8px;
+  color: var(--ink-faint);
+  margin-left: 10px;
   letter-spacing: 0.04em;
+  background: var(--paper-edge);
+  padding: 2px 8px;
+  border-radius: 3px;
+  vertical-align: 2px;
 }
 .card-desc {
-  font-size: 13px;
+  font-size: 14px;
   color: var(--ink-mute);
-  line-height: 1.5;
+  line-height: 1.55;
+  margin-top: 6px;
 }
 .card-arrow {
   font-family: var(--mono);
-  font-size: 14px;
+  font-size: 18px;
+  font-weight: 500;
   color: var(--ink-faint);
+  transition: transform 0.15s ease;
 }
-.card:hover .card-arrow { color: var(--cat-1); }
-.card.muted { opacity: 0.7; }
-.card.muted .card-title { color: var(--ink-mute); }
+.card:hover .card-arrow { color: var(--cat-4); transform: translateX(4px); }
+.card[data-cat="1"]:hover .card-arrow { color: var(--cat-1); }
+.card[data-cat="2"]:hover .card-arrow { color: var(--cat-2); }
+.card[data-cat="3"]:hover .card-arrow { color: var(--cat-3); }
 
+.card.muted { opacity: 0.62; }
+.card.muted:hover { opacity: 1; }
+.card.external .card-arrow::after { content: ""; }
+
+@media (prefers-reduced-motion: reduce) {
+  .card, .card::before, .card .card-arrow { transition: none; }
+  .card:hover { transform: none; }
+  .card:hover .card-arrow { transform: none; }
+}
+
+/* Footer */
 footer {
-  margin-top: 64px;
-  padding-top: 24px;
-  border-top: 1px solid var(--hairline);
-  font-size: 12px;
+  margin-top: 72px;
+  padding-top: 26px;
+  border-top: 1px solid var(--hairline-soft);
+  font-size: 12.5px;
   color: var(--ink-faint);
   font-family: var(--mono);
   letter-spacing: 0.04em;
   display: flex;
   justify-content: space-between;
   flex-wrap: wrap;
-  gap: 12px;
+  gap: 16px;
 }
+footer a {
+  color: var(--ink-mute);
+  text-decoration: underline;
+  text-decoration-color: var(--hairline-soft);
+  text-underline-offset: 3px;
+  transition: all 0.15s ease;
+}
+footer a:hover { color: var(--cat-4); text-decoration-color: var(--cat-4); }
+footer a:focus-visible { outline: 2px solid var(--cat-4); outline-offset: 2px; }
+
 @media (max-width: 600px) {
-  .wrap { padding: 48px 24px 40px; }
-  .kanji { font-size: 60px; }
-  h1 { font-size: 32px; }
-  .subtitle { font-size: 18px; }
+  .wrap { padding: 40px 20px 56px; }
+  .top-nav { padding: 12px 20px; }
+  h1.name-jp { letter-spacing: 0.03em; }
   .lede { font-size: 16px; }
-  .card { flex-direction: column; align-items: flex-start; gap: 8px; }
+  .card { grid-template-columns: 1fr; gap: 14px; }
+  .card-arrow { justify-self: flex-start; }
 }
 </style>
 </head>
 <body>
-<main class="wrap">
-  <div class="kanji">曼荼羅</div>
-  <h1>Mandara</h1>
-  <p class="subtitle">思維路由地圖 · A personal mandala of thinking systems</p>
 
-  <p class="lede">
-    23 個思考典範,組織成 6 類範式,接到 5 種工作情境。把宇宙與意識的所有元素排在一個可閱讀的<em>結構</em>裡 — 這個 atlas 想做的就是讓你在跨領域決策、寫作、治理時,知道哪些工具可以被召喚,如何疊加。
-  </p>
+<a class="skip-link" href="#main-content">跳到主要內容</a>
 
-  <h2 class="section-label">主要入口 / Primary</h2>
+<nav class="top-nav" aria-label="Hierarchical navigation">
+  <a class="back-link" href="../" aria-label="回到 Lab 首頁">← Lab</a>
+  <div class="breadcrumb"><strong lang="ja">マンダラ</strong> · INDEX</div>
+</nav>
+
+<main id="main-content" class="wrap" tabindex="-1">
+
+  <section class="hero" aria-labelledby="hero-title">
+    <div class="lab-tag" aria-label="專案狀態:活躍開發中">INSTRUMENT 001 · ACTIVE</div>
+    <h1 class="name-jp" id="hero-title" lang="ja">マンダラ</h1>
+    <p class="name-meta">
+      <span class="name-en">MANDARA</span>
+      <span class="sep" aria-hidden="true">·</span>
+      <span class="name-zh">曼陀羅</span>
+      <span class="sep" aria-hidden="true">·</span>
+      <span>v0.3.1 · 2026-05-12</span>
+    </p>
+    <p class="lede">
+      23 個思考典範,組織成 6 類範式,接到 5 種工作情境。把宇宙與意識的所有元素排在一個可閱讀的 <em>結構</em> 裡 — 跨領域決策、寫作、治理時,知道哪些工具可以被召喚、如何疊加。
+    </p>
+    <p class="lede" style="font-size:15px;color:var(--ink-mute);">
+      <strong style="color:var(--ink-soft);">命名</strong>:借自 mandala(梵 <span lang="sa">मण्डल</span>)— 佛教與藏密用來描繪宇宙與意識排列的結構性圖像。本專案不走宗教路線,純借隱喻 — 「萬物各得其位且互相牽引」。
+    </p>
+  </section>
+
+  <h2 class="section-label">
+    <span>主要入口 / Primary</span>
+    <span class="count">1 instrument</span>
+  </h2>
   <div class="cards">
-    <a class="card primary" href="thinking-routing-atlas-v0.3.html">
+    <a class="card primary" href="thinking-routing-atlas-v0.3.html" aria-describedby="atlas-desc">
       <div class="card-main">
-        <div class="card-title">思維路由地圖 Atlas <span class="ver">v0.3.1 · current</span></div>
-        <div class="card-desc">23 範式互動式地圖。Combo Workbench 合成解讀 · 拖拉 · 情境 filter · preset 一鍵載入 · WCAG AA 86/100</div>
+        <div class="card-id">ATLAS · CURRENT</div>
+        <div class="card-title">思維路由地圖 Atlas <span class="ver">v0.3.1</span></div>
+        <div class="card-desc" id="atlas-desc">
+          23 範式互動式地圖 · Combo Workbench 合成解讀 · 拖拉到組合 · 情境 filter · preset 一鍵載入 · <strong style="color:var(--cat-4);">Kit/Session 兩層 selection</strong> · WCAG 估 90+
+        </div>
       </div>
-      <div class="card-arrow">→</div>
+      <div class="card-arrow" aria-hidden="true">→</div>
     </a>
   </div>
 
-  <h2 class="section-label">深入頁 / Deep-dives</h2>
+  <h2 class="section-label">
+    <span>範式 Deep-dives / Per-paradigm</span>
+    <span class="count">4 of 23 完成</span>
+  </h2>
   <div class="cards">
-    <a class="card muted" href="paradigms/minerva.html">
+    <a class="card" data-cat="2" href="paradigms/minerva.html" aria-describedby="minerva-desc">
       <div class="card-main">
-        <div class="card-title">Minerva HCs <span class="ver">in progress</span></div>
-        <div class="card-desc">~80 Habits of Mind & Foundational Concepts · 4 大 competency · 11 verified from official PDF</div>
+        <div class="card-id">CAT II · CURRICULUM · 疊加型</div>
+        <div class="card-title">Minerva HCs <span class="ver">109 HC · 11 ✓</span></div>
+        <div class="card-desc" id="minerva-desc">
+          109 Habits of Mind &amp; Foundational Concepts · 4 大 competency · 11 ✓ 官方驗證(Intro PDF)· Kit/Session 雙層 selection · Synthesis Panel + Web Speech TTS · first-time onboarding popover
+        </div>
       </div>
-      <div class="card-arrow">→</div>
+      <div class="card-arrow" aria-hidden="true">→</div>
+    </a>
+    <a class="card" data-cat="3" href="paradigms/cynefin.html" aria-describedby="cynefin-desc">
+      <div class="card-main">
+        <div class="card-id">CAT III · 情境路由 · 分類型</div>
+        <div class="card-title">Cynefin <span class="ver">5 domains</span></div>
+        <div class="card-desc" id="cynefin-desc">
+          Dave Snowden 5-domain framework · Clear / Complicated / Complex / Chaotic / Confusion · CSS `:has` 零-JS panel · catastrophic fold · 6 條 transition · 4 條 synergies · 2024+ Aporetic/Confused split 補註
+        </div>
+      </div>
+      <div class="card-arrow" aria-hidden="true">→</div>
+    </a>
+    <a class="card" data-cat="1" href="paradigms/munger.html" aria-describedby="munger-desc">
+      <div class="card-main">
+        <div class="card-id">CAT I · LATTICEWORK · 疊加型</div>
+        <div class="card-title">Munger Latticework <span class="ver">48 models</span></div>
+        <div class="card-desc" id="munger-desc">
+          Charlie Munger 跨學科 mental models · 8 學科(psychology 14 / math 6 / engineering 6 / biology 4 / chemistry 3 / econ 6 / logic 5 / systems 4)· 22 ✓ MUNGER verified · Kit/Session pattern reuse(驗證憲法)
+        </div>
+      </div>
+      <div class="card-arrow" aria-hidden="true">→</div>
+    </a>
+    <a class="card" data-cat="3" href="paradigms/wardley.html" aria-describedby="wardley-desc">
+      <div class="card-main">
+        <div class="card-id">CAT III · 鏡頭型 · LENS</div>
+        <div class="card-title">Wardley Mapping <span class="ver">3 lenses</span></div>
+        <div class="card-desc" id="wardley-desc">
+          Simon Wardley 3-鏡頭策略 · Mapping(視覺 4x4 grid,個人品牌寫作示例)· Doctrine(12 原則,3 組分群)· Climate(8 patterns,Red Queen / Inertia / Co-evolution)
+        </div>
+      </div>
+      <div class="card-arrow" aria-hidden="true">→</div>
     </a>
   </div>
 
-  <h2 class="section-label">審查 / Audit</h2>
+  <h2 class="section-label">
+    <span>研究 / Research Notes</span>
+    <span class="count">vault external</span>
+  </h2>
   <div class="cards">
-    <a class="card" href="a11y-report.html">
+    <a class="card external" href="https://github.com/devBrightRaven/lab/blob/main/mandara/README.md" aria-describedby="constitution-desc">
       <div class="card-main">
-        <div class="card-title">Accessibility Report <span class="ver">v0.3</span></div>
-        <div class="card-desc">WCAG 2.2 AA inspection by beacon · 70 → 86 score delta · 12 findings, 4 critical resolved</div>
+        <div class="card-id">DESIGN CONSTITUTION · 2026-05-11</div>
+        <div class="card-title">7 種 Paradigm Widget Modes</div>
+        <div class="card-desc" id="constitution-desc">
+          設計憲法:分類 / 疊加 / 階段 / 元件 / 槓桿 / 反向覺察 / 鏡頭。從 Minerva + Cynefin + Munger + Wardley 實作 distilled。4 種已驗證,3 種待寫(OODA 階段 / Toulmin 元件 / Kahneman 反向覺察)。
+        </div>
       </div>
-      <div class="card-arrow">→</div>
+      <div class="card-arrow" aria-hidden="true">↗</div>
     </a>
   </div>
 
-  <h2 class="section-label">封存 / Archive</h2>
+  <h2 class="section-label">
+    <span>審查 / Audit</span>
+    <span class="count">a11y</span>
+  </h2>
+  <div class="cards">
+    <a class="card muted" href="a11y-report.html" aria-describedby="a11y-desc">
+      <div class="card-main">
+        <div class="card-id">WCAG 2.2 AA · BEACON INSPECT</div>
+        <div class="card-title">Accessibility Report <span class="ver">v0.3 · 86 → 90+</span></div>
+        <div class="card-desc" id="a11y-desc">
+          舊版 WCAG inspection。Atlas P1 fix(heading hierarchy / `&lt;aside&gt;` → `&lt;header&gt;` / skip link)後估 90+,實 inspect 待重跑。
+        </div>
+      </div>
+      <div class="card-arrow" aria-hidden="true">→</div>
+    </a>
+  </div>
+
+  <h2 class="section-label">
+    <span>封存 / Archive</span>
+    <span class="count">old versions</span>
+  </h2>
   <div class="cards">
     <a class="card muted" href="thinking-routing-atlas-v2.html">
       <div class="card-main">
-        <div class="card-title">Atlas <span class="ver">v2 · pre-a11y</span></div>
-        <div class="card-desc">Detail panel + Workbench + drag-and-drop. WCAG 70/100 (4 critical Level A keyboard issues unresolved)</div>
+        <div class="card-id">ATLAS · PRE-A11Y</div>
+        <div class="card-title">Atlas <span class="ver">v2</span></div>
+        <div class="card-desc">First interactive version. Detail panel + Workbench + drag-and-drop. WCAG 70/100,4 critical Level A keyboard issues(已在 v0.3 修)。</div>
       </div>
-      <div class="card-arrow">→</div>
+      <div class="card-arrow" aria-hidden="true">→</div>
     </a>
     <a class="card muted" href="thinking-routing-atlas-v1.html">
       <div class="card-main">
-        <div class="card-title">Atlas <span class="ver">v1 · static</span></div>
-        <div class="card-desc">First sketch. Static categories, no interaction.</div>
+        <div class="card-id">ATLAS · STATIC</div>
+        <div class="card-title">Atlas <span class="ver">v1</span></div>
+        <div class="card-desc">First sketch. Static categories, no interaction. 留下做演化參照。</div>
       </div>
-      <div class="card-arrow">→</div>
+      <div class="card-arrow" aria-hidden="true">→</div>
     </a>
   </div>
 
   <footer>
-    <span>曼荼羅 / Mandara · devBrightRaven</span>
-    <span><a href="../" style="color:inherit;text-decoration:underline;text-decoration-color:var(--hairline)">↑ lab</a> · <a href="https://github.com/devBrightRaven/lab/tree/main/mandara" style="color:inherit;text-decoration:underline;text-decoration-color:var(--hairline)">source on github</a> · WIP</span>
+    <span lang="ja">マンダラ</span> / Mandara / 曼陀羅 · devBrightRaven
+    <span>
+      <a href="../">↑ Lab</a> ·
+      <a href="https://github.com/devBrightRaven/lab/tree/main/mandara">source</a> ·
+      <a href="https://brightraven.world/">brightraven.world</a>
+    </span>
   </footer>
+
 </main>
+
 </body>
 </html>
