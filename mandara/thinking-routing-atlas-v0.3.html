@@ -353,6 +353,152 @@ header.atlas-head {
   .hero-prompt .prompt-title .prompt-en { font-size: 9px; }
 }
 
+/* ========= Context Results Panel (浮上檯面,降摩擦) ========= */
+.ctx-results {
+  margin-top: 22px;
+  padding-top: 22px;
+  border-top: 1px dashed var(--hairline-soft);
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 32px;
+}
+.ctx-results[hidden] { display: none; }
+.ctx-section { min-width: 0; }
+.ctx-label {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+  margin: 0 0 12px 0;
+  font-weight: 500;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 14px;
+}
+.ctx-label .ctx-label-zh {
+  font-family: var(--sans);
+  font-size: 13px;
+  text-transform: none;
+  letter-spacing: 0.02em;
+  color: var(--ink-soft);
+  font-weight: 500;
+}
+.ctx-label .ctx-label-zh strong { color: var(--cat-4); font-weight: 700; }
+.ctx-label .ctx-label-en { color: var(--cat-4); font-weight: 600; opacity: 0.7; }
+.ctx-label .ctx-hint {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--ink-faint);
+  letter-spacing: 0.02em;
+  text-transform: none;
+  margin-left: auto;
+}
+
+.ctx-paradigm-pills { display: flex; flex-wrap: wrap; gap: 8px; }
+.ctx-paradigm-pill {
+  display: inline-flex;
+  align-items: stretch;
+  border: 1px solid var(--hairline);
+  border-radius: 6px;
+  background: var(--card-bg);
+  overflow: hidden;
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+.ctx-paradigm-pill:hover { border-color: var(--cat-4); }
+.ctx-paradigm-pill.in-session { border-color: var(--cat-4); background: rgba(0, 188, 212, 0.08); }
+.ctx-paradigm-pill .pill-toggle,
+.ctx-paradigm-pill .pill-detail {
+  background: transparent;
+  border: none;
+  font-family: var(--sans);
+  cursor: pointer;
+  color: var(--ink-soft);
+  padding: 0;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+.ctx-paradigm-pill .pill-toggle {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+  padding: 8px 12px 8px 14px;
+  text-align: left;
+  min-height: 44px;
+  border-right: 1px solid var(--hairline-soft);
+}
+.ctx-paradigm-pill .pill-toggle:hover { background: var(--paper-edge); color: var(--ink); }
+.ctx-paradigm-pill .pill-toggle:focus-visible { outline: 2px solid var(--cat-4); outline-offset: -2px; }
+.ctx-paradigm-pill .pill-name { font-size: 14px; font-weight: 600; line-height: 1.2; color: var(--ink); }
+.ctx-paradigm-pill .pill-action {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.04em;
+  color: var(--ink-faint);
+  line-height: 1.2;
+}
+.ctx-paradigm-pill.in-session .pill-action { color: var(--cat-4); font-weight: 600; }
+.ctx-paradigm-pill .pill-detail {
+  padding: 0 12px;
+  font-family: var(--mono);
+  font-size: 16px;
+  color: var(--ink-faint);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 36px;
+}
+.ctx-paradigm-pill .pill-detail:hover { background: var(--paper-edge); color: var(--cat-4); }
+.ctx-paradigm-pill .pill-detail:focus-visible { outline: 2px solid var(--cat-4); outline-offset: -2px; }
+.ctx-paradigm-pill[data-cat="1"]:hover { border-color: var(--cat-1); }
+.ctx-paradigm-pill[data-cat="2"]:hover { border-color: var(--cat-2); }
+.ctx-paradigm-pill[data-cat="3"]:hover { border-color: var(--cat-3); }
+.ctx-paradigm-pill[data-cat="4"]:hover { border-color: var(--cat-4); }
+.ctx-paradigm-pill[data-cat="5"]:hover { border-color: var(--cat-5); }
+.ctx-paradigm-pill[data-cat="6"]:hover { border-color: var(--cat-6); }
+
+.ctx-preset-pills { display: flex; flex-direction: column; gap: 8px; }
+.ctx-preset-pill {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 12px 14px;
+  background: var(--card-bg);
+  border: 1px solid var(--hairline);
+  border-left: 3px solid var(--cat-4);
+  border-radius: 6px;
+}
+.ctx-preset-pill .preset-name { font-family: var(--sans); font-weight: 600; font-size: 14px; color: var(--ink); line-height: 1.2; }
+.ctx-preset-pill .preset-formula { font-family: var(--mono); font-size: 11px; color: var(--ink-mute); letter-spacing: 0.02em; line-height: 1.4; }
+.ctx-preset-pill .preset-load {
+  align-self: flex-start;
+  margin-top: 2px;
+  background: transparent;
+  color: var(--cat-4);
+  border: 1px solid var(--cat-4);
+  padding: 6px 12px;
+  border-radius: 4px;
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  cursor: pointer;
+  min-height: 32px;
+  transition: all 0.15s ease;
+}
+.ctx-preset-pill .preset-load:hover { background: var(--cat-4); color: #0F1923; }
+.ctx-preset-pill .preset-load:focus-visible { outline: 2px solid var(--cat-4); outline-offset: 2px; }
+
+@media (prefers-reduced-motion: reduce) {
+  .ctx-paradigm-pill, .ctx-paradigm-pill .pill-toggle, .ctx-paradigm-pill .pill-detail, .ctx-preset-pill .preset-load { transition: none; }
+}
+@media (max-width: 900px) {
+  .ctx-results { grid-template-columns: 1fr; gap: 24px; }
+  .ctx-label .ctx-hint { margin-left: 0; flex-basis: 100%; }
+}
+
 .workbench-toggle {
   font-family: var(--mono);
   font-size: 11px;
@@ -1264,6 +1410,24 @@ main {
         <span class="chip-meta">retrospective · 自我校準</span>
       </button>
     </div>
+
+    <div class="ctx-results" id="ctx-results" hidden aria-live="polite">
+      <div class="ctx-section">
+        <h3 class="ctx-label">
+          <span class="ctx-label-zh">給 <strong id="ctx-name">這個情境</strong> 的範式</span>
+          <span class="ctx-label-en">PARADIGMS FOR THIS CONTEXT</span>
+          <span class="ctx-hint">主擊 = 加入 Session · <span aria-hidden="true">→</span> = 看詳情</span>
+        </h3>
+        <div class="ctx-paradigm-pills" id="ctx-paradigm-pills"></div>
+      </div>
+      <div class="ctx-section">
+        <h3 class="ctx-label">
+          <span class="ctx-label-zh">建議組合</span>
+          <span class="ctx-label-en">SUGGESTED COMBOS · ONE-CLICK LOAD</span>
+        </h3>
+        <div class="ctx-preset-pills" id="ctx-preset-pills"></div>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -2080,8 +2244,108 @@ document.querySelectorAll('.filter-pill').forEach(pill => {
       if (p.hasAttribute('aria-pressed')) p.setAttribute('aria-pressed', isActive ? 'true' : 'false');
     });
     applyCardStates();
+    renderContextResults();
   });
 });
+
+// ========= Context results panel (v0.4 浮上檯面) =========
+function buildParadigmPill(p) {
+  const wrap = document.createElement('div');
+  wrap.className = 'ctx-paradigm-pill';
+  wrap.dataset.id = p.id;
+  wrap.dataset.cat = String(p.cat);
+  if (combo.has(p.id)) wrap.classList.add('in-session');
+
+  const toggle = document.createElement('button');
+  toggle.type = 'button';
+  toggle.className = 'pill-toggle';
+  toggle.setAttribute('aria-pressed', combo.has(p.id) ? 'true' : 'false');
+  toggle.setAttribute('aria-label', `${combo.has(p.id) ? '從 Session 移除' : '加入 Session'}:${p.name_zh}`);
+  const name = document.createElement('span');
+  name.className = 'pill-name';
+  name.textContent = p.name_zh;
+  const action = document.createElement('span');
+  action.className = 'pill-action';
+  action.textContent = combo.has(p.id) ? '● 已在 Session — 點擊移除' : '+ 加入 Session';
+  toggle.append(name, action);
+  toggle.addEventListener('click', () => {
+    toggleCombo(p.id);
+  });
+
+  const detail = document.createElement('button');
+  detail.type = 'button';
+  detail.className = 'pill-detail';
+  detail.setAttribute('aria-label', `打開 ${p.name_zh} 詳情面板`);
+  detail.textContent = '→';
+  detail.addEventListener('click', () => openDetail(p.id));
+
+  wrap.append(toggle, detail);
+  return wrap;
+}
+
+function buildPresetPill(preset) {
+  const wrap = document.createElement('div');
+  wrap.className = 'ctx-preset-pill';
+
+  const name = document.createElement('div');
+  name.className = 'preset-name';
+  name.textContent = preset.name;
+
+  const formula = document.createElement('div');
+  formula.className = 'preset-formula';
+  formula.textContent = preset.paradigms
+    .map(pid => PARADIGM_BY_ID[pid] ? PARADIGM_BY_ID[pid].name_zh : pid)
+    .join(' · ');
+
+  const load = document.createElement('button');
+  load.type = 'button';
+  load.className = 'preset-load';
+  load.setAttribute('aria-label', `一鍵載入組合:${preset.name}`);
+  load.textContent = '一鍵載入 →';
+  load.addEventListener('click', () => loadCombo(preset.paradigms));
+
+  wrap.append(name, formula, load);
+  return wrap;
+}
+
+function renderContextResults() {
+  const resultsEl = document.getElementById('ctx-results');
+  if (!resultsEl) return;
+  if (currentFilter === 'all') {
+    resultsEl.hidden = true;
+    return;
+  }
+  resultsEl.hidden = false;
+  const ctxNameEl = document.getElementById('ctx-name');
+  if (ctxNameEl) ctxNameEl.textContent = CTX_FULL[currentFilter] || currentFilter;
+
+  // Matching paradigms
+  const paradigmPillsEl = document.getElementById('ctx-paradigm-pills');
+  paradigmPillsEl.textContent = '';
+  const matching = PARADIGMS.filter(p => p.tags.includes(currentFilter));
+  matching.forEach(p => paradigmPillsEl.appendChild(buildParadigmPill(p)));
+
+  // Matching presets — sort by paradigm-context overlap, top 3
+  const presetPillsEl = document.getElementById('ctx-preset-pills');
+  presetPillsEl.textContent = '';
+  const scored = COMBO_PRESETS.map(preset => {
+    const matchCount = preset.paradigms.filter(pid =>
+      PARADIGM_BY_ID[pid] && PARADIGM_BY_ID[pid].tags.includes(currentFilter)
+    ).length;
+    return { preset, matchCount };
+  }).filter(x => x.matchCount > 0)
+    .sort((a, b) => b.matchCount - a.matchCount)
+    .slice(0, 3);
+  if (scored.length === 0) {
+    const empty = document.createElement('div');
+    empty.className = 'preset-formula';
+    empty.style.cssText = 'padding:14px;border:1px dashed var(--hairline-soft);border-radius:6px;color:var(--ink-faint);';
+    empty.textContent = '此情境暫無預設組合 — 從左側挑選範式自組,或載入「所有」看其他組合。';
+    presetPillsEl.appendChild(empty);
+  } else {
+    scored.forEach(({ preset }) => presetPillsEl.appendChild(buildPresetPill(preset)));
+  }
+}
 
 // ========= Detail Panel =========
 let currentDetailId = null;
@@ -2534,6 +2798,7 @@ function renderPresets() {
 function refreshAll() {
   applyCardStates();
   renderWorkbench();
+  renderContextResults();
   if (currentDetailId) updateAddBtnState();
   const headKit = document.getElementById('head-kit-count');
   if (headKit) headKit.textContent = String(kit.size);
