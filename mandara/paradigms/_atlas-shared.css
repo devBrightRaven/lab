@@ -30,9 +30,10 @@
   --cat-5: #B0BEC5;          /* silver chrome · Anti-Bias / reflection */
   --cat-6: #FF2E92;          /* magenta · Container / Frame */
 
-  /* Typography — Inter body + Space Grotesk display + JetBrains Mono labels */
-  --serif: 'Space Grotesk', 'Inter', 'Noto Sans TC', system-ui, sans-serif;
-  --sans: 'Inter', 'Noto Sans TC', -apple-system, system-ui, "Segoe UI", "Microsoft JhengHei", sans-serif;
+  /* Typography — Inter body + Space Grotesk display + JetBrains Mono labels
+     + Noto Sans JP for マンダラ display + Noto Sans TC for 繁中 */
+  --serif: 'Space Grotesk', 'Inter', 'Noto Sans JP', 'Noto Sans TC', system-ui, sans-serif;
+  --sans: 'Inter', 'Noto Sans JP', 'Noto Sans TC', -apple-system, system-ui, "Segoe UI", "Microsoft JhengHei", sans-serif;
   --mono: 'JetBrains Mono', 'Fira Code', "SF Mono", Consolas, Menlo, monospace;
 }
 

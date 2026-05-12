@@ -7,7 +7,7 @@
 <meta name="description" content="Bright Raven 的研究室 / 工房 — 認知工具、思考視覺化、互動原型的孵化地。">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Noto+Sans+TC:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Noto+Sans+JP:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 :root {
   /* Lab white + blue palette — slate + sky/blue accents */
@@ -29,8 +29,8 @@
   --primary-bg: #DBEAFE;       /* blue-100 — tinted bg */
   --accent: #0EA5E9;           /* sky-500 — secondary accent */
 
-  --display: 'Space Grotesk', 'Inter', 'Noto Sans TC', system-ui, sans-serif;
-  --sans: 'Inter', 'Noto Sans TC', -apple-system, system-ui, "Segoe UI", sans-serif;
+  --display: 'Space Grotesk', 'Inter', 'Noto Sans JP', 'Noto Sans TC', system-ui, sans-serif;
+  --sans: 'Inter', 'Noto Sans JP', 'Noto Sans TC', -apple-system, system-ui, "Segoe UI", sans-serif;
   --mono: 'JetBrains Mono', "SF Mono", Consolas, Menlo, monospace;
 }
 
@@ -309,24 +309,54 @@ h2.section-label .count {
   margin-bottom: 2px;
 }
 .card-title {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.card-title .name-jp {
   font-family: var(--display);
   font-weight: 600;
-  font-size: 22px;
+  font-size: 32px;
   color: var(--ink);
-  letter-spacing: -0.01em;
-  line-height: 1.2;
+  letter-spacing: 0.02em;
+  line-height: 1.05;
+}
+.card-title .name-meta {
+  font-family: var(--mono);
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--ink-mute);
+  letter-spacing: 0.06em;
+  display: inline-flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.card-title .name-meta .name-en {
+  color: var(--ink-soft);
+  font-weight: 600;
+  letter-spacing: 0.08em;
+}
+.card-title .name-meta .sep {
+  color: var(--ink-faint);
+  user-select: none;
+}
+.card-title .name-meta .name-zh {
+  font-family: var(--sans);
+  color: var(--ink-mute);
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  font-size: 13px;
 }
 .card-title .ver {
   font-family: var(--mono);
   font-size: 11px;
   font-weight: 500;
   color: var(--ink-faint);
-  margin-left: 10px;
   letter-spacing: 0.04em;
   background: var(--bg-elevated);
   padding: 2px 8px;
   border-radius: 3px;
-  vertical-align: 2px;
 }
 .card-desc {
   font-size: 14px;
@@ -433,10 +463,18 @@ footer a:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px;
     <span class="count">1 instrument</span>
   </h2>
   <div class="cards">
-    <a class="card primary" href="mandara/" aria-describedby="mandara-desc">
+    <a class="card primary" href="mandara/" aria-label="マンダラ Mandara 曼達拉 — 23 個思考典範的互動式地圖" aria-describedby="mandara-desc">
       <div class="card-main">
-        <div class="card-id">INSTRUMENT 001 · MANDARA</div>
-        <div class="card-title">曼荼羅 Mandara <span class="ver">v0.3.1</span></div>
+        <div class="card-id">INSTRUMENT 001 · マンダラ</div>
+        <div class="card-title">
+          <span class="name-jp" lang="ja">マンダラ</span>
+          <span class="name-meta">
+            <span class="name-en">MANDARA</span>
+            <span class="sep" aria-hidden="true">·</span>
+            <span class="name-zh">曼達拉</span>
+            <span class="ver">v0.3.1</span>
+          </span>
+        </div>
         <div class="card-desc" id="mandara-desc">
           23 個思考典範的互動式地圖,4 個 paradigm 已寫完整 deep-dive(Minerva HC / Cynefin / Munger Latticework / Wardley Mapping)。Kit/Session 兩層 selection、Combo Workbench 合成解讀、情境 filter、WCAG AA 估 90+。
         </div>
