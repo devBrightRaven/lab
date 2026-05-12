@@ -65,6 +65,67 @@ body {
 
 ::selection { background: rgba(0, 188, 212, 0.35); color: var(--ink); }
 
+/* ========= Hierarchical back nav (cyber-themed, sticky at top) ========= */
+.atlas-back-nav {
+  position: sticky;
+  top: 0;
+  z-index: 30;
+  background: rgba(15, 25, 35, 0.85);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--hairline-soft);
+  padding: 10px 64px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+.atlas-back-nav .back-link {
+  font-family: var(--mono);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  color: var(--ink-mute);
+  text-decoration: none;
+  padding: 7px 13px;
+  border: 1px solid var(--hairline);
+  border-radius: 4px;
+  transition: all 0.15s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 36px;
+}
+.atlas-back-nav .back-link:hover {
+  background: rgba(0, 188, 212, 0.08);
+  border-color: var(--cat-4);
+  color: var(--cat-4);
+}
+.atlas-back-nav .back-link:focus-visible {
+  outline: 2px solid var(--cat-4);
+  outline-offset: 2px;
+}
+.atlas-back-nav .back-breadcrumb {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+}
+.atlas-back-nav .back-breadcrumb strong { color: var(--ink); font-weight: 600; letter-spacing: 0.06em; }
+@media (prefers-reduced-motion: reduce) {
+  .atlas-back-nav { backdrop-filter: none; -webkit-backdrop-filter: none; background: var(--paper); }
+  .atlas-back-nav .back-link { transition: none; }
+}
+@media (max-width: 1100px) {
+  .atlas-back-nav { padding: 10px 32px; }
+}
+@media (max-width: 480px) {
+  .atlas-back-nav { padding: 10px 16px; }
+  .atlas-back-nav .back-breadcrumb { font-size: 10px; }
+}
+
 /* ========= Header ========= */
 header.atlas-head {
   border-bottom: 1px solid var(--hairline);
@@ -1030,6 +1091,11 @@ main {
 <body>
 
 <a class="skip-link" href="#workbench">跳到主要內容</a>
+
+<nav class="atlas-back-nav" aria-label="Hierarchical navigation">
+  <a class="back-link" href="../" aria-label="回到 Lab 工房首頁">← Lab</a>
+  <div class="back-breadcrumb"><strong>MANDARA</strong> · ATLAS v0.3.1</div>
+</nav>
 
 <header class="atlas-head">
   <div class="head-row">
