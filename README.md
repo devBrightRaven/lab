@@ -8,9 +8,18 @@ URL: https://lab.brightraven.world/
 
 ## What's here
 
-| Slug | Project | Status |
-|---|---|---|
-| `mandara/` | 曼荼羅 — interactive atlas of 23 thinking paradigms | v0.3.1 · WIP |
+| Slug | Project | Source repo | Status |
+|---|---|---|---|
+| `mandara/` | 曼荼羅 — interactive atlas of 23 thinking paradigms | [`devBrightRaven/mandara`](https://github.com/devBrightRaven/mandara) `main` | v0.4.0 · WIP |
+| `asagiri/` | 朝霧 — daily startup research engine showcase | [`devBrightRaven/asagiri`](https://github.com/devBrightRaven/asagiri) `refactor/thin-orchestrator` (`/design-site`) | design |
+
+## Sync arrangement
+
+`mandara/` and `asagiri/` directories are **mirrored automatically** from the source repos above by [`.github/workflows/sync-instruments.yml`](.github/workflows/sync-instruments.yml). The action runs every 15 minutes and on manual dispatch.
+
+**Do not edit `mandara/` or `asagiri/` directly in this repo** — changes will be overwritten on the next sync. Edit in the source repo and the change flows here automatically.
+
+Files tracked by this repo directly: `index.html` (landing), `CNAME`, `README.md`, `.gitignore`, `.nojekyll`, and `.github/workflows/`.
 
 ## Conventions
 
@@ -27,11 +36,12 @@ Plain HTML + CSS + vanilla JS. Optional Playwright + axe-core for testing. No fr
 
 When an item matures into a "product" rather than a sketch:
 
-1. Move the subdirectory contents into a new repo `devBrightRaven/<slug>`.
-2. Configure GitHub Pages on that repo with custom domain `<slug>.brightraven.world`.
-3. Leave a redirect or a final note in the `lab/<slug>/` directory and remove the live content.
+1. The source repo already exists (see Sync arrangement table above) — that becomes the home of the graduated product.
+2. Configure GitHub Pages or Cloudflare Pages on that repo with custom domain `<slug>.brightraven.world`.
+3. Remove the slug from `.github/workflows/sync-instruments.yml` so lab stops mirroring.
+4. Either remove `<slug>/` from this repo, or leave a redirect HTML pointing to the new domain.
 
-This pattern keeps lab as an incubator and lets graduates build their own narrative.
+This pattern keeps lab as an incubator and lets graduates build their own narrative under their own domain.
 
 ## License
 

@@ -1,0 +1,86 @@
+name: Sync instruments from source repos
+
+# Pulls the latest contents from each instrument's source-of-truth repo
+# and mirrors them into the matching subdirectory in this repo.
+#
+# Mapping:
+#   devBrightRaven/mandara         (main)                          ->  mandara/
+#   devBrightRaven/asagiri        (refactor/thin-orchestrator)    ->  asagiri/   (from /design-site)
+#
+# The action runs every 15 minutes and on manual dispatch. It commits and
+# pushes only if there is an actual content diff to avoid noisy history.
+
+on:
+  schedule:
+    - cron: "*/15 * * * *"
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/sync-instruments.yml"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: sync-instruments
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout lab
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Checkout mandara source
+        uses: actions/checkout@v4
+        with:
+          repository: devBrightRaven/mandara
+          ref: main
+          path: _src/mandara
+
+      - name: Checkout asagiri source
+        uses: actions/checkout@v4
+        with:
+          repository: devBrightRaven/asagiri
+          ref: refactor/thin-orchestrator
+          path: _src/asagiri
+
+      - name: Mirror mandara -> mandara/
+        run: |
+          rsync -a --delete \
+            --exclude=".git" \
+            --exclude=".github" \
+            --exclude=".gitignore" \
+            _src/mandara/ mandara/
+
+      - name: Mirror asagiri/design-site -> asagiri/
+        run: |
+          mkdir -p asagiri
+          rsync -a --delete \
+            --exclude=".git" \
+            --exclude="_headers" \
+            --exclude="_redirects" \
+            --exclude="README.md" \
+            _src/asagiri/design-site/ asagiri/
+
+      - name: Detect and commit changes
+        run: |
+          rm -rf _src
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A mandara/ asagiri/
+          if git diff --cached --quiet; then
+            echo "No instrument changes to sync."
+            exit 0
+          fi
+          MANDARA_SHA=$(cd _src 2>/dev/null && git rev-parse --short HEAD || echo "unknown")
+          MSG="sync: mirror instruments from source repos
+
+Mandara: devBrightRaven/mandara@main
+Asagiri: devBrightRaven/asagiri@refactor/thin-orchestrator (/design-site)"
+          git commit -m "$MSG"
+          git push
