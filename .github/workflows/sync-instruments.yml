@@ -77,10 +77,8 @@ jobs:
             echo "No instrument changes to sync."
             exit 0
           fi
-          MANDARA_SHA=$(cd _src 2>/dev/null && git rev-parse --short HEAD || echo "unknown")
-          MSG="sync: mirror instruments from source repos
-
-Mandara: devBrightRaven/mandara@main
-Asagiri: devBrightRaven/asagiri@refactor/thin-orchestrator (/design-site)"
-          git commit -m "$MSG"
+          git commit \
+            -m "sync: mirror instruments from source repos" \
+            -m "Mandara: devBrightRaven/mandara@main" \
+            -m "Asagiri: devBrightRaven/asagiri@refactor/thin-orchestrator (/design-site)"
           git push
