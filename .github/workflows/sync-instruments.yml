@@ -1,4 +1,5 @@
 name: Sync instruments from source repos
+# Trigger nudge: bump for asagiri widget refactor sync 2026-05-18
 
 # Pulls the latest contents from each instrument's source-of-truth repo
 # and mirrors them into the matching subdirectory in this repo.
