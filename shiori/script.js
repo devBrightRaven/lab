@@ -628,7 +628,10 @@ function clearRelation() {
 function applyActiveRelation() {
   const relation = relations.find((item) => item.id === activeRelation);
   document.querySelectorAll("[data-relation-id]").forEach((el) => {
+    const item = relations.find((candidate) => candidate.id === el.dataset.relationId);
+    const isUnlocked = item && (understoodPapers.has(item.from) || understoodPapers.has(item.to));
     el.classList.toggle("is-active", Boolean(activeRelation && el.dataset.relationId === activeRelation));
+    el.classList.toggle("is-unlocked", Boolean(isUnlocked));
   });
   document.querySelectorAll("[data-paper-id]").forEach((el) => {
     const shouldHighlight = relation && (el.dataset.paperId === relation.from || el.dataset.paperId === relation.to);
@@ -657,6 +660,8 @@ function markUnderstood(id) {
 function updateProgress() {
   const count = understoodPapers.size;
   const percent = Math.round((count / papers.length) * 100);
+  document.body.classList.toggle("has-insight", count > 0);
+  document.body.style.setProperty("--insight-progress", `${percent}%`);
   progressCount.textContent = `${count}/${papers.length}`;
   progressFill.style.width = `${percent}%`;
   if (count === 0) {
