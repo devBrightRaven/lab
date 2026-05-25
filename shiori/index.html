@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>栞 Shiori · Reading Map · Lab</title>
+<meta name="description" content="Shiori 栞 — 17 份 predictive processing、judgment quality、human-AI decision making 素材的互動 reading map。">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' rx='3' fill='%232563EB'/%3E%3Cpath d='M5 3h6v10L8 11l-3 2z' fill='white'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Noto+Sans+JP:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;600;700&family=Noto+Serif+TC:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body data-view="constellation">
+
+<a class="skip-link" href="#main-content">跳到主要內容</a>
+
+<nav class="top-nav" aria-label="Hierarchical navigation">
+  <a class="back-link" href="../" aria-label="回到 Lab 首頁">← Lab</a>
+  <div class="breadcrumb"><strong lang="ja">栞</strong> · READING MAP</div>
+</nav>
+
+<main id="main-content" class="wrap" tabindex="-1">
+
+  <section class="hero" aria-labelledby="hero-title">
+    <div class="lab-tag" aria-label="專案狀態:reading map">INSTRUMENT 003 · READING MAP</div>
+    <h1 id="hero-title">栞<span lang="en">Shiori</span></h1>
+    <p class="subtitle">17 份 paper / book 串起 human-AI decision making、predictive processing、judgment quality 三條主軸。</p>
+    <p class="lede">
+      這不是書單。它是一張索引書籤:把「人如何判斷 AI」、「直覺何時可信」、「大腦如何做 inference」放在同一張地圖上,用來校準 AI-assist-not-AI-first 的設計直覺。
+    </p>
+  </section>
+
+  <section class="insight-panel" aria-labelledby="insight-title">
+    <p class="eyebrow">CORE INSIGHT</p>
+    <h2 id="insight-title">給 evidence,不給結論。</h2>
+    <p>
+      對 AI 的信任本身就是 Bayesian inference 任務:有 prior、likelihood、prediction error。AI 工具設計者的責任不是讓使用者服從 AI,而是讓使用者對 AI 的 posterior 維持校準。
+    </p>
+  </section>
+
+  <section class="controls" aria-labelledby="view-title">
+    <div>
+      <p class="eyebrow" id="view-title">VIEW MODE</p>
+      <p class="control-copy">三種手機布局都保留:星圖、三軸堆疊、推薦順序。切換只改閱讀方式,不改內容。</p>
+    </div>
+    <div class="mode-switcher" role="group" aria-label="切換 reading map 顯示模式">
+      <button type="button" class="mode-button is-active" data-mode="constellation" aria-pressed="true">星圖</button>
+      <button type="button" class="mode-button" data-mode="stack" aria-pressed="false">三軸堆疊</button>
+      <button type="button" class="mode-button" data-mode="sequence" aria-pressed="false">推薦順序</button>
+    </div>
+  </section>
+
+  <section class="map-section" aria-labelledby="map-title">
+    <div class="section-heading">
+      <div>
+        <p class="eyebrow">INTERACTIVE MAP</p>
+        <h2 id="map-title">三軸 constellation</h2>
+      </div>
+      <p class="map-status" id="map-status" aria-live="polite">目前顯示:星圖。點任一節點查看 detail。</p>
+    </div>
+
+    <div class="map-frame" id="map-frame">
+      <div id="map-board" class="map-board" aria-live="polite"></div>
+    </div>
+  </section>
+
+  <section class="relations-section" aria-labelledby="relations-title">
+    <div class="section-heading">
+      <div>
+        <p class="eyebrow">CROSS-AXIS LINKS</p>
+        <h2 id="relations-title">跨軸連線</h2>
+      </div>
+      <p class="relation-help">桌面星圖會畫線;手機與鍵盤使用者可直接操作下方 chips。</p>
+    </div>
+    <div class="relation-chips" id="relation-chips" aria-label="跨軸關係清單"></div>
+  </section>
+
+  <section class="reading-principle" aria-labelledby="principle-title">
+    <p class="eyebrow">DESIGN CONSEQUENCE</p>
+    <h2 id="principle-title">AI assist,not AI-first.</h2>
+    <div class="principle-grid">
+      <article>
+        <h3>Beacon</h3>
+        <p>給設計師 example-based evidence:跟過去某個被罰案例對照,比只丟 WCAG ratio 更能養成 internalized intuition。</p>
+      </article>
+      <article>
+        <h3>shikigarasu</h3>
+        <p>Verdict + Findings 容易被 rubber-stamp。若改成 past-case comparison,更符合「給 evidence、不給結論」。</p>
+      </article>
+      <article>
+        <h3>Noise 的反論</h3>
+        <p>noise reduction 是 AI 主導的強論點。這份 reading map 不迴避它,而是把它放進設計哲學的壓力測試。</p>
+      </article>
+    </div>
+  </section>
+
+  <footer>
+    <span lang="ja">栞</span> / Shiori · devBrightRaven
+    <span>
+      <a href="../">↑ Lab</a> ·
+      <a href="https://github.com/devBrightRaven/lab/tree/main/shiori">source</a> ·
+      <a href="https://brightraven.world/">brightraven.world</a>
+    </span>
+  </footer>
+
+</main>
+
+<dialog class="paper-dialog" id="paper-dialog" aria-labelledby="dialog-title" aria-describedby="dialog-summary">
+  <div class="dialog-shell">
+    <button type="button" class="dialog-close" id="dialog-close" aria-label="關閉 detail panel">×</button>
+    <p class="dialog-axis" id="dialog-axis"></p>
+    <h2 id="dialog-title"></h2>
+    <p class="dialog-meta" id="dialog-meta"></p>
+    <p id="dialog-summary" class="dialog-summary"></p>
+
+    <div class="dialog-grid">
+      <section aria-labelledby="dialog-meaning-title">
+        <h3 id="dialog-meaning-title">對個人工作的含義</h3>
+        <p class="meaning-source" id="dialog-meaning-source"></p>
+        <p id="dialog-meaning"></p>
+      </section>
+      <section aria-labelledby="dialog-path-title">
+        <h3 id="dialog-path-title">Local markdown</h3>
+        <p class="path-note">目前先保留本機處理後 markdown 路徑。公開部署時不假裝它是可用的遠端連結。</p>
+        <div class="path-copy">
+          <code id="dialog-path"></code>
+          <button type="button" id="copy-path">Copy path</button>
+        </div>
+        <p class="copy-status" id="copy-status" aria-live="polite"></p>
+      </section>
+    </div>
+
+    <section aria-labelledby="dialog-related-title">
+      <h3 id="dialog-related-title">跨軸關聯</h3>
+      <div class="dialog-related" id="dialog-related"></div>
+    </section>
+  </div>
+</dialog>
+
+<script src="script.js"></script>
+</body>
+</html>
