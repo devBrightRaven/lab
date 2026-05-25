@@ -22,47 +22,64 @@
 
 <main id="main-content" class="wrap" tabindex="-1">
 
-  <section class="hero" aria-labelledby="hero-title">
-    <div class="lab-tag" aria-label="專案狀態:reading map">INSTRUMENT 003 · READING MAP</div>
-    <h1 id="hero-title">栞<span lang="en">Shiori</span></h1>
-    <p class="subtitle">17 份 paper / book 串起 human-AI decision making、predictive processing、judgment quality 三條主軸。</p>
-    <p class="lede">
-      這不是書單。它是一張索引書籤:把「人如何判斷 AI」、「直覺何時可信」、「大腦如何做 inference」放在同一張地圖上,用來校準 AI-assist-not-AI-first 的設計直覺。
-    </p>
-  </section>
+  <section class="workbench" aria-labelledby="hero-title">
+    <aside class="intro-panel">
+      <div class="lab-tag" aria-label="專案狀態:reading map">INSTRUMENT 003 · READING MAP</div>
+      <h1 id="hero-title">栞<span lang="en">Shiori</span></h1>
+      <p class="subtitle">17 份 paper / book,三條路徑,一張用來校準 human-AI decision making 的閱讀地圖。</p>
+      <p class="lede">
+        這不是書單。它把「人如何判斷 AI」、「直覺何時可信」、「大腦如何做 inference」放到同一張圖上。
+      </p>
 
-  <section class="insight-panel" aria-labelledby="insight-title">
-    <p class="eyebrow">CORE INSIGHT</p>
-    <h2 id="insight-title">給 evidence,不給結論。</h2>
-    <p>
-      對 AI 的信任本身就是 Bayesian inference 任務:有 prior、likelihood、prediction error。AI 工具設計者的責任不是讓使用者服從 AI,而是讓使用者對 AI 的 posterior 維持校準。
-    </p>
-  </section>
-
-  <section class="controls" aria-labelledby="view-title">
-    <div>
-      <p class="eyebrow" id="view-title">VIEW MODE</p>
-      <p class="control-copy">三種手機布局都保留:星圖、三軸堆疊、推薦順序。切換只改閱讀方式,不改內容。</p>
-    </div>
-    <div class="mode-switcher" role="group" aria-label="切換 reading map 顯示模式">
-      <button type="button" class="mode-button is-active" data-mode="constellation" aria-pressed="true">星圖</button>
-      <button type="button" class="mode-button" data-mode="stack" aria-pressed="false">三軸堆疊</button>
-      <button type="button" class="mode-button" data-mode="sequence" aria-pressed="false">推薦順序</button>
-    </div>
-  </section>
-
-  <section class="map-section" aria-labelledby="map-title">
-    <div class="section-heading">
-      <div>
-        <p class="eyebrow">INTERACTIVE MAP</p>
-        <h2 id="map-title">三軸 constellation</h2>
+      <div class="thesis-strip" aria-labelledby="insight-title">
+        <p class="eyebrow">CORE INSIGHT</p>
+        <h2 id="insight-title">給 evidence,不給結論。</h2>
+        <p>AI 工具的責任不是讓使用者服從 AI,而是讓使用者對 AI 的 posterior 維持校準。</p>
       </div>
-      <p class="map-status" id="map-status" aria-live="polite">目前顯示:星圖。點任一節點查看 detail。</p>
-    </div>
 
-    <div class="map-frame" id="map-frame">
-      <div id="map-board" class="map-board" aria-live="polite"></div>
-    </div>
+      <div class="axis-legend" aria-label="三條閱讀主軸">
+        <span data-axis="A">A · predictive mind</span>
+        <span data-axis="B">B · judgment</span>
+        <span data-axis="C">C · human-AI</span>
+      </div>
+
+      <div class="progress-panel" aria-label="理解進度">
+        <div class="progress-row">
+          <span>INSIGHT PROGRESS</span>
+          <strong id="progress-count">0/17</strong>
+        </div>
+        <div class="progress-track" aria-hidden="true">
+          <span id="progress-fill"></span>
+        </div>
+        <p id="progress-note" aria-live="polite">迷宮還是暗的。每理解一個節點,一段路會亮起。</p>
+      </div>
+
+      <section class="controls" aria-labelledby="view-title">
+        <div>
+          <p class="eyebrow" id="view-title">VIEW MODE</p>
+          <p class="control-copy">三種布局都保留。切換只改讀法,不改內容。</p>
+        </div>
+        <div class="mode-switcher" role="group" aria-label="切換 reading map 顯示模式">
+          <button type="button" class="mode-button is-active" data-mode="constellation" aria-pressed="true">星圖</button>
+          <button type="button" class="mode-button" data-mode="stack" aria-pressed="false">三軸堆疊</button>
+          <button type="button" class="mode-button" data-mode="sequence" aria-pressed="false">推薦順序</button>
+        </div>
+      </section>
+    </aside>
+
+    <section class="map-section" aria-labelledby="map-title">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">INTERACTIVE MAP</p>
+          <h2 id="map-title">三軸 constellation</h2>
+        </div>
+        <p class="map-status" id="map-status" aria-live="polite">目前顯示:星圖。點任一節點查看 detail。</p>
+      </div>
+
+      <div class="map-frame" id="map-frame">
+        <div id="map-board" class="map-board" aria-live="polite"></div>
+      </div>
+    </section>
   </section>
 
   <section class="relations-section" aria-labelledby="relations-title">

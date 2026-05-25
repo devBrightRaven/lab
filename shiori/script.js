@@ -407,10 +407,14 @@ const modeButtons = [...document.querySelectorAll(".mode-button")];
 const dialog = document.getElementById("paper-dialog");
 const dialogClose = document.getElementById("dialog-close");
 const copyButton = document.getElementById("copy-path");
+const progressCount = document.getElementById("progress-count");
+const progressFill = document.getElementById("progress-fill");
+const progressNote = document.getElementById("progress-note");
 
 let currentMode = "constellation";
 let activeRelation = null;
 let lastFocusedNode = null;
+const understoodPapers = new Set();
 
 function paperById(id) {
   return papers.find((paper) => paper.id === id);
@@ -456,8 +460,9 @@ function nodeButton(paper, options = {}) {
   const sequenceStep = options.sequenceStep ? `<span class="paper-step">${options.sequenceStep}</span>` : "";
   const reason = options.reason ? `<span class="sequence-reason">${escapeHtml(options.reason)}</span>` : "";
   const extension = paper.implicationType === "延伸推論" ? `<span class="extended-label">延伸推論</span>` : "";
+  const understoodClass = understoodPapers.has(paper.id) ? " is-understood" : "";
   return `
-    <button type="button" class="paper-node" data-paper-id="${paper.id}" data-axis="${paper.axis}" style="${nodeStyle(paper)}">
+    <button type="button" class="paper-node${understoodClass}" data-paper-id="${paper.id}" data-axis="${paper.axis}" style="${nodeStyle(paper)}">
       <span class="paper-meta">${sequenceStep}${escapeHtml(paper.short)}</span>
       <span class="paper-topic">${escapeHtml(paper.topic)}</span>
       ${reason}
@@ -476,6 +481,8 @@ function renderBoard() {
   }
   bindNodeButtons();
   applyActiveRelation();
+  applyUnderstoodState();
+  updateMazeFocus();
 }
 
 function renderConstellation() {
@@ -485,7 +492,7 @@ function renderConstellation() {
     return `
       <g class="connection-group" tabindex="0" role="button" data-relation-id="${relation.id}" aria-label="${escapeHtml(relation.label)}" aria-describedby="relation-desc-${relation.id}">
         <title>${escapeHtml(relation.label)}: ${escapeHtml(relation.copy)}</title>
-        <line class="connection-line" x1="${from.x}" y1="${from.y}" x2="${to.x}" y2="${to.y}"></line>
+        <path class="connection-line" d="${connectionPath(from, to)}"></path>
       </g>
     `;
   }).join("");
@@ -493,23 +500,41 @@ function renderConstellation() {
   board.innerHTML = `
     <div class="constellation-canvas">
       <svg class="axis-svg" viewBox="0 0 1080 760" aria-label="三軸與跨軸連線">
-        <line class="axis-line" x1="120" y1="120" x2="900" y2="240"></line>
-        <line class="axis-line" x1="500" y1="350" x2="118" y2="674"></line>
-        <line class="axis-line" x1="500" y1="350" x2="952" y2="692"></line>
+        <path class="brain-outline" d="M118 382 C68 252 142 108 294 82 C390 22 518 56 574 124 C686 74 836 102 920 206 C1034 294 1004 472 880 540 C842 676 686 720 548 660 C420 736 250 688 214 562 C158 536 128 476 118 382 Z"></path>
+        <path class="ridge" d="M174 340 C250 268 356 268 430 334 C494 392 584 390 658 328 C732 266 838 280 904 354"></path>
+        <path class="ridge" d="M196 458 C292 420 354 474 428 520 C512 572 600 536 672 480 C746 424 826 448 894 506"></path>
+        <path class="ridge" d="M246 206 C320 164 414 182 462 238 C512 292 598 292 664 226 C730 160 822 178 884 248"></path>
+        <path class="ridge" d="M262 596 C360 640 448 584 514 544 C596 494 666 538 736 594"></path>
+        <path class="axis-line axis-line-a" d="M110 136 C292 46 704 54 920 244"></path>
+        <path class="axis-line axis-line-b" d="M488 344 C390 438 236 568 118 674"></path>
+        <path class="axis-line axis-line-c" d="M506 344 C650 422 822 558 952 692"></path>
         ${lines}
       </svg>
       <span class="axis-label label-a">Axis A · predictive mind</span>
       <span class="axis-label label-b">Axis B · judgment</span>
       <span class="axis-label label-c">Axis C · XAI</span>
       <div class="center-insight" aria-hidden="true">
-        <strong>給 evidence,不給結論</strong>
-        <span>AI 的責任是 calibrate posterior,不是替使用者完成判斷。</span>
+        <span class="center-kicker">MAZE FOCUS</span>
+        <strong id="maze-focus-title">給 evidence,不給結論</strong>
+        <span id="maze-focus-copy">AI 的責任是 calibrate posterior,不是替使用者完成判斷。</span>
       </div>
       ${papers.map((paper) => nodeButton(paper)).join("")}
       ${relations.map((relation) => `<p id="relation-desc-${relation.id}" class="visually-hidden">${escapeHtml(relation.label)}:${escapeHtml(relation.copy)}</p>`).join("")}
     </div>
   `;
   bindSvgRelations();
+}
+
+function connectionPath(from, to) {
+  const dx = to.x - from.x;
+  const dy = to.y - from.y;
+  const bend = Math.max(54, Math.min(126, Math.abs(dx) * 0.18 + Math.abs(dy) * 0.12));
+  const sweep = from.y < to.y ? -bend : bend;
+  const cx1 = from.x + dx * 0.34;
+  const cy1 = from.y + dy * 0.18 + sweep;
+  const cx2 = from.x + dx * 0.68;
+  const cy2 = from.y + dy * 0.82 - sweep;
+  return `M ${from.x} ${from.y} C ${cx1} ${cy1}, ${cx2} ${cy2}, ${to.x} ${to.y}`;
 }
 
 function renderStack() {
@@ -609,6 +634,50 @@ function applyActiveRelation() {
     const shouldHighlight = relation && (el.dataset.paperId === relation.from || el.dataset.paperId === relation.to);
     el.classList.toggle("is-highlighted", Boolean(shouldHighlight));
   });
+  updateMazeFocus();
+}
+
+function applyUnderstoodState() {
+  document.querySelectorAll("[data-paper-id]").forEach((el) => {
+    el.classList.toggle("is-understood", understoodPapers.has(el.dataset.paperId));
+  });
+  updateProgress();
+}
+
+function markUnderstood(id) {
+  const before = understoodPapers.size;
+  understoodPapers.add(id);
+  applyUnderstoodState();
+  if (understoodPapers.size > before) {
+    const paper = paperById(id);
+    progressNote.textContent = `${paper.short} 已理解。迷宮亮起 ${understoodPapers.size} / ${papers.length}。`;
+  }
+}
+
+function updateProgress() {
+  const count = understoodPapers.size;
+  const percent = Math.round((count / papers.length) * 100);
+  progressCount.textContent = `${count}/${papers.length}`;
+  progressFill.style.width = `${percent}%`;
+  if (count === 0) {
+    progressNote.textContent = "迷宮還是暗的。每理解一個節點,一段路會亮起。";
+  } else if (count === papers.length) {
+    progressNote.textContent = "全部節點已理解。整張地圖已經打通。";
+  }
+}
+
+function updateMazeFocus() {
+  const title = document.getElementById("maze-focus-title");
+  const copy = document.getElementById("maze-focus-copy");
+  if (!title || !copy) return;
+  const relation = relations.find((item) => item.id === activeRelation);
+  if (relation) {
+    title.textContent = relation.label;
+    copy.textContent = relation.copy;
+  } else {
+    title.textContent = "給 evidence,不給結論";
+    copy.textContent = "AI 的責任是 calibrate posterior,不是替使用者完成判斷。";
+  }
 }
 
 function openPaper(id, trigger) {
@@ -616,6 +685,8 @@ function openPaper(id, trigger) {
   if (!paper) return;
   lastFocusedNode = trigger || document.activeElement;
   const related = relations.filter((relation) => relation.from === id || relation.to === id);
+  markUnderstood(id);
+  if (related.length) setRelation(related[0].id);
   document.getElementById("dialog-axis").textContent = axisMeta[paper.axis].label;
   document.getElementById("dialog-title").textContent = paper.title;
   document.getElementById("dialog-meta").textContent = `${paper.year} · ${paper.authors} · ${paper.venue}`;
