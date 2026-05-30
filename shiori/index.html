@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>栞 Shiori · Reading Map · Lab</title>
-<meta name="description" content="Shiori 栞 — 17 份 predictive processing、judgment quality、human-AI decision making 素材的互動 reading map。">
+<title>栞 Shiori · AI-era Self-Check · Lab</title>
+<meta name="description" content="Shiori 栞 — AI 時代的自我覺察入口:找出 workflow 裡該保留給人的判斷、聲音、review、意義與 ownership。">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' rx='3' fill='%232563EB'/%3E%3Cpath d='M5 3h6v10L8 11l-3 2z' fill='white'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -17,15 +17,215 @@
 
 <nav class="top-nav" aria-label="Hierarchical navigation">
   <a class="back-link" href="../" aria-label="回到 Lab 首頁">← Lab</a>
-  <div class="breadcrumb"><strong lang="ja">栞</strong> · READING MAP</div>
+  <div class="breadcrumb"><strong lang="ja">栞</strong> · AI SELF-CHECK</div>
 </nav>
 
 <main id="main-content" class="wrap" tabindex="-1">
 
-  <section class="workbench" aria-labelledby="hero-title">
+  <section class="market-hero" aria-labelledby="hero-title">
+    <div class="hero-copy-block">
+      <p class="lab-tag" aria-label="專案狀態:self-check">INSTRUMENT 003 · SELF-CHECK</p>
+      <h1 id="hero-title" class="hero-title">AI is already in your workflow. What should stay yours?</h1>
+      <p class="hero-lede">
+        Shiori helps you notice where AI is useful, where it may be quietly taking over judgment, and which boundary to try before speed turns into drift.
+      </p>
+      <div class="hero-actions" aria-label="主要操作">
+        <a class="primary-action" href="#self-check">Start self-check</a>
+        <a class="secondary-action" href="#reading-map">Open reading map</a>
+      </div>
+    </div>
+    <div class="hero-instrument" aria-labelledby="ownership-title">
+      <div class="ownership-panel">
+        <p class="eyebrow">OWNERSHIP SIGNAL</p>
+        <h2 id="ownership-title">Keep these human-first.</h2>
+        <ul class="ownership-list">
+          <li data-layer="automation"><span>Review</span><strong>Can this be checked fast?</strong></li>
+          <li data-layer="voice"><span>Voice</span><strong>Does it still sound like you?</strong></li>
+          <li data-layer="decision"><span>Judgment</span><strong>Who owns the final choice?</strong></li>
+          <li data-layer="team"><span>Ownership</span><strong>Is review more than approval?</strong></li>
+          <li data-layer="life"><span>Meaning</span><strong>Should this move slower?</strong></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="symptom-section" id="symptom-doors" aria-labelledby="symptom-title">
+    <div class="section-heading public-heading">
+      <div>
+        <p class="eyebrow">SYMPTOM DOORS</p>
+        <h2 id="symptom-title">Start from the sentence that already feels true.</h2>
+      </div>
+      <p class="map-status" id="symptom-status" aria-live="polite">Pick one door to seed the self-check, or answer from scratch.</p>
+    </div>
+    <div class="symptom-grid" aria-label="五個 Shiori 入口">
+      <button type="button" class="symptom-door layer-voice" data-symptom-target="voice" aria-controls="self-check-form">
+        <span>01 · Creative Voice</span>
+        <strong>I produce more, but it sounds less like me.</strong>
+      </button>
+      <button type="button" class="symptom-door layer-decision" data-symptom-target="decision" aria-controls="self-check-form">
+        <span>02 · Decision Support</span>
+        <strong>I ask AI quickly, but deciding feels harder.</strong>
+      </button>
+      <button type="button" class="symptom-door layer-team" data-symptom-target="team" aria-controls="self-check-form">
+        <span>03 · Team / Agent Workflow</span>
+        <strong>My team moves faster, but review feels like a formality.</strong>
+      </button>
+      <button type="button" class="symptom-door layer-life" data-symptom-target="life" aria-controls="self-check-form">
+        <span>04 · Life Transition / Slow Mode</span>
+        <strong>I am in a life transition and do not want AI to define the meaning.</strong>
+      </button>
+      <button type="button" class="symptom-door layer-automation" data-symptom-target="automation" aria-controls="self-check-form">
+        <span>05 · Task Automation</span>
+        <strong>I only wanted automation, but I may be accelerating the wrong process.</strong>
+      </button>
+    </div>
+  </section>
+
+  <section class="self-check-section" id="self-check" aria-labelledby="self-check-title">
+    <div class="section-heading public-heading">
+      <div>
+        <p class="eyebrow">SHIORI SELF-CHECK</p>
+        <h2 id="self-check-title">Find your current AI drift layer.</h2>
+      </div>
+      <p class="map-status">Local only. No login, email, network call, or saved result.</p>
+    </div>
+    <div class="self-check-layout">
+      <form class="self-check-form" id="self-check-form" novalidate>
+        <fieldset class="check-question">
+          <legend>1. Which sentence is closest today?</legend>
+          <label class="check-option layer-voice"><input type="radio" name="check-start" value="voice"><span>I produce more, but it sounds less like me.</span></label>
+          <label class="check-option layer-decision"><input type="radio" name="check-start" value="decision"><span>I ask AI quickly, but deciding feels harder.</span></label>
+          <label class="check-option layer-team"><input type="radio" name="check-start" value="team"><span>My team moves faster, but review feels like a formality.</span></label>
+          <label class="check-option layer-life"><input type="radio" name="check-start" value="life"><span>I am in a life transition and do not want AI to define the meaning.</span></label>
+          <label class="check-option layer-automation"><input type="radio" name="check-start" value="automation"><span>I only wanted automation, but I may be accelerating the wrong process.</span></label>
+        </fieldset>
+
+        <fieldset class="check-question">
+          <legend>2. What most needs to stay yours?</legend>
+          <label class="check-option layer-automation"><input type="radio" name="check-owned" value="automation"><span>The process design before AI speeds it up.</span></label>
+          <label class="check-option layer-voice"><input type="radio" name="check-owned" value="voice"><span>The stance, taste, and phrasing that make the work mine.</span></label>
+          <label class="check-option layer-decision"><input type="radio" name="check-owned" value="decision"><span>The final criteria for choosing one path over another.</span></label>
+          <label class="check-option layer-team"><input type="radio" name="check-owned" value="team"><span>The reviewer, approver, and accountable owner.</span></label>
+          <label class="check-option layer-life"><input type="radio" name="check-owned" value="life"><span>The meaning of a major personal change.</span></label>
+        </fieldset>
+
+        <fieldset class="check-question">
+          <legend>3. Where does the drift show up?</legend>
+          <label class="check-option layer-automation"><input type="radio" name="check-drift" value="automation"><span>A messy workflow now moves faster than I can inspect it.</span></label>
+          <label class="check-option layer-voice"><input type="radio" name="check-drift" value="voice"><span>Polished output loses my edge or opinion.</span></label>
+          <label class="check-option layer-decision"><input type="radio" name="check-drift" value="decision"><span>AI gives more options, but not more clarity.</span></label>
+          <label class="check-option layer-team"><input type="radio" name="check-drift" value="team"><span>People approve outputs they cannot realistically verify.</span></label>
+          <label class="check-option layer-life"><input type="radio" name="check-drift" value="life"><span>AI makes a fragile moment feel too quickly explained.</span></label>
+        </fieldset>
+
+        <fieldset class="check-question">
+          <legend>4. Which boundary would help this week?</legend>
+          <label class="check-option layer-automation"><input type="radio" name="check-boundary" value="automation"><span>Separate AI-only tasks from tasks that need human verification.</span></label>
+          <label class="check-option layer-voice"><input type="radio" name="check-boundary" value="voice"><span>Write my stance first, then ask AI to structure around it.</span></label>
+          <label class="check-option layer-decision"><input type="radio" name="check-boundary" value="decision"><span>Set decision criteria before asking for AI advice.</span></label>
+          <label class="check-option layer-team"><input type="radio" name="check-boundary" value="team"><span>Name the owner and review evidence before approval.</span></label>
+          <label class="check-option layer-life"><input type="radio" name="check-boundary" value="life"><span>Use slow mode before asking AI to summarize the situation.</span></label>
+        </fieldset>
+
+        <fieldset class="check-question">
+          <legend>5. What would you put into a diagnosis?</legend>
+          <label class="check-option layer-automation"><input type="radio" name="check-diagnosis" value="automation"><span>An automated workflow that may be optimizing the wrong thing.</span></label>
+          <label class="check-option layer-voice"><input type="radio" name="check-diagnosis" value="voice"><span>My original writing and AI-assisted drafts.</span></label>
+          <label class="check-option layer-decision"><input type="radio" name="check-diagnosis" value="decision"><span>A decision prompt, notes, and the choice I am struggling with.</span></label>
+          <label class="check-option layer-team"><input type="radio" name="check-diagnosis" value="team"><span>A team or agent workflow with handoffs and approvals.</span></label>
+          <label class="check-option layer-life"><input type="radio" name="check-diagnosis" value="life"><span>How I am using AI during a transition that needs care.</span></label>
+        </fieldset>
+
+        <div class="self-check-actions">
+          <button type="submit" class="primary-action">Show my layer</button>
+          <button type="reset" class="secondary-action">Clear</button>
+        </div>
+        <p class="form-status" id="self-check-status" aria-live="polite"></p>
+      </form>
+
+      <aside class="self-check-result" id="self-check-result" hidden tabindex="-1" aria-live="polite" aria-labelledby="result-title">
+        <p class="eyebrow">LIKELY LAYER</p>
+        <h3 id="result-title"><span id="result-layer">Your layer</span></h3>
+        <dl class="result-list">
+          <div>
+            <dt>What may be happening</dt>
+            <dd id="result-happening"></dd>
+          </div>
+          <div>
+            <dt>First boundary to try</dt>
+            <dd id="result-boundary"></dd>
+          </div>
+          <div>
+            <dt>Silent Diagnosis fit</dt>
+            <dd id="result-silent"></dd>
+          </div>
+        </dl>
+        <div class="result-actions">
+          <a class="primary-action" href="#silent-diagnosis">Read Silent Diagnosis</a>
+          <a class="secondary-action" href="#why-this-exists">Why this exists</a>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <section class="silent-diagnosis" id="silent-diagnosis" aria-labelledby="silent-title">
+    <div class="offer-main">
+      <p class="eyebrow">SILENT DIAGNOSIS</p>
+      <h2 id="silent-title">Send your AI workflow. Get a written boundary diagnosis.</h2>
+      <p class="offer-lede">No workshop required. No teaching required. Shiori starts as a low-pressure written review of where AI is helping, where it may be replacing judgment, and what should remain human-first.</p>
+      <a class="primary-action" href="https://brightraven.world/">Contact through Bright Raven</a>
+    </div>
+    <div class="offer-deliverables" aria-label="服務交付物">
+      <article>
+        <h3>AI use map</h3>
+        <p>What is AI-only, AI-assist, or human-first in the workflow you send.</p>
+      </article>
+      <article>
+        <h3>Judgment-risk zones</h3>
+        <p>Where review, voice, ownership, or meaning can become a rubber stamp.</p>
+      </article>
+      <article>
+        <h3>Boundary map</h3>
+        <p>AI-only / AI-assist / human-first boundaries written in plain workflow language.</p>
+      </article>
+      <article>
+        <h3>3 workflow changes</h3>
+        <p>Three concrete changes to test before adding another tool or automation layer.</p>
+      </article>
+    </div>
+  </section>
+
+  <section class="research-section" aria-labelledby="research-title">
+    <div>
+      <p class="eyebrow">RESEARCH SNAPSHOT</p>
+      <h2 id="research-title">Shiori is not competing on speed or audit readiness.</h2>
+    </div>
+    <div class="research-grid">
+      <article>
+        <h3>Automation sells speed</h3>
+        <p>Workflow consultants usually ask what can be automated, ranked by time saved or ROI.</p>
+      </article>
+      <article>
+        <h3>Governance sells audit readiness</h3>
+        <p>Formal AI governance asks whether controls, evidence, and oversight are ready for review.</p>
+      </article>
+      <article>
+        <h3>Shiori focuses on what stays yours</h3>
+        <p>Judgment, voice, review, meaning, and ownership are treated as design boundaries.</p>
+      </article>
+    </div>
+  </section>
+
+  <section class="map-entry" id="why-this-exists" aria-labelledby="map-entry-title">
+    <p class="eyebrow">WHY THIS EXISTS</p>
+    <h2 id="map-entry-title">The reading map is the deeper theory, not the front door.</h2>
+    <p>Below is Shiori's research base: predictive processing, judgment quality, and human-AI decision making. Use it when you want the theory behind why evidence, friction, voice, and ownership belong in the same workflow conversation.</p>
+  </section>
+
+  <section class="workbench" id="reading-map" aria-labelledby="map-hero-title">
     <aside class="intro-panel">
       <div class="lab-tag" aria-label="專案狀態:reading map">INSTRUMENT 003 · READING MAP</div>
-      <h1 id="hero-title">栞<span lang="en">Shiori</span></h1>
+      <h2 id="map-hero-title" class="map-brand">栞<span lang="en">Shiori</span></h2>
       <p class="subtitle">17 份 paper / book,三條路徑,一張用來校準 human-AI decision making 的閱讀地圖。</p>
       <p class="lede">
         這不是書單。它把「人如何判斷 AI」、「直覺何時可信」、「大腦如何做 inference」放到同一張圖上。
@@ -127,7 +327,7 @@
   <div class="dialog-shell">
     <button type="button" class="dialog-close" id="dialog-close" aria-label="關閉 detail panel">×</button>
     <p class="dialog-axis" id="dialog-axis"></p>
-    <h2 id="dialog-title"></h2>
+    <h2 id="dialog-title">Paper detail</h2>
     <p class="dialog-meta" id="dialog-meta"></p>
     <p id="dialog-summary" class="dialog-summary"></p>
 
@@ -138,8 +338,8 @@
         <p id="dialog-meaning"></p>
       </section>
       <section aria-labelledby="dialog-path-title">
-        <h3 id="dialog-path-title">Local markdown</h3>
-        <p class="path-note">目前先保留本機處理後 markdown 路徑。公開部署時不假裝它是可用的遠端連結。</p>
+        <h3 id="dialog-path-title">Source file</h3>
+        <p class="path-note">本機 markdown 路徑。公開部署時不假裝它是可用的遠端連結。</p>
         <div class="path-copy">
           <code id="dialog-path"></code>
           <button type="button" id="copy-path">Copy path</button>

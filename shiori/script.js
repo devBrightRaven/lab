@@ -410,11 +410,68 @@ const copyButton = document.getElementById("copy-path");
 const progressCount = document.getElementById("progress-count");
 const progressFill = document.getElementById("progress-fill");
 const progressNote = document.getElementById("progress-note");
+const selfCheckForm = document.getElementById("self-check-form");
+const selfCheckResult = document.getElementById("self-check-result");
+const selfCheckStatus = document.getElementById("self-check-status");
+const symptomStatus = document.getElementById("symptom-status");
+const symptomDoors = [...document.querySelectorAll("[data-symptom-target]")];
+const resultLayer = document.getElementById("result-layer");
+const resultHappening = document.getElementById("result-happening");
+const resultBoundary = document.getElementById("result-boundary");
+const resultSilent = document.getElementById("result-silent");
 
 let currentMode = "constellation";
 let activeRelation = null;
+let pinnedRelation = null;
+let pinnedPaperId = null;
 let lastFocusedNode = null;
 const understoodPapers = new Set();
+
+const layerOrder = ["automation", "voice", "decision", "team", "life"];
+const selfCheckQuestions = [
+  "check-start",
+  "check-owned",
+  "check-drift",
+  "check-boundary",
+  "check-diagnosis"
+];
+const layerResults = {
+  automation: {
+    label: "Task Automation",
+    color: "var(--layer-automation)",
+    happening: "AI is probably speeding up a process before the process has been inspected. The risk is not the tool; it is making the wrong workflow run faster.",
+    boundary: "Write an AI-only / AI-assist / human-check list for this workflow before adding another automation step.",
+    silent: "Silent Diagnosis may help if you can send the workflow, prompts, outputs, and where human review currently happens."
+  },
+  voice: {
+    label: "Creative Voice",
+    color: "var(--layer-voice)",
+    happening: "AI may be smoothing away stance, taste, or phrasing. The output can be polished while becoming less yours.",
+    boundary: "Draft your core opinion or sentence first, then let AI restructure without changing the stance.",
+    silent: "Silent Diagnosis may help if you can send original writing next to AI-assisted drafts."
+  },
+  decision: {
+    label: "Decision Support",
+    color: "var(--layer-decision)",
+    happening: "AI may be increasing analysis while making commitment harder. The missing piece is often criteria, not more options.",
+    boundary: "Set the decision criteria, risk tolerance, and non-negotiables before asking AI for advice.",
+    silent: "Silent Diagnosis may help if you can send the decision prompt, AI answer, notes, and what still feels unresolved."
+  },
+  team: {
+    label: "Team / Agent Workflow",
+    color: "var(--layer-team)",
+    happening: "The team may have human-in-the-loop steps that are not meaningful review. Approval can become a formality when nobody can verify the output.",
+    boundary: "Name the accountable owner, required review evidence, and stop conditions before accepting AI or agent output.",
+    silent: "Silent Diagnosis may help if you can send the team handoff, agent flow, review step, and approval rule."
+  },
+  life: {
+    label: "Life Transition / Slow Mode",
+    color: "var(--layer-life)",
+    happening: "AI may be making a fragile situation feel too quickly explained. This layer needs structure without outsourcing meaning.",
+    boundary: "Use slow mode: write your own meaning first, ask AI only to organize or reflect, and delay final framing.",
+    silent: "Silent Diagnosis may help only as a written boundary map, not as therapy, coaching, or crisis support."
+  }
+};
 
 function paperById(id) {
   return papers.find((paper) => paper.id === id);
@@ -453,7 +510,9 @@ function setMode(mode) {
 
 function nodeStyle(paper) {
   const meta = axisMeta[paper.axis];
-  return `--node-x:${paper.x}px;--node-y:${paper.y}px;--node-accent:${meta.accent};--node-bg:${meta.bg};--tilt:${paper.tilt};`;
+  const xPercent = ((paper.x / 1080) * 100).toFixed(3);
+  const yPercent = ((paper.y / 760) * 100).toFixed(3);
+  return `--node-x:${xPercent}%;--node-y:${yPercent}%;--node-accent:${meta.accent};--node-bg:${meta.bg};--tilt:${paper.tilt};`;
 }
 
 function nodeButton(paper, options = {}) {
@@ -574,7 +633,7 @@ function renderSequence() {
 
 function renderRelations() {
   relationChips.innerHTML = relations.map((relation) => `
-    <button type="button" class="relation-chip" data-relation-id="${relation.id}" aria-describedby="chip-desc-${relation.id}">
+    <button type="button" class="relation-chip" data-relation-id="${relation.id}" aria-pressed="false" aria-describedby="chip-desc-${relation.id}">
       <span class="relation-title">${escapeHtml(relation.label)}</span>
       <span class="relation-copy" id="chip-desc-${relation.id}">${escapeHtml(relation.copy)}</span>
     </button>
@@ -582,45 +641,89 @@ function renderRelations() {
 
   relationChips.querySelectorAll(".relation-chip").forEach((button) => {
     button.addEventListener("click", () => toggleRelation(button.dataset.relationId));
-    button.addEventListener("focus", () => setRelation(button.dataset.relationId));
+    button.addEventListener("focus", () => previewRelation(button.dataset.relationId));
+    button.addEventListener("blur", () => clearRelationPreview());
   });
 }
 
 function bindSvgRelations() {
   board.querySelectorAll(".connection-group").forEach((group) => {
     group.addEventListener("click", () => toggleRelation(group.dataset.relationId));
-    group.addEventListener("focus", () => setRelation(group.dataset.relationId));
+    group.addEventListener("focus", () => previewRelation(group.dataset.relationId));
+    group.addEventListener("blur", () => clearRelationPreview());
     group.addEventListener("keydown", (event) => {
       if (event.key === "Enter" || event.key === " ") {
         event.preventDefault();
         toggleRelation(group.dataset.relationId);
       }
     });
-    group.addEventListener("mouseenter", () => setRelation(group.dataset.relationId));
-    group.addEventListener("mouseleave", () => clearRelation());
+    group.addEventListener("mouseenter", () => previewRelation(group.dataset.relationId));
+    group.addEventListener("mouseleave", () => clearRelationPreview());
   });
 }
 
 function bindNodeButtons() {
   board.querySelectorAll(".paper-node").forEach((button) => {
-    button.addEventListener("click", () => openPaper(button.dataset.paperId, button));
+    button.addEventListener("click", () => handlePaperNodeClick(button));
   });
 }
 
+function handlePaperNodeClick(button) {
+  const paperId = button.dataset.paperId;
+  if (paperId === pinnedPaperId && understoodPapers.has(paperId)) {
+    unmarkUnderstood(paperId);
+    clearRelationHighlight();
+    return;
+  }
+  openPaper(paperId, button);
+}
+
+function handleMapBoardClick(event) {
+  const interactiveTarget = event.target.closest?.(".paper-node, .connection-group");
+  if (interactiveTarget) return;
+  if (!activeRelation && !pinnedRelation) return;
+  clearRelationHighlight();
+}
+
 function toggleRelation(id) {
-  if (activeRelation === id) {
-    clearRelation();
+  if (pinnedRelation === id) {
+    clearRelationHighlight();
   } else {
-    setRelation(id);
+    setRelation(id, { pinned: true });
   }
 }
 
-function setRelation(id) {
+function setRelation(id, options = {}) {
+  activeRelation = id;
+  if (options.pinned) {
+    pinnedRelation = id;
+    pinnedPaperId = options.sourcePaperId || null;
+  }
+  applyActiveRelation();
+}
+
+function setPaperSelection(id) {
+  activeRelation = null;
+  pinnedRelation = null;
+  pinnedPaperId = id;
+  applyActiveRelation();
+}
+
+function previewRelation(id) {
+  if (pinnedRelation) return;
   activeRelation = id;
   applyActiveRelation();
 }
 
-function clearRelation() {
+function clearRelationPreview() {
+  if (pinnedRelation) return;
+  activeRelation = null;
+  applyActiveRelation();
+}
+
+function clearRelationHighlight() {
+  pinnedRelation = null;
+  pinnedPaperId = null;
   activeRelation = null;
   applyActiveRelation();
 }
@@ -632,6 +735,7 @@ function applyActiveRelation() {
     const isUnlocked = item && (understoodPapers.has(item.from) || understoodPapers.has(item.to));
     el.classList.toggle("is-active", Boolean(activeRelation && el.dataset.relationId === activeRelation));
     el.classList.toggle("is-unlocked", Boolean(isUnlocked));
+    el.setAttribute("aria-pressed", String(pinnedRelation === el.dataset.relationId));
   });
   document.querySelectorAll("[data-paper-id]").forEach((el) => {
     const shouldHighlight = relation && (el.dataset.paperId === relation.from || el.dataset.paperId === relation.to);
@@ -642,7 +746,9 @@ function applyActiveRelation() {
 
 function applyUnderstoodState() {
   document.querySelectorAll("[data-paper-id]").forEach((el) => {
-    el.classList.toggle("is-understood", understoodPapers.has(el.dataset.paperId));
+    const isUnderstood = understoodPapers.has(el.dataset.paperId);
+    el.classList.toggle("is-understood", isUnderstood);
+    el.setAttribute("aria-pressed", String(isUnderstood));
   });
   updateProgress();
 }
@@ -654,6 +760,16 @@ function markUnderstood(id) {
   if (understoodPapers.size > before) {
     const paper = paperById(id);
     progressNote.textContent = `${paper.short} 已理解。迷宮亮起 ${understoodPapers.size} / ${papers.length}。`;
+  }
+}
+
+function unmarkUnderstood(id) {
+  if (!understoodPapers.has(id)) return;
+  understoodPapers.delete(id);
+  applyUnderstoodState();
+  const paper = paperById(id);
+  if (understoodPapers.size > 0 && paper) {
+    progressNote.textContent = `${paper.short} 已取消標記。迷宮亮起 ${understoodPapers.size} / ${papers.length}。`;
   }
 }
 
@@ -685,13 +801,86 @@ function updateMazeFocus() {
   }
 }
 
+function prefersReducedMotion() {
+  return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+}
+
+function selectSymptomDoor(layer) {
+  const result = layerResults[layer];
+  const input = selfCheckForm?.querySelector(`input[name="check-start"][value="${layer}"]`);
+  if (!result || !input) return;
+  input.checked = true;
+  symptomDoors.forEach((door) => {
+    door.classList.toggle("is-selected", door.dataset.symptomTarget === layer);
+  });
+  if (symptomStatus) {
+    symptomStatus.textContent = `${result.label} selected. Continue the self-check below.`;
+  }
+  selfCheckForm.scrollIntoView({
+    behavior: prefersReducedMotion() ? "auto" : "smooth",
+    block: "start"
+  });
+  window.setTimeout(() => input.focus(), prefersReducedMotion() ? 0 : 220);
+}
+
+function scoreSelfCheck(answers) {
+  const scores = Object.fromEntries(layerOrder.map((layer) => [layer, 0]));
+  answers.forEach((answer) => {
+    scores[answer.value] += 1;
+  });
+  return layerOrder.reduce((best, layer) => {
+    return scores[layer] > scores[best] ? layer : best;
+  }, layerOrder[0]);
+}
+
+function showSelfCheckResult(layer) {
+  const result = layerResults[layer];
+  if (!result || !selfCheckResult) return;
+  resultLayer.textContent = result.label;
+  resultHappening.textContent = result.happening;
+  resultBoundary.textContent = result.boundary;
+  resultSilent.textContent = result.silent;
+  selfCheckResult.hidden = false;
+  selfCheckResult.style.setProperty("--result-color", result.color);
+  selfCheckStatus.textContent = `Result: ${result.label}.`;
+  selfCheckResult.focus({ preventScroll: true });
+  selfCheckResult.scrollIntoView({
+    behavior: prefersReducedMotion() ? "auto" : "smooth",
+    block: "nearest"
+  });
+}
+
+function handleSelfCheckSubmit(event) {
+  event.preventDefault();
+  const answers = selfCheckQuestions.map((name) => selfCheckForm.querySelector(`input[name="${name}"]:checked`));
+  const missingIndex = answers.findIndex((answer) => !answer);
+  if (missingIndex !== -1) {
+    const firstOption = selfCheckForm.querySelector(`input[name="${selfCheckQuestions[missingIndex]}"]`);
+    selfCheckStatus.textContent = "Please answer each self-check question before showing a layer.";
+    firstOption?.focus();
+    return;
+  }
+  showSelfCheckResult(scoreSelfCheck(answers));
+}
+
+function resetSelfCheckResult() {
+  if (selfCheckResult) selfCheckResult.hidden = true;
+  if (selfCheckStatus) selfCheckStatus.textContent = "";
+  if (symptomStatus) symptomStatus.textContent = "Pick one door to seed the self-check, or answer from scratch.";
+  symptomDoors.forEach((door) => door.classList.remove("is-selected"));
+}
+
 function openPaper(id, trigger) {
   const paper = paperById(id);
   if (!paper) return;
   lastFocusedNode = trigger || document.activeElement;
   const related = relations.filter((relation) => relation.from === id || relation.to === id);
   markUnderstood(id);
-  if (related.length) setRelation(related[0].id);
+  if (related.length) {
+    setRelation(related[0].id, { pinned: true, sourcePaperId: id });
+  } else {
+    setPaperSelection(id);
+  }
   document.getElementById("dialog-axis").textContent = axisMeta[paper.axis].label;
   document.getElementById("dialog-title").textContent = paper.title;
   document.getElementById("dialog-meta").textContent = `${paper.year} · ${paper.authors} · ${paper.venue}`;
@@ -741,6 +930,23 @@ function escapeHtml(value) {
 modeButtons.forEach((button) => {
   button.addEventListener("click", () => setMode(button.dataset.mode));
 });
+symptomDoors.forEach((door) => {
+  door.addEventListener("click", () => selectSymptomDoor(door.dataset.symptomTarget));
+});
+if (selfCheckForm) {
+  selfCheckForm.addEventListener("submit", handleSelfCheckSubmit);
+  selfCheckForm.addEventListener("reset", () => {
+    window.setTimeout(resetSelfCheckResult, 0);
+  });
+  selfCheckForm.addEventListener("change", (event) => {
+    if (event.target?.name === "check-start") {
+      symptomDoors.forEach((door) => {
+        door.classList.toggle("is-selected", door.dataset.symptomTarget === event.target.value);
+      });
+    }
+  });
+}
+board.addEventListener("click", handleMapBoardClick);
 dialogClose.addEventListener("click", closeDialog);
 copyButton.addEventListener("click", copyCurrentPath);
 dialog.addEventListener("click", (event) => {
