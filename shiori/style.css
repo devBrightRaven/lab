@@ -1102,6 +1102,7 @@ button.secondary-action {
   width: clamp(148px, 16.2%, 174px);
   cursor: pointer;
   position: relative;
+  scroll-margin-top: 88px;
   box-shadow: 0 12px 32px rgba(0, 0, 0, 0.36), inset 0 0 18px rgba(255, 255, 255, 0.035);
   transition: transform 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
 }
@@ -1119,6 +1120,11 @@ button.secondary-action {
   position: absolute;
   left: var(--node-x);
   top: var(--node-y);
+  width: 140px;
+  height: 60px;
+  min-height: 60px;
+  padding: 8px 9px;
+  overflow: hidden;
   transform: translate(-50%, -50%);
 }
 .paper-node:hover,
@@ -1161,6 +1167,19 @@ button.secondary-action {
   font-size: 13px;
   line-height: 1.35;
 }
+.constellation-canvas .paper-meta {
+  font-size: 9.5px;
+  line-height: 1.25;
+  margin-bottom: 3px;
+}
+.constellation-canvas .paper-topic {
+  display: -webkit-box;
+  overflow: hidden;
+  font-size: 11.5px;
+  line-height: 1.22;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
 .paper-step {
   display: inline-flex;
   align-items: center;
@@ -1189,6 +1208,9 @@ button.secondary-action {
   font-size: 10px;
   letter-spacing: 0.08em;
   color: #B6C6DC;
+}
+.constellation-canvas .extended-label {
+  display: none;
 }
 
 .stack-layout,
