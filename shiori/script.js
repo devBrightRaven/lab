@@ -399,6 +399,85 @@ const relations = [
   }
 ];
 
+const i18n = window.SHIORI_I18N || {};
+const translations = i18n.translations || {};
+const implicationTranslations = window.SHIORI_IMPLICATION_I18N || {};
+const defaultLocale = i18n.defaultLocale || "zh-Hant";
+const supportedLocales = i18n.supportedLocales || [defaultLocale];
+const localeStorageKey = "shiori.locale";
+
+function lookup(path, locale = currentLocale) {
+  const source = translations[locale];
+  if (!source) return undefined;
+  return path.split(".").reduce((node, part) => {
+    if (node && Object.prototype.hasOwnProperty.call(node, part)) {
+      return node[part];
+    }
+    return undefined;
+  }, source);
+}
+
+function formatText(value, params = {}) {
+  return String(value).replace(/\{(\w+)\}/g, (_, key) => {
+    return Object.prototype.hasOwnProperty.call(params, key) ? params[key] : `{${key}}`;
+  });
+}
+
+function t(path, params = {}) {
+  const value = lookup(path) ?? lookup(path, defaultLocale) ?? path;
+  return formatText(value, params);
+}
+
+function resolveInitialLocale() {
+  let stored = null;
+  try {
+    stored = window.localStorage?.getItem(localeStorageKey);
+  } catch {
+    stored = null;
+  }
+  if (supportedLocales.includes(stored)) return stored;
+  const browserLocale = navigator.language || "";
+  if (browserLocale.toLowerCase().startsWith("ja")) return "ja";
+  if (browserLocale.toLowerCase().startsWith("zh-cn") || browserLocale.toLowerCase().startsWith("zh-hans")) {
+    return "zh-Hans";
+  }
+  return defaultLocale;
+}
+
+function axisText(axis, field) {
+  return lookup(`axis.${axis}.${field}`) ?? axisMeta[axis]?.[field] ?? "";
+}
+
+function relationText(relation, field) {
+  return lookup(`relations.${relation.id}.${field}`) ?? relation[field] ?? "";
+}
+
+function layerResult(layer) {
+  return {
+    label: t(`layers.${layer}.label`),
+    color: layerResults[layer]?.color || "var(--axis-a)",
+    happening: t(`layers.${layer}.happening`),
+    boundary: t(`layers.${layer}.boundary`),
+    silent: t(`layers.${layer}.silent`)
+  };
+}
+
+function paperText(paper, field) {
+  return lookup(`papers.${paper.id}.${field}`) ?? paper[field] ?? "";
+}
+
+function paperImplicationType(paper) {
+  if (paper.implicationType === "Source implication") return t("implication.source");
+  return t("implication.extended");
+}
+
+function implicationField(paperId, project, field, data) {
+  return implicationTranslations[currentLocale]?.[paperId]?.[project]?.[field]
+    ?? implicationTranslations[defaultLocale]?.[paperId]?.[project]?.[field]
+    ?? data?.[field]
+    ?? "";
+}
+
 const board = document.getElementById("map-board");
 const mapTitle = document.getElementById("map-title");
 const statusEl = document.getElementById("map-status");
@@ -419,12 +498,16 @@ const resultLayer = document.getElementById("result-layer");
 const resultHappening = document.getElementById("result-happening");
 const resultBoundary = document.getElementById("result-boundary");
 const resultSilent = document.getElementById("result-silent");
+const localeButtons = [...document.querySelectorAll("[data-locale]")];
 
+let currentLocale = resolveInitialLocale();
 let currentMode = "constellation";
 let activeRelation = null;
 let pinnedRelation = null;
 let pinnedPaperId = null;
 let lastFocusedNode = null;
+let currentSelfCheckLayer = null;
+let currentDialogPaperId = null;
 const understoodPapers = new Set();
 
 const layerOrder = ["automation", "voice", "decision", "team", "life"];
@@ -481,6 +564,62 @@ function orderedPapers() {
   return readingOrder.map(paperById).filter(Boolean);
 }
 
+function applyStaticTranslations() {
+  document.documentElement.lang = i18n.htmlLang?.[currentLocale] || currentLocale;
+  document.title = t("meta.title");
+  const metaDescription = document.querySelector('meta[name="description"]');
+  if (metaDescription) {
+    metaDescription.setAttribute("content", t("meta.description"));
+  }
+  document.querySelectorAll("[data-i18n]").forEach((element) => {
+    element.textContent = t(element.dataset.i18n);
+  });
+  document.querySelectorAll("[data-i18n-aria-label]").forEach((element) => {
+    element.setAttribute("aria-label", t(element.dataset.i18nAriaLabel));
+  });
+}
+
+function updateLocaleButtons() {
+  localeButtons.forEach((button) => {
+    const isActive = button.dataset.locale === currentLocale;
+    button.classList.toggle("is-active", isActive);
+    button.setAttribute("aria-pressed", String(isActive));
+  });
+}
+
+function capitalize(value) {
+  return value.charAt(0).toUpperCase() + value.slice(1);
+}
+
+function updateModeText() {
+  mapTitle.textContent = t(`map.title${capitalize(currentMode)}`);
+  statusEl.textContent = t(`map.status${capitalize(currentMode)}`);
+}
+
+function applyLocale(locale, options = {}) {
+  if (!supportedLocales.includes(locale)) return;
+  currentLocale = locale;
+  if (options.persist) {
+    try {
+      window.localStorage?.setItem(localeStorageKey, locale);
+    } catch {
+      // Locale still changes for this page view when localStorage is unavailable.
+    }
+  }
+  applyStaticTranslations();
+  updateLocaleButtons();
+  updateModeText();
+  renderRelations();
+  renderBoard();
+  updateProgress();
+  if (currentSelfCheckLayer && !selfCheckResult.hidden) {
+    renderSelfCheckResult(currentSelfCheckLayer);
+  }
+  if (currentDialogPaperId && dialog.open) {
+    renderDialogPaper(currentDialogPaperId);
+  }
+}
+
 function setMode(mode) {
   currentMode = mode;
   document.body.dataset.view = mode;
@@ -489,18 +628,7 @@ function setMode(mode) {
     button.classList.toggle("is-active", isActive);
     button.setAttribute("aria-pressed", String(isActive));
   });
-  const statusText = {
-    constellation: "目前顯示:星圖。點任一節點查看 detail。",
-    stack: "目前顯示:三軸堆疊。每一軸以時間順序排列。",
-    sequence: "目前顯示:推薦順序。前 8 步是 source map 指定路徑,其餘為延伸。"
-  };
-  const titleText = {
-    constellation: "三軸 constellation",
-    stack: "三軸堆疊",
-    sequence: "推薦閱讀順序"
-  };
-  mapTitle.textContent = titleText[mode];
-  statusEl.textContent = statusText[mode];
+  updateModeText();
   board.classList.add("is-changing");
   window.setTimeout(() => {
     renderBoard();
@@ -518,12 +646,12 @@ function nodeStyle(paper) {
 function nodeButton(paper, options = {}) {
   const sequenceStep = options.sequenceStep ? `<span class="paper-step">${options.sequenceStep}</span>` : "";
   const reason = options.reason ? `<span class="sequence-reason">${escapeHtml(options.reason)}</span>` : "";
-  const extension = paper.implicationType === "延伸推論" ? `<span class="extended-label">延伸推論</span>` : "";
+  const extension = paper.implicationType === "延伸推論" ? `<span class="extended-label">${escapeHtml(t("implication.extended"))}</span>` : "";
   const understoodClass = understoodPapers.has(paper.id) ? " is-understood" : "";
   return `
     <button type="button" class="paper-node${understoodClass}" data-paper-id="${paper.id}" data-axis="${paper.axis}" style="${nodeStyle(paper)}">
       <span class="paper-meta">${sequenceStep}${escapeHtml(paper.short)}</span>
-      <span class="paper-topic">${escapeHtml(paper.topic)}</span>
+      <span class="paper-topic">${escapeHtml(paperText(paper, "topic"))}</span>
       ${reason}
       ${extension}
     </button>
@@ -548,9 +676,11 @@ function renderConstellation() {
   const lines = relations.map((relation) => {
     const from = paperById(relation.from);
     const to = paperById(relation.to);
+    const label = relationText(relation, "label");
+    const copy = relationText(relation, "copy");
     return `
-      <g class="connection-group" tabindex="0" role="button" data-relation-id="${relation.id}" aria-label="${escapeHtml(relation.label)}" aria-describedby="relation-desc-${relation.id}">
-        <title>${escapeHtml(relation.label)}: ${escapeHtml(relation.copy)}</title>
+      <g class="connection-group" tabindex="0" role="button" data-relation-id="${relation.id}" aria-label="${escapeHtml(label)}" aria-describedby="relation-desc-${relation.id}">
+        <title>${escapeHtml(label)}: ${escapeHtml(copy)}</title>
         <path class="connection-line" d="${connectionPath(from, to)}"></path>
       </g>
     `;
@@ -558,7 +688,7 @@ function renderConstellation() {
 
   board.innerHTML = `
     <div class="constellation-canvas">
-      <svg class="axis-svg" viewBox="0 0 1080 760" aria-label="三軸與跨軸連線">
+      <svg class="axis-svg" viewBox="0 0 1080 760" aria-label="${escapeHtml(t("map.axisSvgLabel"))}">
         <path class="brain-outline" d="M118 382 C68 252 142 108 294 82 C390 22 518 56 574 124 C686 74 836 102 920 206 C1034 294 1004 472 880 540 C842 676 686 720 548 660 C420 736 250 688 214 562 C158 536 128 476 118 382 Z"></path>
         <path class="ridge" d="M174 340 C250 268 356 268 430 334 C494 392 584 390 658 328 C732 266 838 280 904 354"></path>
         <path class="ridge" d="M196 458 C292 420 354 474 428 520 C512 572 600 536 672 480 C746 424 826 448 894 506"></path>
@@ -569,16 +699,16 @@ function renderConstellation() {
         <path class="axis-line axis-line-c" d="M506 344 C650 422 822 558 952 692"></path>
         ${lines}
       </svg>
-      <span class="axis-label label-a">Axis A · predictive mind</span>
-      <span class="axis-label label-b">Axis B · judgment</span>
-      <span class="axis-label label-c">Axis C · XAI</span>
+      <span class="axis-label label-a">${escapeHtml(t("map.labelA"))}</span>
+      <span class="axis-label label-b">${escapeHtml(t("map.labelB"))}</span>
+      <span class="axis-label label-c">${escapeHtml(t("map.labelC"))}</span>
       <div class="center-insight" aria-hidden="true">
-        <span class="center-kicker">MAZE FOCUS</span>
-        <strong id="maze-focus-title">給 evidence,不給結論</strong>
-        <span id="maze-focus-copy">AI 的責任是 calibrate posterior,不是替使用者完成判斷。</span>
+        <span class="center-kicker">${escapeHtml(t("map.mazeKicker"))}</span>
+        <strong id="maze-focus-title">${escapeHtml(t("map.mazeTitle"))}</strong>
+        <span id="maze-focus-copy">${escapeHtml(t("map.mazeCopy"))}</span>
       </div>
       ${papers.map((paper) => nodeButton(paper)).join("")}
-      ${relations.map((relation) => `<p id="relation-desc-${relation.id}" class="visually-hidden">${escapeHtml(relation.label)}:${escapeHtml(relation.copy)}</p>`).join("")}
+      ${relations.map((relation) => `<p id="relation-desc-${relation.id}" class="visually-hidden">${escapeHtml(relationText(relation, "label"))}:${escapeHtml(relationText(relation, "copy"))}</p>`).join("")}
     </div>
   `;
   bindSvgRelations();
@@ -603,7 +733,7 @@ function renderStack() {
         const group = papers.filter((paper) => paper.axis === axis);
         return `
           <section class="axis-group" aria-labelledby="axis-${axis}">
-            <h3 id="axis-${axis}">${escapeHtml(meta.label)} · ${escapeHtml(meta.title)}</h3>
+            <h3 id="axis-${axis}">${escapeHtml(axisText(axis, "label"))} · ${escapeHtml(axisText(axis, "title"))}</h3>
             <div class="axis-grid">
               ${group.map((paper) => nodeButton(paper)).join("")}
             </div>
@@ -618,11 +748,11 @@ function renderSequence() {
   board.innerHTML = `
     <div class="sequence-layout">
       <section class="axis-group" aria-labelledby="sequence-heading">
-        <h3 id="sequence-heading">Recommended path · 1 to 8, then extension</h3>
+        <h3 id="sequence-heading">${escapeHtml(t("map.sequenceHeading"))}</h3>
         <div class="sequence-grid">
           ${orderedPapers().map((paper) => {
             const step = paper.sequence || "8+";
-            const reason = paper.reason || "延伸閱讀:依興趣補完三軸背景,不用照唯一順序讀。";
+            const reason = paperText(paper, "reason") || t("map.sequenceDefaultReason");
             return nodeButton(paper, { sequenceStep: step, reason });
           }).join("")}
         </div>
@@ -634,8 +764,8 @@ function renderSequence() {
 function renderRelations() {
   relationChips.innerHTML = relations.map((relation) => `
     <button type="button" class="relation-chip" data-relation-id="${relation.id}" aria-pressed="false" aria-describedby="chip-desc-${relation.id}">
-      <span class="relation-title">${escapeHtml(relation.label)}</span>
-      <span class="relation-copy" id="chip-desc-${relation.id}">${escapeHtml(relation.copy)}</span>
+      <span class="relation-title">${escapeHtml(relationText(relation, "label"))}</span>
+      <span class="relation-copy" id="chip-desc-${relation.id}">${escapeHtml(relationText(relation, "copy"))}</span>
     </button>
   `).join("");
 
@@ -759,7 +889,11 @@ function markUnderstood(id) {
   applyUnderstoodState();
   if (understoodPapers.size > before) {
     const paper = paperById(id);
-    progressNote.textContent = `${paper.short} 已理解。迷宮亮起 ${understoodPapers.size} / ${papers.length}。`;
+    progressNote.textContent = t("map.progressMarked", {
+      paper: paper.short,
+      count: understoodPapers.size,
+      total: papers.length
+    });
   }
 }
 
@@ -769,7 +903,11 @@ function unmarkUnderstood(id) {
   applyUnderstoodState();
   const paper = paperById(id);
   if (understoodPapers.size > 0 && paper) {
-    progressNote.textContent = `${paper.short} 已取消標記。迷宮亮起 ${understoodPapers.size} / ${papers.length}。`;
+    progressNote.textContent = t("map.progressUnmarked", {
+      paper: paper.short,
+      count: understoodPapers.size,
+      total: papers.length
+    });
   }
 }
 
@@ -781,9 +919,9 @@ function updateProgress() {
   progressCount.textContent = `${count}/${papers.length}`;
   progressFill.style.width = `${percent}%`;
   if (count === 0) {
-    progressNote.textContent = "迷宮還是暗的。每理解一個節點,一段路會亮起。";
+    progressNote.textContent = t("map.progressEmpty");
   } else if (count === papers.length) {
-    progressNote.textContent = "全部節點已理解。整張地圖已經打通。";
+    progressNote.textContent = t("map.progressComplete");
   }
 }
 
@@ -793,11 +931,11 @@ function updateMazeFocus() {
   if (!title || !copy) return;
   const relation = relations.find((item) => item.id === activeRelation);
   if (relation) {
-    title.textContent = relation.label;
-    copy.textContent = relation.copy;
+    title.textContent = relationText(relation, "label");
+    copy.textContent = relationText(relation, "copy");
   } else {
-    title.textContent = "給 evidence,不給結論";
-    copy.textContent = "AI 的責任是 calibrate posterior,不是替使用者完成判斷。";
+    title.textContent = t("map.mazeTitle");
+    copy.textContent = t("map.mazeCopy");
   }
 }
 
@@ -806,7 +944,7 @@ function prefersReducedMotion() {
 }
 
 function selectSymptomDoor(layer) {
-  const result = layerResults[layer];
+  const result = layerResult(layer);
   const input = selfCheckForm?.querySelector(`input[name="check-start"][value="${layer}"]`);
   if (!result || !input) return;
   input.checked = true;
@@ -814,7 +952,7 @@ function selectSymptomDoor(layer) {
     door.classList.toggle("is-selected", door.dataset.symptomTarget === layer);
   });
   if (symptomStatus) {
-    symptomStatus.textContent = `${result.label} selected. Continue the self-check below.`;
+    symptomStatus.textContent = t("symptoms.selected", { layer: result.label });
   }
   selfCheckForm.scrollIntoView({
     behavior: prefersReducedMotion() ? "auto" : "smooth",
@@ -834,20 +972,25 @@ function scoreSelfCheck(answers) {
 }
 
 function showSelfCheckResult(layer) {
-  const result = layerResults[layer];
-  if (!result || !selfCheckResult) return;
-  resultLayer.textContent = result.label;
-  resultHappening.textContent = result.happening;
-  resultBoundary.textContent = result.boundary;
-  resultSilent.textContent = result.silent;
+  if (!selfCheckResult) return;
+  currentSelfCheckLayer = layer;
+  renderSelfCheckResult(layer);
   selfCheckResult.hidden = false;
-  selfCheckResult.style.setProperty("--result-color", result.color);
-  selfCheckStatus.textContent = `Result: ${result.label}.`;
   selfCheckResult.focus({ preventScroll: true });
   selfCheckResult.scrollIntoView({
     behavior: prefersReducedMotion() ? "auto" : "smooth",
     block: "nearest"
   });
+}
+
+function renderSelfCheckResult(layer) {
+  const result = layerResult(layer);
+  resultLayer.textContent = result.label;
+  resultHappening.textContent = result.happening;
+  resultBoundary.textContent = result.boundary;
+  resultSilent.textContent = result.silent;
+  selfCheckResult.style.setProperty("--result-color", result.color);
+  selfCheckStatus.textContent = t("selfCheck.resultStatus", { layer: result.label });
 }
 
 function handleSelfCheckSubmit(event) {
@@ -856,7 +999,7 @@ function handleSelfCheckSubmit(event) {
   const missingIndex = answers.findIndex((answer) => !answer);
   if (missingIndex !== -1) {
     const firstOption = selfCheckForm.querySelector(`input[name="${selfCheckQuestions[missingIndex]}"]`);
-    selfCheckStatus.textContent = "Please answer each self-check question before showing a layer.";
+    selfCheckStatus.textContent = t("selfCheck.missing");
     firstOption?.focus();
     return;
   }
@@ -865,8 +1008,9 @@ function handleSelfCheckSubmit(event) {
 
 function resetSelfCheckResult() {
   if (selfCheckResult) selfCheckResult.hidden = true;
+  currentSelfCheckLayer = null;
   if (selfCheckStatus) selfCheckStatus.textContent = "";
-  if (symptomStatus) symptomStatus.textContent = "Pick one door to seed the self-check, or answer from scratch.";
+  if (symptomStatus) symptomStatus.textContent = t("symptoms.statusDefault");
   symptomDoors.forEach((door) => door.classList.remove("is-selected"));
 }
 
@@ -874,6 +1018,7 @@ function openPaper(id, trigger) {
   const paper = paperById(id);
   if (!paper) return;
   lastFocusedNode = trigger || document.activeElement;
+  currentDialogPaperId = id;
   const related = relations.filter((relation) => relation.from === id || relation.to === id);
   markUnderstood(id);
   if (related.length) {
@@ -881,20 +1026,57 @@ function openPaper(id, trigger) {
   } else {
     setPaperSelection(id);
   }
-  document.getElementById("dialog-axis").textContent = axisMeta[paper.axis].label;
+  renderDialogPaper(id);
+  dialog.showModal();
+  dialogClose.focus();
+}
+
+function renderDialogPaper(id) {
+  const paper = paperById(id);
+  if (!paper) return;
+  const related = relations.filter((relation) => relation.from === id || relation.to === id);
+  document.getElementById("dialog-axis").textContent = axisText(paper.axis, "label");
   document.getElementById("dialog-title").textContent = paper.title;
   document.getElementById("dialog-meta").textContent = `${paper.year} · ${paper.authors} · ${paper.venue}`;
-  document.getElementById("dialog-summary").textContent = paper.description;
-  document.getElementById("dialog-meaning-source").textContent = paper.implicationType;
-  document.getElementById("dialog-meaning").textContent = paper.implication;
+  document.getElementById("dialog-summary").textContent = paperText(paper, "description");
+  document.getElementById("dialog-meaning-source").textContent = t("dialog.meaningSource");
+
+  renderImplicationBlock(id, "beacon");
+  renderImplicationBlock(id, "shikigarasu");
+
   document.getElementById("dialog-path").textContent = paper.path;
   document.getElementById("copy-status").textContent = "";
   const relatedContainer = document.getElementById("dialog-related");
   relatedContainer.innerHTML = related.length
-    ? related.map((relation) => `<div class="related-item"><strong>${escapeHtml(relation.label)}</strong>${escapeHtml(relation.copy)}</div>`).join("")
-    : `<div class="related-item">這篇目前沒有預定義跨軸連線;請回到地圖看同軸脈絡。</div>`;
-  dialog.showModal();
-  dialogClose.focus();
+    ? related.map((relation) => `<div class="related-item"><strong>${escapeHtml(relationText(relation, "label"))}</strong>${escapeHtml(relationText(relation, "copy"))}</div>`).join("")
+    : `<div class="related-item">${escapeHtml(t("dialog.noRelation"))}</div>`;
+}
+
+function renderImplicationBlock(paperId, project) {
+  const data = paperImplications && paperImplications[paperId] && paperImplications[paperId][project];
+  const textEl = document.getElementById(`dialog-${project}-text`);
+  const quoteEl = document.getElementById(`dialog-${project}-quote`);
+  const whereEl = document.getElementById(`dialog-${project}-where`);
+  const evidenceEl = document.getElementById(`dialog-${project}-evidence`);
+  const emptyEl = document.getElementById(`dialog-${project}-empty`);
+
+  if (!textEl || !quoteEl || !whereEl || !evidenceEl) return;
+
+  if (data && data.has) {
+    textEl.textContent = implicationField(paperId, project, "text", data);
+    textEl.hidden = false;
+    quoteEl.textContent = data.quote;
+    whereEl.textContent = implicationField(paperId, project, "where", data);
+    evidenceEl.hidden = false;
+    if (emptyEl) emptyEl.hidden = true;
+  } else {
+    textEl.textContent = "";
+    textEl.hidden = true;
+    quoteEl.textContent = "";
+    whereEl.textContent = "";
+    evidenceEl.hidden = true;
+    if (emptyEl) emptyEl.hidden = false;
+  }
 }
 
 function closeDialog() {
@@ -902,6 +1084,7 @@ function closeDialog() {
 }
 
 function restoreDialogFocus() {
+  currentDialogPaperId = null;
   if (lastFocusedNode && typeof lastFocusedNode.focus === "function") {
     lastFocusedNode.focus();
   }
@@ -912,9 +1095,9 @@ async function copyCurrentPath() {
   const status = document.getElementById("copy-status");
   try {
     await navigator.clipboard.writeText(text);
-    status.textContent = "已複製 local path。";
+    status.textContent = t("dialog.copySuccess");
   } catch {
-    status.textContent = "無法自動複製;請手動選取上方 path。";
+    status.textContent = t("dialog.copyFail");
   }
 }
 
@@ -929,6 +1112,9 @@ function escapeHtml(value) {
 
 modeButtons.forEach((button) => {
   button.addEventListener("click", () => setMode(button.dataset.mode));
+});
+localeButtons.forEach((button) => {
+  button.addEventListener("click", () => applyLocale(button.dataset.locale, { persist: true }));
 });
 symptomDoors.forEach((door) => {
   door.addEventListener("click", () => selectSymptomDoor(door.dataset.symptomTarget));
@@ -954,5 +1140,4 @@ dialog.addEventListener("click", (event) => {
 });
 dialog.addEventListener("close", restoreDialogFocus);
 
-renderRelations();
-renderBoard();
+applyLocale(currentLocale);

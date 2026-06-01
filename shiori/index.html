@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="zh-Hant">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>栞 Shiori · AI-era Self-Check · Lab</title>
-<meta name="description" content="Shiori 栞 — AI 時代的自我覺察入口:找出 workflow 裡該保留給人的判斷、聲音、review、意義與 ownership。">
+<meta name="description" content="Shiori 栞 — an AI-era self-awareness entrance for finding which judgment, voice, review, meaning, and ownership should stay human in your workflow.">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' rx='3' fill='%232563EB'/%3E%3Cpath d='M5 3h6v10L8 11l-3 2z' fill='white'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -13,37 +13,52 @@
 </head>
 <body data-view="constellation">
 
-<a class="skip-link" href="#main-content">跳到主要內容</a>
+<noscript>
+  <div class="noscript-banner" role="region" aria-label="Static fallback notice">
+    <p><strong>JavaScript is off.</strong> Shiori's self-check, reading map view modes, and paper inspector dialog require JavaScript. The page below still lists every section as plain HTML, including the 17 reading-list entries (in DOM order: axis A → B → C, each with title, year, author, and local markdown path).</p>
+    <p><strong>JavaScript 已關。</strong>自我檢測、reading map 三種顯示模式、paper 詳細視窗都需要 JS。下面所有內容仍以純 HTML 呈現,17 篇 reading-list(依軸 A → B → C 順序)都附完整標題、年份、作者與本機 markdown 路徑。</p>
+  </div>
+</noscript>
 
-<nav class="top-nav" aria-label="Hierarchical navigation">
-  <a class="back-link" href="../" aria-label="回到 Lab 首頁">← Lab</a>
-  <div class="breadcrumb"><strong lang="ja">栞</strong> · AI SELF-CHECK</div>
+<a class="skip-link" href="#main-content" data-i18n="nav.skip">跳到主要內容</a>
+
+<nav class="top-nav" aria-label="Hierarchical navigation" data-i18n-aria-label="nav.label">
+  <a class="back-link" href="../" aria-label="回到 Lab 首頁" data-i18n-aria-label="nav.backLabel">← Lab</a>
+  <div class="nav-right">
+    <div class="language-switcher" role="group" aria-label="切換語言" data-i18n-aria-label="nav.languageLabel">
+      <button type="button" class="language-button is-active" data-locale="en" aria-pressed="true">EN</button>
+      <button type="button" class="language-button" data-locale="ja" aria-pressed="false">JA</button>
+      <button type="button" class="language-button" data-locale="zh-Hans" aria-pressed="false">简</button>
+      <button type="button" class="language-button" data-locale="zh-Hant" aria-pressed="false">繁</button>
+    </div>
+    <div class="breadcrumb"><strong lang="ja">栞</strong> · <span data-i18n="nav.breadcrumb">AI SELF-CHECK</span></div>
+  </div>
 </nav>
 
 <main id="main-content" class="wrap" tabindex="-1">
 
   <section class="market-hero" aria-labelledby="hero-title">
     <div class="hero-copy-block">
-      <p class="lab-tag" aria-label="專案狀態:self-check">INSTRUMENT 003 · SELF-CHECK</p>
-      <h1 id="hero-title" class="hero-title">AI is already in your workflow. What should stay yours?</h1>
-      <p class="hero-lede">
+      <p class="lab-tag" aria-label="專案狀態:self-check" data-i18n="hero.labTag" data-i18n-aria-label="hero.labTagLabel">INSTRUMENT 003 · SELF-CHECK</p>
+      <h1 id="hero-title" class="hero-title" data-i18n="hero.title">AI is already in your workflow. What should stay yours?</h1>
+      <p class="hero-lede" data-i18n="hero.lede">
         Shiori helps you notice where AI is useful, where it may be quietly taking over judgment, and which boundary to try before speed turns into drift.
       </p>
-      <div class="hero-actions" aria-label="主要操作">
-        <a class="primary-action" href="#self-check">Start self-check</a>
-        <a class="secondary-action" href="#reading-map">Open reading map</a>
+      <div class="hero-actions" aria-label="主要操作" data-i18n-aria-label="hero.actionsLabel">
+        <a class="primary-action" href="#self-check" data-i18n="hero.start">Start self-check</a>
+        <a class="secondary-action" href="#reading-map" data-i18n="hero.map">Open reading map</a>
       </div>
     </div>
     <div class="hero-instrument" aria-labelledby="ownership-title">
       <div class="ownership-panel">
-        <p class="eyebrow">OWNERSHIP SIGNAL</p>
-        <h2 id="ownership-title">Keep these human-first.</h2>
+        <p class="eyebrow" data-i18n="ownership.eyebrow">OWNERSHIP SIGNAL</p>
+        <h2 id="ownership-title" data-i18n="ownership.title">Keep these human-first.</h2>
         <ul class="ownership-list">
-          <li data-layer="automation"><span>Review</span><strong>Can this be checked fast?</strong></li>
-          <li data-layer="voice"><span>Voice</span><strong>Does it still sound like you?</strong></li>
-          <li data-layer="decision"><span>Judgment</span><strong>Who owns the final choice?</strong></li>
-          <li data-layer="team"><span>Ownership</span><strong>Is review more than approval?</strong></li>
-          <li data-layer="life"><span>Meaning</span><strong>Should this move slower?</strong></li>
+          <li data-layer="automation"><span data-i18n="ownership.automationLabel">Review</span><strong data-i18n="ownership.automationText">Can this be checked fast?</strong></li>
+          <li data-layer="voice"><span data-i18n="ownership.voiceLabel">Voice</span><strong data-i18n="ownership.voiceText">Does it still sound like you?</strong></li>
+          <li data-layer="decision"><span data-i18n="ownership.decisionLabel">Judgment</span><strong data-i18n="ownership.decisionText">Who owns the final choice?</strong></li>
+          <li data-layer="team"><span data-i18n="ownership.teamLabel">Ownership</span><strong data-i18n="ownership.teamText">Is review more than approval?</strong></li>
+          <li data-layer="life"><span data-i18n="ownership.lifeLabel">Meaning</span><strong data-i18n="ownership.lifeText">Should this move slower?</strong></li>
         </ul>
       </div>
     </div>
@@ -52,31 +67,31 @@
   <section class="symptom-section" id="symptom-doors" aria-labelledby="symptom-title">
     <div class="section-heading public-heading">
       <div>
-        <p class="eyebrow">SYMPTOM DOORS</p>
-        <h2 id="symptom-title">Start from the sentence that already feels true.</h2>
+        <p class="eyebrow" data-i18n="symptoms.eyebrow">SYMPTOM DOORS</p>
+        <h2 id="symptom-title" data-i18n="symptoms.title">Start from the sentence that already feels true.</h2>
       </div>
-      <p class="map-status" id="symptom-status" aria-live="polite">Pick one door to seed the self-check, or answer from scratch.</p>
+      <p class="map-status" id="symptom-status" aria-live="polite" data-i18n="symptoms.statusDefault">Pick one door to seed the self-check, or answer from scratch.</p>
     </div>
-    <div class="symptom-grid" aria-label="五個 Shiori 入口">
+    <div class="symptom-grid" aria-label="五個 Shiori 入口" data-i18n-aria-label="symptoms.gridLabel">
       <button type="button" class="symptom-door layer-voice" data-symptom-target="voice" aria-controls="self-check-form">
-        <span>01 · Creative Voice</span>
-        <strong>I produce more, but it sounds less like me.</strong>
+        <span data-i18n="symptoms.voiceLabel">01 · Creative Voice</span>
+        <strong data-i18n="symptoms.voiceText">I produce more, but it sounds less like me.</strong>
       </button>
       <button type="button" class="symptom-door layer-decision" data-symptom-target="decision" aria-controls="self-check-form">
-        <span>02 · Decision Support</span>
-        <strong>I ask AI quickly, but deciding feels harder.</strong>
+        <span data-i18n="symptoms.decisionLabel">02 · Decision Support</span>
+        <strong data-i18n="symptoms.decisionText">I ask AI quickly, but deciding feels harder.</strong>
       </button>
       <button type="button" class="symptom-door layer-team" data-symptom-target="team" aria-controls="self-check-form">
-        <span>03 · Team / Agent Workflow</span>
-        <strong>My team moves faster, but review feels like a formality.</strong>
+        <span data-i18n="symptoms.teamLabel">03 · Team / Agent Workflow</span>
+        <strong data-i18n="symptoms.teamText">My team moves faster, but review feels like a formality.</strong>
       </button>
       <button type="button" class="symptom-door layer-life" data-symptom-target="life" aria-controls="self-check-form">
-        <span>04 · Life Transition / Slow Mode</span>
-        <strong>I am in a life transition and do not want AI to define the meaning.</strong>
+        <span data-i18n="symptoms.lifeLabel">04 · Life Transition / Slow Mode</span>
+        <strong data-i18n="symptoms.lifeText">I am in a life transition and do not want AI to define the meaning.</strong>
       </button>
       <button type="button" class="symptom-door layer-automation" data-symptom-target="automation" aria-controls="self-check-form">
-        <span>05 · Task Automation</span>
-        <strong>I only wanted automation, but I may be accelerating the wrong process.</strong>
+        <span data-i18n="symptoms.automationLabel">05 · Task Automation</span>
+        <strong data-i18n="symptoms.automationText">I only wanted automation, but I may be accelerating the wrong process.</strong>
       </button>
     </div>
   </section>
@@ -84,185 +99,185 @@
   <section class="self-check-section" id="self-check" aria-labelledby="self-check-title">
     <div class="section-heading public-heading">
       <div>
-        <p class="eyebrow">SHIORI SELF-CHECK</p>
-        <h2 id="self-check-title">Find your current AI drift layer.</h2>
+        <p class="eyebrow" data-i18n="selfCheck.eyebrow">SHIORI SELF-CHECK</p>
+        <h2 id="self-check-title" data-i18n="selfCheck.title">Find your current AI drift layer.</h2>
       </div>
-      <p class="map-status">Local only. No login, email, network call, or saved result.</p>
+      <p class="map-status" data-i18n="selfCheck.local">Local only. No login, email, network call, or saved result.</p>
     </div>
     <div class="self-check-layout">
       <form class="self-check-form" id="self-check-form" novalidate>
         <fieldset class="check-question">
-          <legend>1. Which sentence is closest today?</legend>
-          <label class="check-option layer-voice"><input type="radio" name="check-start" value="voice"><span>I produce more, but it sounds less like me.</span></label>
-          <label class="check-option layer-decision"><input type="radio" name="check-start" value="decision"><span>I ask AI quickly, but deciding feels harder.</span></label>
-          <label class="check-option layer-team"><input type="radio" name="check-start" value="team"><span>My team moves faster, but review feels like a formality.</span></label>
-          <label class="check-option layer-life"><input type="radio" name="check-start" value="life"><span>I am in a life transition and do not want AI to define the meaning.</span></label>
-          <label class="check-option layer-automation"><input type="radio" name="check-start" value="automation"><span>I only wanted automation, but I may be accelerating the wrong process.</span></label>
+          <legend data-i18n="selfCheck.q1Legend">1. Which sentence is closest today?</legend>
+          <label class="check-option layer-voice"><input type="radio" name="check-start" value="voice"><span data-i18n="selfCheck.startVoice">I produce more, but it sounds less like me.</span></label>
+          <label class="check-option layer-decision"><input type="radio" name="check-start" value="decision"><span data-i18n="selfCheck.startDecision">I ask AI quickly, but deciding feels harder.</span></label>
+          <label class="check-option layer-team"><input type="radio" name="check-start" value="team"><span data-i18n="selfCheck.startTeam">My team moves faster, but review feels like a formality.</span></label>
+          <label class="check-option layer-life"><input type="radio" name="check-start" value="life"><span data-i18n="selfCheck.startLife">I am in a life transition and do not want AI to define the meaning.</span></label>
+          <label class="check-option layer-automation"><input type="radio" name="check-start" value="automation"><span data-i18n="selfCheck.startAutomation">I only wanted automation, but I may be accelerating the wrong process.</span></label>
         </fieldset>
 
         <fieldset class="check-question">
-          <legend>2. What most needs to stay yours?</legend>
-          <label class="check-option layer-automation"><input type="radio" name="check-owned" value="automation"><span>The process design before AI speeds it up.</span></label>
-          <label class="check-option layer-voice"><input type="radio" name="check-owned" value="voice"><span>The stance, taste, and phrasing that make the work mine.</span></label>
-          <label class="check-option layer-decision"><input type="radio" name="check-owned" value="decision"><span>The final criteria for choosing one path over another.</span></label>
-          <label class="check-option layer-team"><input type="radio" name="check-owned" value="team"><span>The reviewer, approver, and accountable owner.</span></label>
-          <label class="check-option layer-life"><input type="radio" name="check-owned" value="life"><span>The meaning of a major personal change.</span></label>
+          <legend data-i18n="selfCheck.q2Legend">2. What most needs to stay yours?</legend>
+          <label class="check-option layer-automation"><input type="radio" name="check-owned" value="automation"><span data-i18n="selfCheck.ownedAutomation">The process design before AI speeds it up.</span></label>
+          <label class="check-option layer-voice"><input type="radio" name="check-owned" value="voice"><span data-i18n="selfCheck.ownedVoice">The stance, taste, and phrasing that make the work mine.</span></label>
+          <label class="check-option layer-decision"><input type="radio" name="check-owned" value="decision"><span data-i18n="selfCheck.ownedDecision">The final criteria for choosing one path over another.</span></label>
+          <label class="check-option layer-team"><input type="radio" name="check-owned" value="team"><span data-i18n="selfCheck.ownedTeam">The reviewer, approver, and accountable owner.</span></label>
+          <label class="check-option layer-life"><input type="radio" name="check-owned" value="life"><span data-i18n="selfCheck.ownedLife">The meaning of a major personal change.</span></label>
         </fieldset>
 
         <fieldset class="check-question">
-          <legend>3. Where does the drift show up?</legend>
-          <label class="check-option layer-automation"><input type="radio" name="check-drift" value="automation"><span>A messy workflow now moves faster than I can inspect it.</span></label>
-          <label class="check-option layer-voice"><input type="radio" name="check-drift" value="voice"><span>Polished output loses my edge or opinion.</span></label>
-          <label class="check-option layer-decision"><input type="radio" name="check-drift" value="decision"><span>AI gives more options, but not more clarity.</span></label>
-          <label class="check-option layer-team"><input type="radio" name="check-drift" value="team"><span>People approve outputs they cannot realistically verify.</span></label>
-          <label class="check-option layer-life"><input type="radio" name="check-drift" value="life"><span>AI makes a fragile moment feel too quickly explained.</span></label>
+          <legend data-i18n="selfCheck.q3Legend">3. Where does the drift show up?</legend>
+          <label class="check-option layer-automation"><input type="radio" name="check-drift" value="automation"><span data-i18n="selfCheck.driftAutomation">A messy workflow now moves faster than I can inspect it.</span></label>
+          <label class="check-option layer-voice"><input type="radio" name="check-drift" value="voice"><span data-i18n="selfCheck.driftVoice">Polished output loses my edge or opinion.</span></label>
+          <label class="check-option layer-decision"><input type="radio" name="check-drift" value="decision"><span data-i18n="selfCheck.driftDecision">AI gives more options, but not more clarity.</span></label>
+          <label class="check-option layer-team"><input type="radio" name="check-drift" value="team"><span data-i18n="selfCheck.driftTeam">People approve outputs they cannot realistically verify.</span></label>
+          <label class="check-option layer-life"><input type="radio" name="check-drift" value="life"><span data-i18n="selfCheck.driftLife">AI makes a fragile moment feel too quickly explained.</span></label>
         </fieldset>
 
         <fieldset class="check-question">
-          <legend>4. Which boundary would help this week?</legend>
-          <label class="check-option layer-automation"><input type="radio" name="check-boundary" value="automation"><span>Separate AI-only tasks from tasks that need human verification.</span></label>
-          <label class="check-option layer-voice"><input type="radio" name="check-boundary" value="voice"><span>Write my stance first, then ask AI to structure around it.</span></label>
-          <label class="check-option layer-decision"><input type="radio" name="check-boundary" value="decision"><span>Set decision criteria before asking for AI advice.</span></label>
-          <label class="check-option layer-team"><input type="radio" name="check-boundary" value="team"><span>Name the owner and review evidence before approval.</span></label>
-          <label class="check-option layer-life"><input type="radio" name="check-boundary" value="life"><span>Use slow mode before asking AI to summarize the situation.</span></label>
+          <legend data-i18n="selfCheck.q4Legend">4. Which boundary would help this week?</legend>
+          <label class="check-option layer-automation"><input type="radio" name="check-boundary" value="automation"><span data-i18n="selfCheck.boundaryAutomation">Separate AI-only tasks from tasks that need human verification.</span></label>
+          <label class="check-option layer-voice"><input type="radio" name="check-boundary" value="voice"><span data-i18n="selfCheck.boundaryVoice">Write my stance first, then ask AI to structure around it.</span></label>
+          <label class="check-option layer-decision"><input type="radio" name="check-boundary" value="decision"><span data-i18n="selfCheck.boundaryDecision">Set decision criteria before asking for AI advice.</span></label>
+          <label class="check-option layer-team"><input type="radio" name="check-boundary" value="team"><span data-i18n="selfCheck.boundaryTeam">Name the owner and review evidence before approval.</span></label>
+          <label class="check-option layer-life"><input type="radio" name="check-boundary" value="life"><span data-i18n="selfCheck.boundaryLife">Use slow mode before asking AI to summarize the situation.</span></label>
         </fieldset>
 
         <fieldset class="check-question">
-          <legend>5. What would you put into a diagnosis?</legend>
-          <label class="check-option layer-automation"><input type="radio" name="check-diagnosis" value="automation"><span>An automated workflow that may be optimizing the wrong thing.</span></label>
-          <label class="check-option layer-voice"><input type="radio" name="check-diagnosis" value="voice"><span>My original writing and AI-assisted drafts.</span></label>
-          <label class="check-option layer-decision"><input type="radio" name="check-diagnosis" value="decision"><span>A decision prompt, notes, and the choice I am struggling with.</span></label>
-          <label class="check-option layer-team"><input type="radio" name="check-diagnosis" value="team"><span>A team or agent workflow with handoffs and approvals.</span></label>
-          <label class="check-option layer-life"><input type="radio" name="check-diagnosis" value="life"><span>How I am using AI during a transition that needs care.</span></label>
+          <legend data-i18n="selfCheck.q5Legend">5. What would you put into a diagnosis?</legend>
+          <label class="check-option layer-automation"><input type="radio" name="check-diagnosis" value="automation"><span data-i18n="selfCheck.diagnosisAutomation">An automated workflow that may be optimizing the wrong thing.</span></label>
+          <label class="check-option layer-voice"><input type="radio" name="check-diagnosis" value="voice"><span data-i18n="selfCheck.diagnosisVoice">My original writing and AI-assisted drafts.</span></label>
+          <label class="check-option layer-decision"><input type="radio" name="check-diagnosis" value="decision"><span data-i18n="selfCheck.diagnosisDecision">A decision prompt, notes, and the choice I am struggling with.</span></label>
+          <label class="check-option layer-team"><input type="radio" name="check-diagnosis" value="team"><span data-i18n="selfCheck.diagnosisTeam">A team or agent workflow with handoffs and approvals.</span></label>
+          <label class="check-option layer-life"><input type="radio" name="check-diagnosis" value="life"><span data-i18n="selfCheck.diagnosisLife">How I am using AI during a transition that needs care.</span></label>
         </fieldset>
 
         <div class="self-check-actions">
-          <button type="submit" class="primary-action">Show my layer</button>
-          <button type="reset" class="secondary-action">Clear</button>
+          <button type="submit" class="primary-action" data-i18n="selfCheck.show">Show my layer</button>
+          <button type="reset" class="secondary-action" data-i18n="selfCheck.clear">Clear</button>
         </div>
         <p class="form-status" id="self-check-status" aria-live="polite"></p>
       </form>
 
       <aside class="self-check-result" id="self-check-result" hidden tabindex="-1" aria-live="polite" aria-labelledby="result-title">
-        <p class="eyebrow">LIKELY LAYER</p>
-        <h3 id="result-title"><span id="result-layer">Your layer</span></h3>
+        <p class="eyebrow" data-i18n="result.eyebrow">LIKELY LAYER</p>
+        <h3 id="result-title"><span id="result-layer" data-i18n="result.titleFallback">Your layer</span></h3>
         <dl class="result-list">
           <div>
-            <dt>What may be happening</dt>
+            <dt data-i18n="result.happening">What may be happening</dt>
             <dd id="result-happening"></dd>
           </div>
           <div>
-            <dt>First boundary to try</dt>
+            <dt data-i18n="result.boundary">First boundary to try</dt>
             <dd id="result-boundary"></dd>
           </div>
-          <div>
-            <dt>Silent Diagnosis fit</dt>
+          <div hidden>
+            <dt data-i18n="result.silent">Silent Diagnosis fit</dt>
             <dd id="result-silent"></dd>
           </div>
         </dl>
         <div class="result-actions">
-          <a class="primary-action" href="#silent-diagnosis">Read Silent Diagnosis</a>
-          <a class="secondary-action" href="#why-this-exists">Why this exists</a>
+          <a class="primary-action" href="#silent-diagnosis" data-i18n="result.readSilent" hidden>Read Silent Diagnosis</a>
+          <a class="primary-action" href="#why-this-exists" data-i18n="result.why">Why this exists</a>
         </div>
       </aside>
     </div>
   </section>
 
-  <section class="silent-diagnosis" id="silent-diagnosis" aria-labelledby="silent-title">
+  <section class="silent-diagnosis" id="silent-diagnosis" aria-labelledby="silent-title" hidden>
     <div class="offer-main">
-      <p class="eyebrow">SILENT DIAGNOSIS</p>
-      <h2 id="silent-title">Send your AI workflow. Get a written boundary diagnosis.</h2>
-      <p class="offer-lede">No workshop required. No teaching required. Shiori starts as a low-pressure written review of where AI is helping, where it may be replacing judgment, and what should remain human-first.</p>
-      <a class="primary-action" href="https://brightraven.world/">Contact through Bright Raven</a>
+      <p class="eyebrow" data-i18n="silent.eyebrow">SILENT DIAGNOSIS</p>
+      <h2 id="silent-title" data-i18n="silent.title">Send your AI workflow. Get a written boundary diagnosis.</h2>
+      <p class="offer-lede" data-i18n="silent.lede">No workshop required. No teaching required. Shiori starts as a low-pressure written review of where AI is helping, where it may be replacing judgment, and what should remain human-first.</p>
+      <a class="primary-action" href="https://brightraven.world/" data-i18n="silent.cta">Contact through Bright Raven</a>
     </div>
-    <div class="offer-deliverables" aria-label="服務交付物">
+    <div class="offer-deliverables" aria-label="服務交付物" data-i18n-aria-label="silent.deliverablesLabel">
       <article>
-        <h3>AI use map</h3>
-        <p>What is AI-only, AI-assist, or human-first in the workflow you send.</p>
+        <h3 data-i18n="silent.mapTitle">AI use map</h3>
+        <p data-i18n="silent.mapText">What is AI-only, AI-assist, or human-first in the workflow you send.</p>
       </article>
       <article>
-        <h3>Judgment-risk zones</h3>
-        <p>Where review, voice, ownership, or meaning can become a rubber stamp.</p>
+        <h3 data-i18n="silent.riskTitle">Judgment-risk zones</h3>
+        <p data-i18n="silent.riskText">Where review, voice, ownership, or meaning can become a rubber stamp.</p>
       </article>
       <article>
-        <h3>Boundary map</h3>
-        <p>AI-only / AI-assist / human-first boundaries written in plain workflow language.</p>
+        <h3 data-i18n="silent.boundaryTitle">Boundary map</h3>
+        <p data-i18n="silent.boundaryText">AI-only / AI-assist / human-first boundaries written in plain workflow language.</p>
       </article>
       <article>
-        <h3>3 workflow changes</h3>
-        <p>Three concrete changes to test before adding another tool or automation layer.</p>
+        <h3 data-i18n="silent.changesTitle">3 workflow changes</h3>
+        <p data-i18n="silent.changesText">Three concrete changes to test before adding another tool or automation layer.</p>
       </article>
     </div>
   </section>
 
   <section class="research-section" aria-labelledby="research-title">
     <div>
-      <p class="eyebrow">RESEARCH SNAPSHOT</p>
-      <h2 id="research-title">Shiori is not competing on speed or audit readiness.</h2>
+      <p class="eyebrow" data-i18n="research.eyebrow">RESEARCH SNAPSHOT</p>
+      <h2 id="research-title" data-i18n="research.title">Shiori is not competing on speed or audit readiness.</h2>
     </div>
     <div class="research-grid">
       <article>
-        <h3>Automation sells speed</h3>
-        <p>Workflow consultants usually ask what can be automated, ranked by time saved or ROI.</p>
+        <h3 data-i18n="research.automationTitle">Automation sells speed</h3>
+        <p data-i18n="research.automationText">Workflow consultants usually ask what can be automated, ranked by time saved or ROI.</p>
       </article>
       <article>
-        <h3>Governance sells audit readiness</h3>
-        <p>Formal AI governance asks whether controls, evidence, and oversight are ready for review.</p>
+        <h3 data-i18n="research.governanceTitle">Governance sells audit readiness</h3>
+        <p data-i18n="research.governanceText">Formal AI governance asks whether controls, evidence, and oversight are ready for review.</p>
       </article>
       <article>
-        <h3>Shiori focuses on what stays yours</h3>
-        <p>Judgment, voice, review, meaning, and ownership are treated as design boundaries.</p>
+        <h3 data-i18n="research.shioriTitle">Shiori focuses on what stays yours</h3>
+        <p data-i18n="research.shioriText">Judgment, voice, review, meaning, and ownership are treated as design boundaries.</p>
       </article>
     </div>
   </section>
 
   <section class="map-entry" id="why-this-exists" aria-labelledby="map-entry-title">
-    <p class="eyebrow">WHY THIS EXISTS</p>
-    <h2 id="map-entry-title">The reading map is the deeper theory, not the front door.</h2>
-    <p>Below is Shiori's research base: predictive processing, judgment quality, and human-AI decision making. Use it when you want the theory behind why evidence, friction, voice, and ownership belong in the same workflow conversation.</p>
+    <p class="eyebrow" data-i18n="why.eyebrow">WHY THIS EXISTS</p>
+    <h2 id="map-entry-title" data-i18n="why.title">The reading map is the deeper theory, not the front door.</h2>
+    <p data-i18n="why.body">Below is Shiori's research base: predictive processing, judgment quality, and human-AI decision making. Use it when you want the theory behind why evidence, friction, voice, and ownership belong in the same workflow conversation.</p>
   </section>
 
   <section class="workbench" id="reading-map" aria-labelledby="map-hero-title">
     <aside class="intro-panel">
-      <div class="lab-tag" aria-label="專案狀態:reading map">INSTRUMENT 003 · READING MAP</div>
+      <div class="lab-tag" aria-label="專案狀態:reading map" data-i18n="map.labTag" data-i18n-aria-label="map.labTagLabel">INSTRUMENT 003 · READING MAP</div>
       <h2 id="map-hero-title" class="map-brand">栞<span lang="en">Shiori</span></h2>
-      <p class="subtitle">17 份 paper / book,三條路徑,一張用來校準 human-AI decision making 的閱讀地圖。</p>
-      <p class="lede">
+      <p class="subtitle" data-i18n="map.subtitle">17 份 paper / book,三條路徑,一張用來校準 human-AI decision making 的閱讀地圖。</p>
+      <p class="lede" data-i18n="map.lede">
         這不是書單。它把「人如何判斷 AI」、「直覺何時可信」、「大腦如何做 inference」放到同一張圖上。
       </p>
 
       <div class="thesis-strip" aria-labelledby="insight-title">
-        <p class="eyebrow">CORE INSIGHT</p>
-        <h2 id="insight-title">給 evidence,不給結論。</h2>
-        <p>AI 工具的責任不是讓使用者服從 AI,而是讓使用者對 AI 的 posterior 維持校準。</p>
+        <p class="eyebrow" data-i18n="map.coreEyebrow">CORE INSIGHT</p>
+        <h2 id="insight-title" data-i18n="map.coreTitle">給 evidence,不給結論。</h2>
+        <p data-i18n="map.coreCopy">AI 工具的責任不是讓使用者服從 AI,而是讓使用者對 AI 的 posterior 維持校準。</p>
       </div>
 
-      <div class="axis-legend" aria-label="三條閱讀主軸">
-        <span data-axis="A">A · predictive mind</span>
-        <span data-axis="B">B · judgment</span>
-        <span data-axis="C">C · human-AI</span>
+      <div class="axis-legend" aria-label="三條閱讀主軸" data-i18n-aria-label="map.axisLegendLabel">
+        <span data-axis="A" data-i18n="axis.A.legend">A · predictive mind</span>
+        <span data-axis="B" data-i18n="axis.B.legend">B · judgment</span>
+        <span data-axis="C" data-i18n="axis.C.legend">C · human-AI</span>
       </div>
 
-      <div class="progress-panel" aria-label="理解進度">
+      <div class="progress-panel" aria-label="理解進度" data-i18n-aria-label="map.progressA11y">
         <div class="progress-row">
-          <span>INSIGHT PROGRESS</span>
+          <span data-i18n="map.progressLabel">INSIGHT PROGRESS</span>
           <strong id="progress-count">0/17</strong>
         </div>
         <div class="progress-track" aria-hidden="true">
           <span id="progress-fill"></span>
         </div>
-        <p id="progress-note" aria-live="polite">迷宮還是暗的。每理解一個節點,一段路會亮起。</p>
+        <p id="progress-note" aria-live="polite" data-i18n="map.progressEmpty">迷宮還是暗的。每理解一個節點,一段路會亮起。</p>
       </div>
 
       <section class="controls" aria-labelledby="view-title">
         <div>
-          <p class="eyebrow" id="view-title">VIEW MODE</p>
-          <p class="control-copy">三種布局都保留。切換只改讀法,不改內容。</p>
+          <p class="eyebrow" id="view-title" data-i18n="map.viewTitle">VIEW MODE</p>
+          <p class="control-copy" data-i18n="map.controlCopy">三種布局都保留。切換只改讀法,不改內容。</p>
         </div>
-        <div class="mode-switcher" role="group" aria-label="切換 reading map 顯示模式">
-          <button type="button" class="mode-button is-active" data-mode="constellation" aria-pressed="true">星圖</button>
-          <button type="button" class="mode-button" data-mode="stack" aria-pressed="false">三軸堆疊</button>
-          <button type="button" class="mode-button" data-mode="sequence" aria-pressed="false">推薦順序</button>
+        <div class="mode-switcher" role="group" aria-label="切換 reading map 顯示模式" data-i18n-aria-label="map.modeLabel">
+          <button type="button" class="mode-button is-active" data-mode="constellation" aria-pressed="true" data-i18n="map.modeConstellation">星圖</button>
+          <button type="button" class="mode-button" data-mode="stack" aria-pressed="false" data-i18n="map.modeStack">三軸堆疊</button>
+          <button type="button" class="mode-button" data-mode="sequence" aria-pressed="false" data-i18n="map.modeSequence">推薦順序</button>
         </div>
       </section>
     </aside>
@@ -270,7 +285,7 @@
     <section class="map-section" aria-labelledby="map-title">
       <div class="section-heading">
         <div>
-          <p class="eyebrow">INTERACTIVE MAP</p>
+          <p class="eyebrow" data-i18n="map.interactiveEyebrow">INTERACTIVE MAP</p>
           <h2 id="map-title">三軸 constellation</h2>
         </div>
         <p class="map-status" id="map-status" aria-live="polite">目前顯示:星圖。點任一節點查看 detail。</p>
@@ -285,29 +300,29 @@
   <section class="relations-section" aria-labelledby="relations-title">
     <div class="section-heading">
       <div>
-        <p class="eyebrow">CROSS-AXIS LINKS</p>
-        <h2 id="relations-title">跨軸連線</h2>
+        <p class="eyebrow" data-i18n="map.relationEyebrow">CROSS-AXIS LINKS</p>
+        <h2 id="relations-title" data-i18n="map.relationTitle">跨軸連線</h2>
       </div>
-      <p class="relation-help">桌面星圖會畫線;手機與鍵盤使用者可直接操作下方 chips。</p>
+      <p class="relation-help" data-i18n="map.relationHelp">桌面星圖會畫線;手機與鍵盤使用者可直接操作下方 chips。</p>
     </div>
-    <div class="relation-chips" id="relation-chips" aria-label="跨軸關係清單"></div>
+    <div class="relation-chips" id="relation-chips" aria-label="跨軸關係清單" data-i18n-aria-label="map.relationListLabel"></div>
   </section>
 
   <section class="reading-principle" aria-labelledby="principle-title">
-    <p class="eyebrow">DESIGN CONSEQUENCE</p>
-    <h2 id="principle-title">AI assist,not AI-first.</h2>
+    <p class="eyebrow" data-i18n="map.principleEyebrow">DESIGN CONSEQUENCE</p>
+    <h2 id="principle-title" data-i18n="map.principleTitle">AI assist,not AI-first.</h2>
     <div class="principle-grid">
       <article>
-        <h3>Beacon</h3>
-        <p>給設計師 example-based evidence:跟過去某個被罰案例對照,比只丟 WCAG ratio 更能養成 internalized intuition。</p>
+        <h3 data-i18n="principle.beaconTitle">Beacon</h3>
+        <p data-i18n="principle.beaconText">給設計師 example-based evidence:跟過去某個被罰案例對照,比只丟 WCAG ratio 更能養成 internalized intuition。</p>
       </article>
       <article>
-        <h3>shikigarasu</h3>
-        <p>Verdict + Findings 容易被 rubber-stamp。若改成 past-case comparison,更符合「給 evidence、不給結論」。</p>
+        <h3 data-i18n="principle.shikigarasuTitle">shikigarasu</h3>
+        <p data-i18n="principle.shikigarasuText">Verdict + Findings 容易被 rubber-stamp。若改成 past-case comparison,更符合「給 evidence、不給結論」。</p>
       </article>
       <article>
-        <h3>Noise 的反論</h3>
-        <p>noise reduction 是 AI 主導的強論點。這份 reading map 不迴避它,而是把它放進設計哲學的壓力測試。</p>
+        <h3 data-i18n="principle.noiseTitle">Noise 的反論</h3>
+        <p data-i18n="principle.noiseText">noise reduction 是 AI 主導的強論點。這份 reading map 不迴避它,而是把它放進設計哲學的壓力測試。</p>
       </article>
     </div>
   </section>
@@ -315,8 +330,8 @@
   <footer>
     <span lang="ja">栞</span> / Shiori · devBrightRaven
     <span>
-      <a href="../">↑ Lab</a> ·
-      <a href="https://github.com/devBrightRaven/lab/tree/main/shiori">source</a> ·
+      <a href="../" data-i18n="map.footerLab">↑ Lab</a> ·
+      <a href="https://github.com/devBrightRaven/lab/tree/main/shiori" data-i18n="map.footerSource">source</a> ·
       <a href="https://brightraven.world/">brightraven.world</a>
     </span>
   </footer>
@@ -325,36 +340,57 @@
 
 <dialog class="paper-dialog" id="paper-dialog" aria-labelledby="dialog-title" aria-describedby="dialog-summary">
   <div class="dialog-shell">
-    <button type="button" class="dialog-close" id="dialog-close" aria-label="關閉 detail panel">×</button>
+    <button type="button" class="dialog-close" id="dialog-close" aria-label="關閉 detail panel" data-i18n-aria-label="dialog.closeLabel">×</button>
     <p class="dialog-axis" id="dialog-axis"></p>
-    <h2 id="dialog-title">Paper detail</h2>
+    <h2 id="dialog-title" data-i18n="dialog.titleFallback">Paper detail</h2>
     <p class="dialog-meta" id="dialog-meta"></p>
     <p id="dialog-summary" class="dialog-summary"></p>
 
     <div class="dialog-grid">
       <section aria-labelledby="dialog-meaning-title">
-        <h3 id="dialog-meaning-title">對個人工作的含義</h3>
-        <p class="meaning-source" id="dialog-meaning-source"></p>
-        <p id="dialog-meaning"></p>
+        <h3 id="dialog-meaning-title" data-i18n="dialog.meaningTitle">對個人工作的含義</h3>
+        <p class="meaning-source" id="dialog-meaning-source" data-i18n="dialog.meaningSource">Sonnet 4.6 fan-out · quote-grounded against output.text-only.md</p>
+
+        <article class="implication-block" aria-labelledby="dialog-beacon-label">
+          <h4 id="dialog-beacon-label" data-i18n="dialog.beaconLabel">Beacon · a11y plugin</h4>
+          <p class="implication-text" id="dialog-beacon-text"></p>
+          <blockquote class="evidence-quote" id="dialog-beacon-evidence">
+            <p id="dialog-beacon-quote"></p>
+            <footer><cite id="dialog-beacon-where"></cite></footer>
+          </blockquote>
+        </article>
+
+        <article class="implication-block" aria-labelledby="dialog-shikigarasu-label">
+          <h4 id="dialog-shikigarasu-label" data-i18n="dialog.shikigarasuLabel">shikigarasu · six-axis agent</h4>
+          <p class="implication-text" id="dialog-shikigarasu-text"></p>
+          <p class="no-implication" id="dialog-shikigarasu-empty" hidden data-i18n="dialog.noShikigarasuImplication">這份 paper 對 shikigarasu 沒有明顯的設計含義(誠實「無」)。</p>
+          <blockquote class="evidence-quote" id="dialog-shikigarasu-evidence">
+            <p id="dialog-shikigarasu-quote"></p>
+            <footer><cite id="dialog-shikigarasu-where"></cite></footer>
+          </blockquote>
+        </article>
       </section>
       <section aria-labelledby="dialog-path-title">
-        <h3 id="dialog-path-title">Source file</h3>
-        <p class="path-note">本機 markdown 路徑。公開部署時不假裝它是可用的遠端連結。</p>
+        <h3 id="dialog-path-title" data-i18n="dialog.pathTitle">Source file</h3>
+        <p class="path-note" data-i18n="dialog.pathNote">本機 markdown 路徑。公開部署時不假裝它是可用的遠端連結。</p>
         <div class="path-copy">
           <code id="dialog-path"></code>
-          <button type="button" id="copy-path">Copy path</button>
+          <button type="button" id="copy-path" data-i18n="dialog.copyPath">Copy path</button>
         </div>
         <p class="copy-status" id="copy-status" aria-live="polite"></p>
       </section>
     </div>
 
     <section aria-labelledby="dialog-related-title">
-      <h3 id="dialog-related-title">跨軸關聯</h3>
+      <h3 id="dialog-related-title" data-i18n="dialog.relatedTitle">跨軸關聯</h3>
       <div class="dialog-related" id="dialog-related"></div>
     </section>
   </div>
 </dialog>
 
+<script src="i18n.js"></script>
+<script src="implications.js"></script>
+<script src="implications-i18n.js"></script>
 <script src="script.js"></script>
 </body>
 </html>
