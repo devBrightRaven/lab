@@ -24,10 +24,10 @@ const papers = [
     short: "2010 Friston",
     title: "The free-energy principle: a unified brain theory?",
     venue: "Paper",
-    topic: "free-energy principle 作為統一腦理論",
-    description: "把大腦理解成持續最小化 surprise / prediction error 的系統,用 generative model 來維持對世界的可行解釋。",
+    topic: "自由能原理作為統一腦理論",
+    description: "把大腦理解成持續最小化驚訝與預測誤差的系統，用生成模型來維持對世界的可行解釋。",
     implicationType: "延伸推論",
-    implication: "AI 工具輸出的每個信號都會改變使用者的 likelihood 權重。設計上要控制 evidence 強度,不要把單一模型輸出包裝成過度確定的世界。",
+    implication: "AI 工具輸出的每個信號都會改變使用者對可能性的加權。設計上要控制證據強度，不要把單一模型輸出包裝成過度確定的世界。",
     path: "C:/Code/human-intuition/done/2010-Friston-FreeEnergyPrinciple/output.md",
     x: 305,
     y: 96,
@@ -41,10 +41,10 @@ const papers = [
     short: "2013 Friston+",
     title: "The Computational Anatomy of Psychosis",
     venue: "Paper",
-    topic: "psychosis 作為 precision / prediction error 失衡",
-    description: "用 predictive coding 解釋 psychosis:當 precision weighting 與 prediction error 處理失衡,世界會被錯誤地賦予意義。",
+    topic: "精神病性經驗作為精確度與預測誤差的失衡",
+    description: "用預測編碼解釋精神病性經驗:當精確度加權與預測誤差處理失衡，世界會被錯誤地賦予意義。",
     implicationType: "延伸推論",
-    implication: "AI explanation 也會改變 precision。若 UI 把錯誤線索做得太權威,使用者可能不是不理性,而是被介面錯誤地調高了某些 evidence 的權重。",
+    implication: "AI 說明也會改變精確度。若介面把錯誤線索做得太權威，使用者可能不是不理性，而是被介面錯誤地調高了某些證據的權重。",
     path: "C:/Code/human-intuition/done/2013-Friston-ComputationalAnatomyOfPsychosis/output.md",
     x: 500,
     y: 88,
@@ -58,16 +58,16 @@ const papers = [
     short: "2013 Hohwy",
     title: "The Predictive Mind",
     venue: "Oxford University Press",
-    topic: "大腦是 hierarchical Bayesian inference engine",
-    description: "把心智理解為 prediction-error minimization 的層級系統。人不是單純接收 AI 結論,而會自動對它做 inference。",
+    topic: "大腦是層級貝葉斯推論引擎",
+    description: "把心智理解為最小化預測誤差的層級系統。人不是單純接收 AI 結論，而會自動對它做推論。",
     implicationType: "延伸推論",
-    implication: "這是 Shiori 的本體論支柱:AI 輸出進入人腦後會被重新推論。工具要供應 evidence,讓人腦自己校準 posterior。",
+    implication: "這是 Shiori 的本體論支柱:AI 輸出進入人腦後會被重新推論。工具要供應證據，讓人腦自己校準後驗判斷。",
     path: "C:/Code/human-intuition/done/2013-Hohwy-PredictiveMind/output.md",
     x: 695,
     y: 96,
     tilt: "0.8deg",
     sequence: 3,
-    reason: "開始理解 pathway 為何存在:人會把 AI output 放進自己的 inference engine。"
+    reason: "開始理解路徑為何存在:人會把 AI 輸出放進自己的推論引擎。"
   },
   {
     id: "clark-2016",
@@ -77,10 +77,10 @@ const papers = [
     short: "2016 Clark",
     title: "Surfing Uncertainty",
     venue: "Book",
-    topic: "predictive processing 與 embodied / 4E cognition",
-    description: "把 predictive processing 接到 action、body、environment。與 Hohwy 的 internalism 形成姊妹作與張力。",
+    topic: "預測處理與具身／4E 認知",
+    description: "把預測處理接到行動、身體與環境。與 Hohwy 的內在論形成姊妹作與張力。",
     implicationType: "延伸推論",
-    implication: "提醒 AI-assist 設計不能只看腦內模型。工具、環境與工作流本身也在塑造 inference,所以 evidence 應嵌入任務現場。",
+    implication: "提醒 AI 協助設計不能只看腦內模型。工具、環境與工作流本身也在塑造推論，所以證據應嵌入任務現場。",
     path: "C:/Code/human-intuition/done/2016-Clark-SurfingUncertainty/output.md",
     x: 875,
     y: 132,
@@ -94,16 +94,16 @@ const papers = [
     short: "2016 Hohwy",
     title: "The Self-Evidencing Brain",
     venue: "Paper",
-    topic: "organism 作為 self-evidencing model",
-    description: "把生命體理解為主動尋找證據來維持自身模型的系統,往 ontology 與 self-modeling 的方向推進。",
+    topic: "生命體作為自我證成模型",
+    description: "把生命體理解為主動尋找證據來維持自身模型的系統，往本體論與自我模型的方向推進。",
     implicationType: "延伸推論",
-    implication: "對個人工具設計的含義是:人會尋找能維持自我模型的 evidence。AI 工具若直接替人下結論,會削弱這個 self-evidencing 過程。",
+    implication: "對個人工具設計的含義是:人會尋找能維持自我模型的證據。AI 工具若直接替人下結論，會削弱這個自我證成過程。",
     path: "C:/Code/human-intuition/done/2016-Hohwy-SelfEvidencingBrain/output.md",
     x: 210,
     y: 242,
     tilt: "0.7deg",
     sequence: 7,
-    reason: "在 K&K / Sunday 之後回到 self-evidencing,把直覺校準接回主體模型。"
+    reason: "在 K&K / Sunday 之後回到自我證成，把直覺校準接回主體模型。"
   },
   {
     id: "barrett-2017",
@@ -113,10 +113,10 @@ const papers = [
     short: "2017 Barrett",
     title: "How Emotions Are Made",
     venue: "Book",
-    topic: "emotion 是 predictive construction",
+    topic: "情緒是預測性建構",
     description: "把情緒視為大腦對身體狀態與情境的主動建構,而不是固定內建反應。",
     implicationType: "延伸推論",
-    implication: "AI 介面會影響使用者的情緒預測。警示、分數與紅色狀態不是中性資訊,它們會改變人的 interoceptive inference。",
+    implication: "AI 介面會影響使用者的情緒預測。警示、分數與紅色狀態不是中性資訊，它們會改變人的內感受推論。",
     path: "C:/Code/human-intuition/done/2017-Barrett-HowEmotionsAreMade/output.md",
     x: 365,
     y: 226,
@@ -130,10 +130,10 @@ const papers = [
     short: "2021 Seth",
     title: "Being You",
     venue: "Book",
-    topic: "self 與 consciousness 作為 controlled hallucination",
-    description: "用 predictive processing 講意識、自我與身體感。self 不是被讀取的東西,而是不斷被控制與更新的模型。",
+    topic: "自我與意識作為受控幻覺",
+    description: "用預測處理講意識、自我與身體感。自我不是被讀取的東西，而是不斷被控制與更新的模型。",
     implicationType: "延伸推論",
-    implication: "使用者與 AI 共事時也在更新 self-model:我是判斷者、審稿者、操作者,還是按鈕按下去的人?UI 要保護使用者作為主體的感覺。",
+    implication: "使用者與 AI 共事時也在更新自我模型:我是判斷者、審稿者、操作者，還是按鈕按下去的人？介面要保護使用者作為主體的感覺。",
     path: "C:/Code/human-intuition/done/2021-Seth-BeingYou/output.md",
     x: 530,
     y: 220,
@@ -147,10 +147,10 @@ const papers = [
     short: "2021 Solms",
     title: "The Hidden Spring",
     venue: "Book",
-    topic: "consciousness 的 affect / brainstem 立場",
-    description: "同樣談 consciousness,但把重心放到 affect、brainstem 與生命需求,與 Seth 形成同年對讀。",
+    topic: "意識的情感／腦幹立場",
+    description: "同樣談意識，但把重心放到情感、腦幹與生命需求，與 Seth 形成同年對讀。",
     implicationType: "延伸推論",
-    implication: "若 AI 工具忽略使用者的壓力、疲勞、風險感與動機狀態,就只是在 cognitive layer 上設計,沒有照顧真正影響判斷的底層訊號。",
+    implication: "若 AI 工具忽略使用者的壓力、疲勞、風險感與動機狀態，就只是在認知層上設計，沒有照顧真正影響判斷的底層訊號。",
     path: "C:/Code/human-intuition/done/2021-Solms-HiddenSpring/output.md",
     x: 690,
     y: 226,
@@ -164,8 +164,8 @@ const papers = [
     short: "2023 Clark",
     title: "The Experience Machine",
     venue: "Book",
-    topic: "跨 paradigm 串起 predictive mind 的科普入口",
-    description: "把 Seth、Solms、Barrett 等線索以更易讀方式串起來,適合作為 predictive processing 群的中後段入口。",
+    topic: "跨典範串起預測心智的科普入口",
+    description: "把 Seth、Solms、Barrett 等線索以更易讀方式串起來，適合作為預測處理群的中後段入口。",
     implicationType: "延伸推論",
     implication: "對產品敘事很有用:把複雜理論翻成可操作語言,不是降智,而是幫使用者建立能持續校準的模型。",
     path: "C:/Code/human-intuition/done/2023-Clark-ExperienceMachine/output.md",
@@ -173,7 +173,7 @@ const papers = [
     y: 242,
     tilt: "1deg",
     sequence: 4,
-    reason: "用比較易讀的方式把 predictive processing 群串成可操作模型。"
+    reason: "用比較易讀的方式把預測處理群串成可操作模型。"
   },
   {
     id: "kk-2009",
@@ -183,10 +183,10 @@ const papers = [
     short: "2009 K&K",
     title: "Conditions for Intuitive Expertise: A Failure to Disagree",
     venue: "American Psychologist",
-    topic: "直覺可信需要 regular environment + feedback",
-    description: "Kahneman 與 Klein 收斂出直覺專業的條件:環境要有可學習規律,個體要有足夠回饋來校準判斷。",
+    topic: "直覺可信需要有規律的環境與回饋",
+    description: "Kahneman 與 Klein 收斂出直覺專業的條件:環境要有可學習規律，個體要有足夠回饋來校準判斷。",
     implicationType: "延伸推論",
-    implication: "AI 工具不該只問使用者要不要相信模型,而要提供可學習的回饋環境。cognitive forcing function 可以被看成直覺校準的工程版。",
+    implication: "AI 工具不該只問使用者要不要相信模型，而要提供可學習的回饋環境。認知強迫函式可以被看成直覺校準的工程版。",
     path: "C:/Code/human-intuition/done/2009-Kahneman-Klein-IntuitiveExpertise/output.md",
     x: 328,
     y: 474,
@@ -202,16 +202,16 @@ const papers = [
     short: "2021 Kahneman+",
     title: "Noise: A Flaw in Human Judgment",
     venue: "Book",
-    topic: "bias 之外還有 within-person / between-person noise",
-    description: "指出人類判斷除了偏誤,還有大量不穩定 noise。同一專家不同時間也可能給出不同判斷。",
+    topic: "偏誤之外，還有個人內與個人間的判斷噪音",
+    description: "指出人類判斷除了偏誤，還有大量不穩定的判斷噪音。同一專家不同時間也可能給出不同判斷。",
     implicationType: "Source implication",
-    implication: "這是 AI-assist-not-AI-first 的強反論:在 noise reduction 這個 specific use case 上,algorithm 可能真的有壓倒性優勢,需要正面回應。",
+    implication: "這是「AI 協助，而不是 AI 優先」的強反論:在降低判斷噪音這個特定使用情境中，演算法可能真的有壓倒性優勢，需要正面回應。",
     path: "C:/Code/human-intuition/done/2021-Kahneman-Sibony-Sunstein-Noise/output.md",
     x: 222,
     y: 574,
     tilt: "1deg",
     sequence: 5,
-    reason: "帶入 judgment quality,知道 bias 之外還有 noise。"
+    reason: "帶入判斷品質，知道偏誤之外還有判斷噪音。"
   },
   {
     id: "sunday-2023",
@@ -221,10 +221,10 @@ const papers = [
     short: "2023 Sunday",
     title: "Intuitive Skill",
     venue: "Philosophia",
-    topic: "直覺作為可訓練 skill",
-    description: "把 intuitive skill 當成需要條件、練習與環境支撐的能力,補足 K&K 對直覺品質的理論基礎。",
+    topic: "直覺作為可訓練技能",
+    description: "把直覺技能當成需要條件、練習與環境支撐的能力，補足 K&K 對直覺品質的理論基礎。",
     implicationType: "延伸推論",
-    implication: "如果直覺是 skill,AI 工具的任務不是替代 skill,而是讓使用者在每次使用中更能看見 feedback、形成可遷移的判斷能力。",
+    implication: "如果直覺是技能，AI 工具的任務不是替代技能，而是讓使用者在每次使用中更能看見回饋、形成可遷移的判斷能力。",
     path: "C:/Code/human-intuition/done/2023-Sunday-IntuitiveSkill/output.md",
     x: 118,
     y: 674,
@@ -240,10 +240,10 @@ const papers = [
     short: "2021 Bansal+",
     title: "Does the Whole Exceed its Parts?",
     venue: "CHI 2021",
-    topic: "human-AI team 是否真的形成互補表現",
-    description: "檢驗人與 AI 合作是否超過各自單獨表現,把 complementary performance 從願景拉回可測量問題。",
+    topic: "人與 AI 團隊是否真的形成互補表現",
+    description: "檢驗人與 AI 合作是否超過各自單獨表現，把互補表現從願景拉回可測量問題。",
     implicationType: "延伸推論",
-    implication: "不要把 human-in-the-loop 當成自動加分。若 UI 沒讓人類在自己強的地方介入,整體系統可能只是把兩邊錯誤疊在一起。",
+    implication: "不要把人在迴路中當成自動加分。若介面沒讓人類在自己強的地方介入，整體系統可能只是把兩邊錯誤疊在一起。",
     path: "C:/Code/human-intuition/done/2021-Bansal-DoesTheWholeExceedItsParts/output.md",
     x: 672,
     y: 474,
@@ -257,16 +257,16 @@ const papers = [
     short: "2021 Buçinca+",
     title: "To Trust or to Think: Cognitive Forcing Functions",
     venue: "CSCW 2021",
-    topic: "用 cognitive forcing function 防止過度依賴",
-    description: "研究如何透過介面設計迫使使用者先思考,而不是直接接受 AI prediction。",
+    topic: "用迫使思考的介面防止過度依賴",
+    description: "研究如何透過介面設計迫使使用者先思考，而不是直接接受 AI 預測。",
     implicationType: "延伸推論",
-    implication: "這是 K&K 直覺校準的工程化版本。好的 friction 不是阻礙效率,而是保護使用者的 posterior 不被 AI 結論壓死。",
+    implication: "這是 K&K 直覺校準的工程化版本。好的摩擦不是阻礙效率，而是保護使用者的後驗判斷不被 AI 結論壓死。",
     path: "C:/Code/human-intuition/done/2021-Bucinca-ToTrustOrToThink/output.md",
     x: 770,
     y: 548,
     tilt: "-0.8deg",
     sequence: 2,
-    reason: "配對 Chen,看 forcing function 如何工程化 pathway 1。"
+    reason: "配對 Chen，看迫使思考的設計如何工程化第一條路徑。"
   },
   {
     id: "chen-2023",
@@ -276,16 +276,16 @@ const papers = [
     short: "2023 Chen+",
     title: "Understanding the Role of Human Intuition on Reliance in Human-AI Decision-Making with Explanations",
     venue: "Proc. ACM Hum.-Comput. Interact. 7, CSCW2",
-    topic: "outcome / feature / reliability intuition 三條 pathway",
-    description: "指出人類面對 AI explanation 時,會用 outcome、feature、AI reliability 三類直覺去判斷是否覆蓋 AI prediction。",
+    topic: "結果、特徵與可靠性直覺三條路徑",
+    description: "指出人類面對 AI 說明時，會用結果、特徵與 AI 可靠性三類直覺，去判斷是否推翻 AI 預測。",
     implicationType: "Source implication",
-    implication: "Beacon 與其他 AI-assist 工具應優先給 example-based evidence,讓使用者自己跑 inference。feature-based explanation 若太像結論,反而會增加 overreliance。",
+    implication: "Beacon 與其他 AI 協助工具應優先給以案例為基礎的證據，讓使用者自己推論。以特徵為基礎的說明若太像結論，反而會增加過度依賴。",
     path: "C:/Code/human-intuition/done/2023-Chen-HumanIntuition/output.md",
     x: 876,
     y: 622,
     tilt: "1deg",
     sequence: 1,
-    reason: "從實證問題出發,先知道三條 pathway 是什麼。"
+    reason: "從實證問題出發，先知道三條路徑是什麼。"
   },
   {
     id: "vasconcelos-2023",
@@ -295,10 +295,10 @@ const papers = [
     short: "2023 Vasconcelos+",
     title: "Explanations Can Reduce Overreliance on AI Systems",
     venue: "CSCW 2023",
-    topic: "explanations 何時能降低 overreliance",
-    description: "把 explanation 對 overreliance 的效果拉到實證層面,補上 AI explanation 不一定只會讓人過度依賴的另一面。",
+    topic: "說明何時能降低過度依賴",
+    description: "把說明對過度依賴的效果拉到實證層面，補上 AI 說明不一定只會讓人過度依賴的另一面。",
     implicationType: "延伸推論",
-    implication: "設計問題不是要不要 explanation,而是 explanation 是否提供可檢查 evidence。能降低 overreliance 的說明,通常讓使用者更能判斷 AI 何時錯。",
+    implication: "設計問題不是要不要說明，而是說明是否提供可檢查的證據。能降低過度依賴的說明，通常讓使用者更能判斷 AI 何時錯。",
     path: "C:/Code/human-intuition/done/2023-Vasconcelos-ExplanationsCanReduceOverreliance/output.md",
     x: 952,
     y: 692,
@@ -308,20 +308,20 @@ const papers = [
 
 const axisMeta = {
   A: {
-    label: "Axis A · Predictive processing",
+    label: "A 軸 · 預測處理",
     title: "人腦為何如此運作",
     accent: "var(--axis-a)",
     bg: "var(--axis-a-bg)"
   },
   B: {
-    label: "Axis B · Judgment quality",
+    label: "B 軸 · 判斷品質",
     title: "直覺判斷的可靠性",
     accent: "var(--axis-b)",
     bg: "var(--axis-b-bg)"
   },
   C: {
-    label: "Axis C · XAI / Human-AI",
-    title: "工程實證與 human-AI decision making",
+    label: "C 軸 · 可解釋 AI / 人機協作",
+    title: "工程實證與人與 AI 的共同決策",
     accent: "var(--axis-c)",
     bg: "var(--axis-c-bg)"
   }
@@ -353,49 +353,49 @@ const relations = [
     from: "chen-2023",
     to: "hohwy-2013",
     label: "Chen 2023 ↔ Hohwy 2013",
-    copy: "三條 pathway 是 predictive processing 的 corollary。"
+    copy: "三條路徑是預測處理的推論結果。"
   },
   {
     id: "bucinca-kk",
     from: "bucinca-2021",
     to: "kk-2009",
     label: "Buçinca 2021 ↔ K&K 2009",
-    copy: "cognitive forcing function = K&K 直覺 calibration 的工程化。"
+    copy: "認知強迫函式，就是 K&K 直覺校準的工程化。"
   },
   {
     id: "noise-kk",
     from: "noise-2021",
     to: "kk-2009",
     label: "Noise 2021 ↔ K&K 2009",
-    copy: "Noise 是 K&K 2009 的延伸,補 bias 的另一面。"
+    copy: "《Noise》延伸 K&K 2009，補上偏誤之外的另一面。"
   },
   {
     id: "friston-hohwy",
     from: "friston-2013",
     to: "hohwy-2013",
     label: "Friston 2013 ↔ Hohwy 2013",
-    copy: "Hohwy Ch 7 整章用 Friston psychosis 框架。"
+    copy: "Hohwy 第七章大量使用 Friston 的精神病理框架。"
   },
   {
     id: "clark-hohwy",
     from: "clark-2016",
     to: "hohwy-2013",
     label: "Clark 2016 ↔ Hohwy 2013",
-    copy: "姊妹作:internalism vs 4E cognition 對讀。"
+    copy: "姊妹作:內在論與 4E 認知的對讀。"
   },
   {
     id: "solms-seth",
     from: "solms-2021",
     to: "seth-2021",
     label: "Solms 2021 ↔ Seth 2021",
-    copy: "同年、不同立場談 consciousness:腦幹 vs 皮質。"
+    copy: "同年、不同立場談意識:腦幹與皮質。"
   },
   {
     id: "barrett-seth",
     from: "barrett-2017",
     to: "seth-2021",
     label: "Barrett 2017 ↔ Seth 2021",
-    copy: "predictive processing 應用到 interoception / emotion / self。"
+    copy: "把預測處理應用到內感受、情緒與自我。"
   }
 ];
 
@@ -464,6 +464,15 @@ function layerResult(layer) {
 
 function paperText(paper, field) {
   return lookup(`papers.${paper.id}.${field}`) ?? paper[field] ?? "";
+}
+
+function paperVenue(paper) {
+  const venue = paperText(paper, "venue");
+  if (currentLocale === "zh-Hant") {
+    if (venue === "Book") return "書籍";
+    if (venue === "Paper") return "論文";
+  }
+  return venue;
 }
 
 function paperImplicationType(paper) {
@@ -1037,7 +1046,7 @@ function renderDialogPaper(id) {
   const related = relations.filter((relation) => relation.from === id || relation.to === id);
   document.getElementById("dialog-axis").textContent = axisText(paper.axis, "label");
   document.getElementById("dialog-title").textContent = paper.title;
-  document.getElementById("dialog-meta").textContent = `${paper.year} · ${paper.authors} · ${paper.venue}`;
+  document.getElementById("dialog-meta").textContent = `${paper.year} · ${paper.authors} · ${paperVenue(paper)}`;
   document.getElementById("dialog-summary").textContent = paperText(paper, "description");
   document.getElementById("dialog-meaning-source").textContent = t("dialog.meaningSource");
 

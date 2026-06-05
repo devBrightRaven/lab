@@ -390,18 +390,18 @@ window.SHIORI_I18N = {
     "zh-Hant": {
       meta: {
         title: "栞 Shiori · AI 時代的自我覺察入口 · Lab",
-        description: "Shiori 栞 — AI 時代的自我覺察入口:找出 workflow 裡該保留給人的判斷、聲音、review、意義與 ownership。"
+        description: "Shiori 栞 — AI 時代的自我覺察入口:找出工作流裡該保留給人的判斷、聲音、審查、意義與負責關係。"
       },
       nav: {
         skip: "跳到主要內容",
         label: "階層導覽",
         backLabel: "回到 Lab 首頁",
-        breadcrumb: "AI SELF-CHECK",
+        breadcrumb: "AI 自我檢測",
         languageLabel: "切換語言"
       },
       hero: {
-        labTag: "INSTRUMENT 003 · SELF-CHECK",
-        labTagLabel: "專案狀態:self-check",
+        labTag: "工具 003 · 自我檢測",
+        labTagLabel: "專案狀態:自我檢測",
         title: "AI 已經在你的工作流裡。哪些判斷應該留下來？",
         lede: "Shiori 幫你看見 AI 在哪裡有用、哪裡可能正在悄悄接管判斷，以及在速度變成漂移前，哪一道邊界值得先試。",
         start: "開始自我檢測",
@@ -409,265 +409,265 @@ window.SHIORI_I18N = {
         actionsLabel: "主要操作"
       },
       ownership: {
-        eyebrow: "OWNERSHIP SIGNAL",
+        eyebrow: "責任訊號",
         title: "先把這些留在人這邊。",
-        automationLabel: "Review",
+        automationLabel: "審查",
         automationText: "這能被快速檢查嗎？",
-        voiceLabel: "Voice",
+        voiceLabel: "聲音",
         voiceText: "它聽起來還像你嗎？",
-        decisionLabel: "Judgment",
+        decisionLabel: "判斷",
         decisionText: "最後選擇由誰負責？",
-        teamLabel: "Ownership",
-        teamText: "Review 不只是 approve 嗎？",
-        lifeLabel: "Meaning",
+        teamLabel: "負責關係",
+        teamText: "審查不只是核准嗎？",
+        lifeLabel: "意義",
         lifeText: "這件事應該慢一點嗎？"
       },
       symptoms: {
-        eyebrow: "SYMPTOM DOORS",
+        eyebrow: "症狀入口",
         title: "從那句已經有點真實的話開始。",
-        statusDefault: "選一扇門來預先帶入 self-check，或直接從空白開始。",
-        selected: "已選擇 {layer}。請繼續完成下方 self-check。",
+        statusDefault: "選一扇門來預先帶入自我檢測，或直接從空白開始。",
+        selected: "已選擇 {layer}。請繼續完成下方自我檢測。",
         gridLabel: "五個 Shiori 入口",
-        voiceLabel: "01 · Creative Voice",
+        voiceLabel: "01 · 創作聲音",
         voiceText: "我產出更多，但越來越不像我。",
-        decisionLabel: "02 · Decision Support",
+        decisionLabel: "02 · 決策支援",
         decisionText: "我很快問 AI，但做決定反而更難。",
-        teamLabel: "03 · Team / Agent Workflow",
-        teamText: "團隊變快了，但 review 像走形式。",
-        lifeLabel: "04 · Life Transition / Slow Mode",
+        teamLabel: "03 · 團隊／代理工作流",
+        teamText: "團隊變快了，但審查像走形式。",
+        lifeLabel: "04 · 人生轉換／慢速模式",
         lifeText: "我正在人生轉換期，不想讓 AI 替我定義意義。",
-        automationLabel: "05 · Task Automation",
+        automationLabel: "05 · 任務自動化",
         automationText: "我只是想自動化，但可能正在加速錯的流程。"
       },
       selfCheck: {
-        eyebrow: "SHIORI SELF-CHECK",
-        title: "找出你現在的 AI drift layer。",
-        local: "只在本機運算。不登入、不收 email、不發送網路請求，也不保存結果。",
-        show: "顯示我的 layer",
+        eyebrow: "Shiori 自我檢測",
+        title: "找出你現在的 AI 漂移層。",
+        local: "只在本機運算。不登入、不收電子郵件、不發送網路請求，也不保存結果。",
+        show: "顯示我的層",
         clear: "清除",
-        missing: "請先回答每一道 self-check 題目，再顯示 layer。",
+        missing: "請先回答每一道自我檢測題目，再顯示層級。",
         resultStatus: "結果:{layer}。",
         q1Legend: "1. 今天最接近哪一句？",
         q2Legend: "2. 什麼最需要留給你自己？",
-        q3Legend: "3. drift 出現在哪裡？",
+        q3Legend: "3. 漂移出現在哪裡？",
         q4Legend: "4. 這週哪一道邊界會有幫助？",
-        q5Legend: "5. 你會把什麼放進 diagnosis？",
+        q5Legend: "5. 你會把什麼放進診斷？",
         startVoice: "我產出更多，但越來越不像我。",
         startDecision: "我很快問 AI，但做決定反而更難。",
-        startTeam: "團隊變快了，但 review 像走形式。",
+        startTeam: "團隊變快了，但審查像走形式。",
         startLife: "我正在人生轉換期，不想讓 AI 替我定義意義。",
         startAutomation: "我只是想自動化，但可能正在加速錯的流程。",
         ownedAutomation: "AI 加速之前的流程設計。",
         ownedVoice: "讓作品屬於我的立場、品味與措辭。",
         ownedDecision: "在多條路之間選擇的最後標準。",
-        ownedTeam: "reviewer、approver 與實際負責的人。",
+        ownedTeam: "審查者、核准者與實際負責的人。",
         ownedLife: "重大個人變化的意義。",
-        driftAutomation: "混亂的 workflow 現在跑得比我能檢查的速度還快。",
-        driftVoice: "漂亮的 output 失去我的邊角或意見。",
+        driftAutomation: "混亂的工作流現在跑得比我能檢查的速度還快。",
+        driftVoice: "漂亮的輸出失去我的邊角或意見。",
         driftDecision: "AI 給更多選項，但沒有更多清晰度。",
-        driftTeam: "人們 approve 自己其實無法驗證的 output。",
+        driftTeam: "人們核准自己其實無法驗證的輸出。",
         driftLife: "AI 讓脆弱的時刻被太快解釋完。",
-        boundaryAutomation: "把 AI-only 任務和需要人檢查的任務分開。",
+        boundaryAutomation: "把只適合 AI 處理的任務，和需要人檢查的任務分開。",
         boundaryVoice: "先寫下我的立場，再讓 AI 圍繞它整理。",
         boundaryDecision: "問 AI 建議前，先寫出決策標準。",
-        boundaryTeam: "approve 前先命名 owner 與 review evidence。",
-        boundaryLife: "先進入 slow mode，再請 AI 摘要情況。",
-        diagnosisAutomation: "一個可能正在最佳化錯誤目標的自動化 workflow。",
+        boundaryTeam: "核准前先命名負責人與審查證據。",
+        boundaryLife: "先進入慢速模式，再請 AI 摘要情況。",
+        diagnosisAutomation: "一個可能正在最佳化錯誤目標的自動化工作流。",
         diagnosisVoice: "我的原稿和 AI 輔助後的版本。",
-        diagnosisDecision: "decision prompt、筆記，以及我卡住的選擇。",
-        diagnosisTeam: "包含 handoff 與 approval 的團隊或 agent workflow。",
+        diagnosisDecision: "決策提示、筆記，以及我卡住的選擇。",
+        diagnosisTeam: "包含交接與核准規則的團隊或代理工作流。",
         diagnosisLife: "我在一段需要照顧的轉換期如何使用 AI。"
       },
       result: {
-        eyebrow: "LIKELY LAYER",
-        titleFallback: "你的 layer",
+        eyebrow: "可能層級",
+        titleFallback: "你的層級",
         happening: "可能正在發生什麼",
         boundary: "第一道可以試的邊界",
         silent: "Silent Diagnosis 是否適合",
         readSilent: "閱讀 Silent Diagnosis",
-        why: "Why this exists"
+        why: "為什麼有這張地圖"
       },
       silent: {
         eyebrow: "SILENT DIAGNOSIS",
-        title: "送出你的 AI workflow，拿到一份書面邊界診斷。",
-        lede: "不需要 workshop。不需要上課。Shiori 先從低壓的書面 review 開始:AI 哪裡在幫忙、哪裡可能正在取代判斷，以及什麼應該保留給人。",
+        title: "送出你的 AI 工作流，拿到一份書面邊界診斷。",
+        lede: "不需要工作坊。不需要上課。Shiori 先從低壓的書面審查開始:AI 哪裡在幫忙、哪裡可能正在取代判斷，以及什麼應該保留給人。",
         cta: "透過 Bright Raven 聯絡",
         deliverablesLabel: "服務交付物",
-        mapTitle: "AI use map",
-        mapText: "你送來的 workflow 裡，哪些是 AI-only、AI-assist 或 human-first。",
-        riskTitle: "Judgment-risk zones",
-        riskText: "review、voice、ownership 或 meaning 可能變成 rubber stamp 的地方。",
-        boundaryTitle: "Boundary map",
-        boundaryText: "用 workflow 語言寫出的 AI-only / AI-assist / human-first 邊界。",
-        changesTitle: "3 workflow changes",
-        changesText: "在新增工具或自動化層之前，先測試三個具體 workflow 改動。"
+        mapTitle: "AI 使用地圖",
+        mapText: "你送來的工作流裡，哪些只適合 AI 處理、哪些需要 AI 協助、哪些應該以人為主。",
+        riskTitle: "判斷風險區",
+        riskText: "審查、聲音、負責關係或意義可能變成走過場的地方。",
+        boundaryTitle: "邊界地圖",
+        boundaryText: "用工作流語言寫出的 AI 處理、AI 協助、以人為主的邊界。",
+        changesTitle: "三個工作流改動",
+        changesText: "在新增工具或自動化層之前，先測試三個具體工作流改動。"
       },
       research: {
-        eyebrow: "RESEARCH SNAPSHOT",
-        title: "Shiori 不是在比速度，也不是在賣 audit readiness。",
-        automationTitle: "Automation sells speed",
-        automationText: "Workflow 顧問通常先問什麼能被自動化，再用省下的時間或 ROI 排序。",
-        governanceTitle: "Governance sells audit readiness",
-        governanceText: "正式 AI governance 會問 controls、evidence 與 oversight 是否準備好接受 review。",
-        shioriTitle: "Shiori focuses on what stays yours",
-        shioriText: "Judgment、voice、review、meaning 與 ownership 被當成設計邊界處理。"
+        eyebrow: "研究摘要",
+        title: "Shiori 不是在比速度，也不是在賣稽核準備度。",
+        automationTitle: "自動化賣的是速度",
+        automationText: "工作流顧問通常先問什麼能被自動化，再用省下的時間或投資報酬排序。",
+        governanceTitle: "治理賣的是稽核準備度",
+        governanceText: "正式的 AI 治理會問控制、證據與監督是否準備好接受審查。",
+        shioriTitle: "Shiori 關心什麼應該留給你",
+        shioriText: "判斷、聲音、審查、意義與負責關係，都被當成設計邊界處理。"
       },
       why: {
-        eyebrow: "WHY THIS EXISTS",
-        title: "Reading map 是更深的理論，不是入口。",
-        body: "下面是 Shiori 的研究底層:predictive processing、judgment quality 與 human-AI decision making。當你想理解為什麼 evidence、friction、voice 與 ownership 應該放在同一個 workflow 對話裡，就從這裡進去。"
+        eyebrow: "為什麼有這張地圖",
+        title: "閱讀地圖是更深的理論，不是入口。",
+        body: "下面是 Shiori 的研究底層:預測處理、判斷品質，以及人與 AI 的共同決策。當你想理解為什麼證據、摩擦、聲音與負責關係應該放在同一個工作流對話裡，就從這裡進去。"
       },
       map: {
-        labTag: "INSTRUMENT 003 · READING MAP",
-        labTagLabel: "專案狀態:reading map",
-        subtitle: "17 份 paper / book,三條路徑,一張用來校準 human-AI decision making 的閱讀地圖。",
-        lede: "這不是書單。它把「人如何判斷 AI」、「直覺何時可信」、「大腦如何做 inference」放到同一張圖上。",
-        coreEyebrow: "CORE INSIGHT",
-        coreTitle: "給 evidence,不給結論。",
-        coreCopy: "AI 工具的責任不是讓使用者服從 AI,而是讓使用者對 AI 的 posterior 維持校準。",
+        labTag: "工具 003 · 閱讀地圖",
+        labTagLabel: "專案狀態:閱讀地圖",
+        subtitle: "17 份論文／書籍、三條路徑，一張用來校準人與 AI 共同決策的閱讀地圖。",
+        lede: "這不是書單。它把「人如何判斷 AI」、「直覺何時可信」、「大腦如何做推論」放到同一張圖上。",
+        coreEyebrow: "核心洞察",
+        coreTitle: "給證據，不給結論。",
+        coreCopy: "AI 工具的責任不是讓使用者服從 AI，而是讓使用者對 AI 的後驗判斷維持校準。",
         axisLegendLabel: "三條閱讀主軸",
-        progressLabel: "INSIGHT PROGRESS",
+        progressLabel: "理解進度",
         progressA11y: "理解進度",
         progressEmpty: "迷宮還是暗的。每理解一個節點,一段路會亮起。",
         progressMarked: "{paper} 已理解。迷宮亮起 {count} / {total}。",
         progressUnmarked: "{paper} 已取消標記。迷宮亮起 {count} / {total}。",
         progressComplete: "全部節點已理解。整張地圖已經打通。",
-        viewTitle: "VIEW MODE",
+        viewTitle: "顯示模式",
         controlCopy: "三種布局都保留。切換只改讀法,不改內容。",
-        modeLabel: "切換 reading map 顯示模式",
+        modeLabel: "切換閱讀地圖顯示模式",
         modeConstellation: "星圖",
         modeStack: "三軸堆疊",
         modeSequence: "推薦順序",
-        interactiveEyebrow: "INTERACTIVE MAP",
-        titleConstellation: "三軸 constellation",
+        interactiveEyebrow: "互動地圖",
+        titleConstellation: "三軸星圖",
         titleStack: "三軸堆疊",
         titleSequence: "推薦閱讀順序",
-        statusConstellation: "目前顯示:星圖。點任一節點查看 detail；再點同一節點可取消標記。",
+        statusConstellation: "目前顯示:星圖。點任一節點查看細節；再點同一節點可取消標記。",
         statusStack: "目前顯示:三軸堆疊。每一軸以時間順序排列。",
-        statusSequence: "目前顯示:推薦順序。前 8 步是 source map 指定路徑,其餘為延伸。",
+        statusSequence: "目前顯示:推薦順序。前 8 步是來源地圖指定路徑，其餘為延伸。",
         axisSvgLabel: "三軸與跨軸連線",
-        labelA: "Axis A · predictive mind",
-        labelB: "Axis B · judgment",
-        labelC: "Axis C · XAI",
-        mazeKicker: "MAZE FOCUS",
-        mazeTitle: "給 evidence,不給結論",
-        mazeCopy: "AI 的責任是 calibrate posterior,不是替使用者完成判斷。",
-        sequenceHeading: "Recommended path · 1 to 8, then extension",
+        labelA: "A 軸 · 預測心智",
+        labelB: "B 軸 · 判斷",
+        labelC: "C 軸 · 可解釋 AI",
+        mazeKicker: "迷宮焦點",
+        mazeTitle: "給證據，不給結論",
+        mazeCopy: "AI 的責任是校準後驗判斷，不是替使用者完成判斷。",
+        sequenceHeading: "推薦路徑 · 先讀 1 到 8，再進入延伸",
         sequenceDefaultReason: "延伸閱讀:依興趣補完三軸背景,不用照唯一順序讀。",
-        relationEyebrow: "CROSS-AXIS LINKS",
+        relationEyebrow: "跨軸關聯",
         relationTitle: "跨軸連線",
-        relationHelp: "桌面星圖會畫線;手機與鍵盤使用者可直接操作下方 chips。",
+        relationHelp: "桌面星圖會畫線；手機與鍵盤使用者可直接操作下方關係按鈕。",
         relationListLabel: "跨軸關係清單",
-        principleEyebrow: "DESIGN CONSEQUENCE",
-        principleTitle: "AI assist,not AI-first.",
+        principleEyebrow: "設計後果",
+        principleTitle: "AI 協助，而不是 AI 優先。",
         footerLab: "↑ Lab",
-        footerSource: "source"
+        footerSource: "原始碼"
       },
       axis: {
         A: {
-          label: "Axis A · Predictive processing",
+          label: "A 軸 · 預測處理",
           title: "人腦為何如此運作",
-          legend: "A · predictive mind"
+          legend: "A · 預測心智"
         },
         B: {
-          label: "Axis B · Judgment quality",
+          label: "B 軸 · 判斷品質",
           title: "直覺判斷的可靠性",
-          legend: "B · judgment"
+          legend: "B · 判斷"
         },
         C: {
-          label: "Axis C · XAI / Human-AI",
-          title: "工程實證與 human-AI decision making",
-          legend: "C · human-AI"
+          label: "C 軸 · 可解釋 AI / 人機協作",
+          title: "工程實證與人與 AI 的共同決策",
+          legend: "C · 人與 AI"
         }
       },
       implication: {
         extended: "延伸推論",
-        source: "Source implication"
+        source: "來源含義"
       },
       principle: {
         beaconTitle: "Beacon",
-        beaconText: "給設計師 example-based evidence:跟過去某個被罰案例對照,比只丟 WCAG ratio 更能養成 internalized intuition。",
+        beaconText: "給設計師以案例為基礎的證據:和過去某個被罰案例對照，比只丟 WCAG 比率更能養成內化直覺。",
         shikigarasuTitle: "shikigarasu",
-        shikigarasuText: "Verdict + Findings 容易被 rubber-stamp。若改成 past-case comparison,更符合「給 evidence、不給結論」。",
+        shikigarasuText: "「判定 + 發現項目」容易被走過場接受。若改成過去案例對照，更符合「給證據、不給結論」。",
         noiseTitle: "Noise 的反論",
-        noiseText: "noise reduction 是 AI 主導的強論點。這份 reading map 不迴避它,而是把它放進設計哲學的壓力測試。"
+        noiseText: "降低判斷噪音是支持 AI 主導的強論點。這份閱讀地圖不迴避它，而是把它放進設計哲學的壓力測試。"
       },
       dialog: {
-        closeLabel: "關閉 detail panel",
-        titleFallback: "Paper detail",
+        closeLabel: "關閉細節面板",
+        titleFallback: "文獻細節",
         meaningTitle: "對個人工作的含義",
-        meaningSource: "Sonnet 4.6 fan-out · 以 verbatim quote 校準",
-        beaconLabel: "Beacon · a11y plugin",
-        shikigarasuLabel: "shikigarasu · 六軸 agent",
-        noShikigarasuImplication: "這份 paper 對 shikigarasu 沒有明顯的設計含義(誠實「無」)。",
-        pathTitle: "Source file",
-        pathNote: "本機 markdown 路徑。公開部署時不假裝它是可用的遠端連結。",
-        copyPath: "Copy path",
+        meaningSource: "Sonnet 4.6 分流分析 · 以原文引句校準",
+        beaconLabel: "Beacon · 可及性外掛",
+        shikigarasuLabel: "shikigarasu · 六軸代理",
+        noShikigarasuImplication: "這份文獻對 shikigarasu 沒有明顯的設計含義(誠實「無」)。",
+        pathTitle: "來源檔案",
+        pathNote: "本機 Markdown 路徑。公開部署時不假裝它是可用的遠端連結。",
+        copyPath: "複製路徑",
         relatedTitle: "跨軸關聯",
         noRelation: "這篇目前沒有預定義跨軸連線;請回到地圖看同軸脈絡。",
-        copySuccess: "已複製 local path。",
-        copyFail: "無法自動複製;請手動選取上方 path。"
+        copySuccess: "已複製本機路徑。",
+        copyFail: "無法自動複製；請手動選取上方路徑。"
       },
       layers: {
         automation: {
-          label: "Task Automation",
-          happening: "AI 可能在流程被檢查之前就先把它加速了。風險不只是工具，而是錯的 workflow 變得更快。",
-          boundary: "在新增下一個自動化步驟前，先為這個 workflow 寫出 AI-only / AI-assist / human-check 清單。",
-          silent: "如果你能提供 workflow、prompts、outputs，以及目前人類 review 發生的位置，Silent Diagnosis 會有幫助。"
+          label: "任務自動化",
+          happening: "AI 可能在流程被檢查之前就先把它加速了。風險不只是工具，而是錯的工作流變得更快。",
+          boundary: "在新增下一個自動化步驟前，先為這個工作流寫出「AI 處理／AI 協助／人類檢查」清單。",
+          silent: "如果你能提供工作流、提示、輸出，以及目前人類審查發生的位置，Silent Diagnosis 會有幫助。"
         },
         voice: {
-          label: "Creative Voice",
-          happening: "AI 可能正在磨平立場、品味或措辭。Output 可以更漂亮，同時變得比較不像你。",
+          label: "創作聲音",
+          happening: "AI 可能正在磨平立場、品味或措辭。輸出可以更漂亮，同時變得比較不像你。",
           boundary: "先寫下你的核心意見或句子，再讓 AI 在不改變立場的前提下重組。",
-          silent: "如果你能把原始寫作與 AI-assisted drafts 放在一起送來，Silent Diagnosis 會有幫助。"
+          silent: "如果你能把原始寫作與 AI 輔助草稿放在一起送來，Silent Diagnosis 會有幫助。"
         },
         decision: {
-          label: "Decision Support",
-          happening: "AI 可能增加了分析量，卻讓承諾更困難。缺的常常不是更多選項，而是 criteria。",
+          label: "決策支援",
+          happening: "AI 可能增加了分析量，卻讓承諾更困難。缺的常常不是更多選項，而是判斷標準。",
           boundary: "在問 AI 建議之前，先寫下決策標準、風險承受度與不可妥協條件。",
-          silent: "如果你能提供 decision prompt、AI answer、notes，以及仍然卡住的地方，Silent Diagnosis 會有幫助。"
+          silent: "如果你能提供決策提示、AI 回答、筆記，以及仍然卡住的地方，Silent Diagnosis 會有幫助。"
         },
         team: {
-          label: "Team / Agent Workflow",
-          happening: "團隊可能有 human-in-the-loop 步驟，但那不一定是有意義的 review。當沒有人能驗證 output，approval 很容易變成形式。",
-          boundary: "在接受 AI 或 agent output 前，先命名 accountable owner、required review evidence 與 stop conditions。",
-          silent: "如果你能提供 team handoff、agent flow、review step 與 approval rule，Silent Diagnosis 會有幫助。"
+          label: "團隊／代理工作流",
+          happening: "團隊可能有人工把關步驟，但那不一定是有意義的審查。當沒有人能驗證輸出，核准很容易變成形式。",
+          boundary: "在接受 AI 或代理輸出前，先命名負責人、必要審查證據與停止條件。",
+          silent: "如果你能提供團隊交接、代理流程、審查步驟與核准規則，Silent Diagnosis 會有幫助。"
         },
         life: {
-          label: "Life Transition / Slow Mode",
+          label: "人生轉換／慢速模式",
           happening: "AI 可能讓脆弱的情境被太快解釋完。這一層需要結構，但不能把意義外包。",
-          boundary: "使用 slow mode:先寫下你自己的意義，只請 AI organize 或 reflect，並延後最後框架。",
-          silent: "Silent Diagnosis 只適合作為書面 boundary map，不是 therapy、coaching 或 crisis support。"
+          boundary: "使用慢速模式:先寫下你自己的意義，只請 AI 整理或反映，並延後最後框架。",
+          silent: "Silent Diagnosis 只適合作為書面邊界地圖，不是治療、教練服務或危機支援。"
         }
       },
       relations: {
         "chen-hohwy": {
           label: "Chen 2023 ↔ Hohwy 2013",
-          copy: "三條 pathway 是 predictive processing 的 corollary。"
+          copy: "三條路徑是預測處理的推論結果。"
         },
         "bucinca-kk": {
           label: "Buçinca 2021 ↔ K&K 2009",
-          copy: "cognitive forcing function = K&K 直覺 calibration 的工程化。"
+          copy: "認知強迫函式，就是 K&K 直覺校準的工程化。"
         },
         "noise-kk": {
           label: "Noise 2021 ↔ K&K 2009",
-          copy: "Noise 是 K&K 2009 的延伸,補 bias 的另一面。"
+          copy: "《Noise》延伸 K&K 2009，補上偏誤之外的另一面。"
         },
         "friston-hohwy": {
           label: "Friston 2013 ↔ Hohwy 2013",
-          copy: "Hohwy Ch 7 整章用 Friston psychosis 框架。"
+          copy: "Hohwy 第七章大量使用 Friston 的精神病理框架。"
         },
         "clark-hohwy": {
           label: "Clark 2016 ↔ Hohwy 2013",
-          copy: "姊妹作:internalism vs 4E cognition 對讀。"
+          copy: "姊妹作:內在論與 4E 認知的對讀。"
         },
         "solms-seth": {
           label: "Solms 2021 ↔ Seth 2021",
-          copy: "同年、不同立場談 consciousness:腦幹 vs 皮質。"
+          copy: "同年、不同立場談意識:腦幹與皮質。"
         },
         "barrett-seth": {
           label: "Barrett 2017 ↔ Seth 2021",
-          copy: "predictive processing 應用到 interoception / emotion / self。"
+          copy: "把預測處理應用到內感受、情緒與自我。"
         }
       }
     },

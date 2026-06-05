@@ -5,123 +5,123 @@ window.SHIORI_IMPLICATION_I18N = {
   "zh-Hant": {
     "merleau-1945": {
       beacon: {
-        text: "Merleau-Ponty 指出自然知覺總是在情境與場域中發生。對 Beacon 來說，單獨丟出 contrast ratio 或 WCAG 條文，會把問題拆成抽象指標。更好的做法是在每個 finding 旁邊放一個可比較案例，讓 reviewer 看見同一種 accessibility gap 在真實 UI 中如何出現。"
+        text: "Merleau-Ponty 指出自然知覺總是在情境與場域中發生。對 Beacon 來說，單獨丟出對比度比值或 WCAG 條文，會把問題拆成抽象指標。更好的做法是在每個發現項目旁邊放一個可比較案例，讓審查者看見同一種可及性缺口在真實介面中如何出現。"
       },
       shikigarasu: {
-        text: "Hakuso 的 Verdict + Findings + Required fixes 很容易把問題列成孤立屬性。這篇 paper 提醒它要把 finding 錨定到 prior case，例如某個 auth bypass 或 N+1 degradation 的已知案例，讓 agent 讀到的是 situated failure，而不是抽象規則違反。"
+        text: "Hakuso 的「判定 + 發現項目 + 必要修正」很容易把問題列成孤立屬性。這篇文獻提醒它要把發現項目錨定到既有案例，例如某個繞過驗證或 N+1 效能劣化的已知案例，讓代理讀到的是情境中的失敗，而不是抽象規則違反。"
       }
     },
     "friston-2010": {
       beacon: {
-        text: "Friston 的 precision-weighting 提醒 Beacon:抽象指標常常太低 stakes，reviewer 不會真正更新判斷。每個 fail score 應該配一個高 precision anchor，例如真實 lawsuit、user struggle recording 或 audit failure，讓 evidence 有足夠更新力。"
+        text: "Friston 的精確度加權提醒 Beacon:抽象指標常常利害感太低，審查者不會真正更新判斷。每個失敗分數應該配一個高精確度參照點，例如真實訴訟、使用者受阻錄影或稽核失敗，讓證據有足夠更新力。"
       }
     },
     "friston-2013": {
       beacon: {
-        text: "這篇 paper 把 posterior judgment 描述成 prior 與 evidence 依 precision 加權的結果。Beacon 若先給分數，reviewer 很容易被 tool signal 接管。更好的順序是先呈現可比較案例，讓 reviewer 形成 calibrated prior，再顯示 metric。"
+        text: "這篇文獻把後驗判斷描述成先驗判斷與證據依精確度加權的結果。Beacon 若先給分數，審查者很容易被工具訊號接管。更好的順序是先呈現可比較案例，讓審查者形成已校準的先驗判斷，再顯示指標。"
       }
     },
     "hohwy-2013": {
       beacon: {
-        text: "Hohwy 的 prediction-error gain 說明為什麼熟悉的 WCAG finding 容易被既有 prior 吸收。Beacon 需要加入高 surprise 的 case reference，讓 finding 不能被當成普通 checklist item 直接帶過。"
+        text: "Hohwy 的預測誤差增益說明，為什麼熟悉的 WCAG 發現項目容易被既有先驗判斷吸收。Beacon 需要加入高驚訝度的案例參照，讓發現項目不能被當成普通清單項目直接帶過。"
       },
       shikigarasu: {
-        text: "Hakuso 的固定 verdict 格式會啟動讀者對 audit report 的既有模型，讓 findings 被預先解釋掉。它應該為 critical finding 加入 Closest prior failure 欄位，用命名案例提高 prediction error gain。"
+        text: "Hakuso 的固定判定格式會啟動讀者對稽核報告的既有模型，讓發現項目被預先解釋掉。它應該為關鍵發現加入「最接近的既有失敗案例」欄位，用命名案例提高預測誤差增益。"
       }
     },
     "clark-2016": {
       beacon: {
-        text: "Clark 的 precision account 指出，沒有情境 grounding 的抽象 signal 影響力很低。Beacon 應該把 feature-based finding 加上 exemplar layer，像 lawsuit、user-test data 或 legal precedent，讓 reviewer 的高層模型必須重新處理。"
+        text: "Clark 對精確度的說明指出，沒有情境 grounding 的抽象訊號影響力很低。Beacon 應該替以特徵為基礎的發現項目加上範例層，例如訴訟、使用者測試資料或法律前例，讓審查者的高層模型必須重新處理。"
       }
     },
     "hohwy-2016": {
       beacon: {
-        text: "Hohwy 的 self-evidencing / EE-circle 提醒 Beacon:便宜、可預期的 evidence 只會確認既有假設。Example-based finding 應該被當成 deliberate prediction-error injection，用真實後果打斷 benign confirmation loop。"
+        text: "Hohwy 的自我證成／EE 循環提醒 Beacon:便宜、可預期的證據只會確認既有假設。案例型發現項目應該被當成刻意注入的預測誤差，用真實後果打斷良性確認迴圈。"
       }
     },
     "barrett-2017": {
       beacon: {
-        text: "Barrett 認為知覺需要概念模擬。Beacon 只給 rule 時，reviewer 看到的是數字；若給一個命名案例，reviewer 會模擬整個 failure situation，再用 metric 驗證。case 是啟動感知的 anchor。"
+        text: "Barrett 認為知覺需要概念模擬。Beacon 只給規則時，審查者看到的是數字；若給一個命名案例，審查者會模擬整個失敗情境，再用指標驗證。案例是啟動感知的錨點。"
       },
       shikigarasu: {
-        text: "Barrett 的 categorization 不是 feature matching，而是按目標取回 past instances。Hakuso 應該把每個 finding 接到 past-case reference，並明確標出 audit goal，讓修復不是薄弱的 generic response。"
+        text: "Barrett 說的分類不是特徵比對，而是依目標取回過去實例。Hakuso 應該把每個發現項目接到過去案例參照，並明確標出稽核目標，讓修復不是薄弱的泛用回應。"
       }
     },
     "seth-2021": {
       beacon: {
-        text: "Seth 的 controlled hallucination 說明人經驗到的是 interpretation，不是 raw signal。Beacon 的 contrast metric 會被 developer 的 prior 重新解釋；具體案例能改變 top-down interpretation，讓問題變得可感。"
+        text: "Seth 的受控幻覺說明，人經驗到的是詮釋，不是原始訊號。Beacon 的對比度指標會被開發者的既有判斷重新解釋；具體案例能改變由上而下的詮釋，讓問題變得可感。"
       },
       shikigarasu: {
-        text: "Hakuso 只列 raw signals 時，強 prior 仍會吞掉 findings。它需要把 verdict 接到使用者已有信念會感到衝突的 reference case，讓 audit output 不只是 feature detection，而能改變 interpretation。"
+        text: "Hakuso 只列原始訊號時，強先驗判斷仍會吞掉發現項目。它需要把判定接到會和使用者既有信念衝突的參照案例，讓稽核輸出不只是特徵偵測，而能改變詮釋。"
       }
     },
     "solms-2021": {
       beacon: {
-        text: "Solms 強調 affect 與 felt consequence。Beacon 的抽象規則會落入自動處理，缺乏動機重量。加入真實案例與後果，可以把 finding 從 automatic register 推到需要自願注意的層級。"
+        text: "Solms 強調情感與能被感受到的後果。Beacon 的抽象規則會落入自動處理，缺乏動機重量。加入真實案例與後果，可以把發現項目從自動處理推到需要自願注意的層級。"
       },
       shikigarasu: {
-        text: "Hakuso 的 verdict grammar 太熟悉，容易被低優先級處理。Solms 的 Law of Affect 暗示每個 high-severity finding 都要加 felt-stakes layer，例如 outage、breach、legal exposure 或 user harm。"
+        text: "Hakuso 的判定語法太熟悉，容易被低優先級處理。Solms 的情感法則暗示，每個高嚴重度發現項目都要加上可感利害層，例如服務中斷、資料外洩、法律暴露或使用者傷害。"
       }
     },
     "clark-2023": {
       beacon: {
-        text: "Clark 的 popular account 強調 predictive brain 只會對偏離預期的東西反應。Beacon 熟悉的 rule citation 不會產生 prediction error；具體 precedent 會迫使 reviewer 把自己的 UI 和 anchor case 做 active matching。"
+        text: "Clark 的通俗說法強調，預測大腦只會對偏離預期的東西反應。Beacon 熟悉的規則引用不會產生預測誤差；具體前例會迫使審查者把自己的介面和錨點案例主動比對。"
       },
       shikigarasu: {
-        text: "Hakuso 的 PASS / CONDITIONAL verdict 會先種下高信心 prior，讓後面的 evidence 變成 confirmation。它應該延後 verdict，或先放 falsifying case，避免 findings 被 verdict label 預先收編。"
+        text: "Hakuso 的 PASS / CONDITIONAL 判定會先種下高信心的先驗判斷，讓後面的證據變成確認。它應該延後判定，或先放反證案例，避免發現項目被判定標籤預先收編。"
       }
     },
     "kk-2009": {
       beacon: {
-        text: "Kahneman 與 Klein 指出可靠直覺需要 valid cues 與 feedback。Accessibility review 常是 wicked environment，後果延遲又不明。Beacon 應該用 resolved cases 當 feedback proxy，幫 reviewer 建立可學習的 cue-outcome 關係。"
+        text: "Kahneman 與 Klein 指出可靠直覺需要有效線索與回饋。可及性審查常是難以學習的環境，後果延遲又不明。Beacon 應該用已結案案例作為回饋代理，幫審查者建立可學習的線索與後果關係。"
       },
       shikigarasu: {
-        text: "K&K 的 fractionated expertise 提醒 Hakuso 不要把所有 finding 都包成單一 unified verdict。每個 finding 應標出 validity tier，區分高可學習模式和低可學習判斷，避免 overconfidence。"
+        text: "K&K 的分散式專業提醒 Hakuso，不要把所有發現項目都包成單一統一判定。每個發現項目應標出效度層級，區分高可學習模式和低可學習判斷，避免過度自信。"
       }
     },
     "noise-2021": {
       beacon: {
-        text: "Noise 指出 absolute rating 會產生大量不一致。Beacon 的 0-100 分數應該錨定到 case scale，例如某個 anchor site 的實際 score 與後果，讓 reviewer 做相對判斷而不是各自解讀抽象數字。"
+        text: "《Noise》指出絕對評分會產生大量不一致。Beacon 的 0-100 分數應該錨定到案例尺度，例如某個參照網站的實際分數與後果，讓審查者做相對判斷，而不是各自解讀抽象數字。"
       },
       shikigarasu: {
-        text: "Hakuso 的 verdict 也是隱含 scale 上的 absolute rating。它應先拆成 blast radius、exploitability、pattern frequency 等 mediating assessments，並把每一維錨到過去案例，再組合成 verdict。"
+        text: "Hakuso 的判定也是隱含尺度上的絕對評分。它應先拆成影響範圍、可利用性、模式頻率等中介評估，並把每一維錨到過去案例，再組合成判定。"
       }
     },
     "sunday-2023": {
       beacon: {
-        text: "Sunday 把可靠直覺視為可校準 skill。Beacon 的 isolated finding 沒有 calibration anchor；它應在每個 finding 旁放已知 reference case，讓 reviewer 用熟悉案例微調到新案例。"
+        text: "Sunday 把可靠直覺視為可校準技能。Beacon 的孤立發現項目沒有校準錨點；它應在每個發現項目旁放已知參照案例，讓審查者用熟悉案例微調到新案例。"
       }
     },
     "bansal-2021": {
       beacon: {
-        text: "Bansal 等人顯示 feature-based explanation 會提高 blind agreement，即使 AI 錯也一樣。Beacon 應加入 adversarial mode 或 top-2 counter-evidence，讓 explanation informative，而不是只讓 finding 更有說服力。"
+        text: "Bansal 等人顯示，以特徵為基礎的說明會提高盲目同意，即使 AI 錯也一樣。Beacon 應加入對抗模式或前兩項反證，讓說明真的提供資訊，而不是只讓發現項目更有說服力。"
       },
       shikigarasu: {
-        text: "這篇 paper 支持 hakuso rubber-stamp 風險，但不直接證明 precedent comparison 會解決。更直接的設計是 devil's-advocate block:在 verdict 後列出反方最強證據，再請 reviewer confirm。"
+        text: "這篇文獻支持 hakuso 被走過場接受的風險，但不直接證明前例對照能解決。更直接的設計是反方區塊:在判定後列出反方最強證據，再請審查者確認。"
       }
     },
     "bucinca-2021": {
       beacon: {
-        text: "Buçinca 的 cognitive forcing functions 指出 explanation 本身不夠。Beacon 應先讓 reviewer 做自己的 pass/fail 判斷，再 reveal score 與 explanation；disagreement 才會觸發真正分析。"
+        text: "Buçinca 的認知強迫函式指出，說明本身不夠。Beacon 應先讓審查者做自己的通過／失敗判斷，再顯示分數與說明；不一致才會觸發真正分析。"
       },
       shikigarasu: {
-        text: "Hakuso front-load verdict 會讓人先接受 AI judgment。它應改成 Update flow:先要求 human 或 requesting agent 寫 pre-assessment，再顯示 hakuso findings 與差異。"
+        text: "Hakuso 把判定放在最前面，會讓人先接受 AI 判斷。它應改成更新流程:先要求人或提出請求的代理寫預評估，再顯示 hakuso 的發現項目與差異。"
       }
     },
     "chen-2023": {
       beacon: {
-        text: "Chen 等人的三條 pathway 說明 example-based explanation 為何能降低 overreliance。Beacon 應在 finding 旁加入 comparator cases，並顯示類似案例中 AI 何時正確、何時錯，讓 reviewer 看見 reliability signal。"
+        text: "Chen 等人的三條路徑說明，以案例為基礎的說明為何能降低過度依賴。Beacon 應在發現項目旁加入對照案例，並顯示類似案例中 AI 何時正確、何時錯，讓審查者看見可靠性訊號。"
       },
       shikigarasu: {
-        text: "Hakuso 的 Verdict + Findings 很像 paper 中容易 rubber-stamp 的 feature-based explanation。它可以保留骨架，但新增 Comparable cases block，顯示過去相似 audit 的 verdict 是否被確認或挑戰。"
+        text: "Hakuso 的「判定 + 發現項目」很像文獻中容易被走過場接受的特徵型說明。它可以保留骨架，但新增「可比較案例」區塊，顯示過去相似稽核的判定是否被確認或挑戰。"
       }
     },
     "vasconcelos-2023": {
       beacon: {
-        text: "Vasconcelos 等人顯示 written explanation 不一定降低 overreliance，關鍵是 saliency。Beacon 應把錯誤直接標在 rendered UI 的失敗點，而不是只用文字描述 rule violation。"
+        text: "Vasconcelos 等人顯示，書面說明不一定降低過度依賴，關鍵是顯著性。Beacon 應把錯誤直接標在已渲染介面的失敗點，而不是只用文字描述規則違反。"
       },
       shikigarasu: {
-        text: "這篇 paper 反而警告 contrastive example-based explanation 只給 rough understanding，不一定告訴使用者 prediction 是否真。對 hakuso，較可行的是提高錯誤接受的成本，例如要求 reviewer 逐項 attest findings。"
+        text: "這篇文獻反而警告，對照式案例說明只給粗略理解，不一定告訴使用者預測是否為真。對 hakuso，較可行的是提高錯誤接受的成本，例如要求審查者逐項確認發現項目。"
       }
     }
   },
