@@ -112,7 +112,7 @@ window.SHIORI_I18N = {
         eyebrow: "SILENT DIAGNOSIS",
         title: "Send your AI workflow. Get a written boundary diagnosis.",
         lede: "No workshop required. No teaching required. Shiori starts as a low-pressure written review of where AI is helping, where it may be replacing judgment, and what should remain human-first.",
-        cta: "Contact through Bright Raven",
+        cta: "Email Bright Raven about Shiori",
         deliverablesLabel: "Service deliverables",
         mapTitle: "AI use map",
         mapText: "What is AI-only, AI-assist, or human-first in the workflow you send.",
@@ -491,7 +491,7 @@ window.SHIORI_I18N = {
         eyebrow: "SILENT DIAGNOSIS",
         title: "送出你的 AI 工作流，拿到一份書面邊界診斷。",
         lede: "不需要工作坊。不需要上課。Shiori 先從低壓的書面審查開始:AI 哪裡在幫忙、哪裡可能正在取代判斷，以及什麼應該保留給人。",
-        cta: "透過 Bright Raven 聯絡",
+        cta: "寄信聯絡 Bright Raven",
         deliverablesLabel: "服務交付物",
         mapTitle: "AI 使用地圖",
         mapText: "你送來的工作流裡，哪些只適合 AI 處理、哪些需要 AI 協助、哪些應該以人為主。",
@@ -640,6 +640,101 @@ window.SHIORI_I18N = {
           silent: "Silent Diagnosis 只適合作為書面邊界地圖，不是治療、教練服務或危機支援。"
         }
       },
+      papers: {
+        "merleau-1945": {
+          topic: "知覺是身體在世界中的主動取向",
+          description: "現象學的起點：知覺不是被動接收資料，而是身體帶著意向、姿態與可行動性，在世界中組織經驗。",
+          implication: "AI 介面不該把使用者當成接收結論的容器。好的工具要保留人的具身判斷、情境感與可行動性。"
+        },
+        "friston-2010": {
+          topic: "以 free-energy principle 統整理解大腦",
+          description: "把大腦理解為持續最小化 surprise／prediction error 的系統，透過 generative model 維持對世界可行的解釋。",
+          implication: "AI 工具輸出的每個訊號都會改變使用者的 likelihood 權重。設計要控制 evidence 的強度，不要把單一模型輸出包裝成過度確定的世界。"
+        },
+        "friston-2013": {
+          topic: "把 psychosis 理解為 precision 與 prediction error 的失衡",
+          description: "以 predictive coding 解釋 psychosis：當 precision weighting 與 prediction error 的處理失衡，世界會被錯誤地賦予意義。",
+          implication: "AI explanation 也會改變 precision。若 UI 把錯誤線索呈現得太權威，使用者未必是不理性，而可能是介面錯誤地提高了某些 evidence 的權重。"
+        },
+        "hohwy-2013": {
+          topic: "大腦是 hierarchical Bayesian inference engine",
+          description: "把心智理解為 prediction-error minimization 的層級系統。人不是單純接收 AI 結論，而會自動對它進行 inference。",
+          implication: "這是 Shiori 的本體論支柱：AI 輸出進入人腦後會被重新推論。工具要供應 evidence，讓人腦能自行校準 posterior。",
+          reason: "開始理解 pathway 為何存在：人會把 AI output 放進自己的 inference engine。"
+        },
+        "clark-2016": {
+          topic: "predictive processing 與具身／4E cognition",
+          description: "把 predictive processing 連到 action、body 與 environment，與 Hohwy 的 internalism 形成姊妹作與張力。",
+          implication: "AI-assist 設計不能只看腦內模型。工具、環境與 workflow 本身也在塑造 inference，因此 evidence 應嵌入任務現場。"
+        },
+        "hohwy-2016": {
+          topic: "organism 作為 self-evidencing model",
+          description: "把生命體理解為主動尋找證據、維持自身模型的系統，往 ontology 與 self-modeling 的方向推進。",
+          implication: "對個人工具設計的含義是：人會尋找維持自我模型的 evidence。AI 工具若直接替人下結論，會削弱這個 self-evidencing 過程。",
+          reason: "在 K&K／Sunday 之後回到 self-evidencing，把直覺校準接回主體模型。"
+        },
+        "barrett-2017": {
+          topic: "情緒是 predictive construction",
+          description: "把情緒視為大腦對身體狀態與情境的主動建構，而非固定內建的反應。",
+          implication: "AI 介面會影響使用者的情緒預測。警示、分數與紅色狀態不是中性資訊，它們會改變人的 interoceptive inference。"
+        },
+        "seth-2021": {
+          topic: "self 與 consciousness 是 controlled hallucination",
+          description: "用 predictive processing 談意識、自我與身體感。self 不是被讀取的東西，而是不斷被控制與更新的模型。",
+          implication: "使用者與 AI 共事時也在更新 self-model：我是判斷者、審稿者、操作者，還是按下按鈕的人？UI 要保護使用者作為主體的感覺。"
+        },
+        "solms-2021": {
+          topic: "consciousness 的 affect／brainstem 立場",
+          description: "同樣談 consciousness，但把重心放在 affect、brainstem 與生命需求，與 Seth 形成同年對讀。",
+          implication: "若 AI 工具忽略使用者的壓力、疲勞、風險感與動機狀態，就只是在 cognitive layer 上設計，沒有照顧真正影響判斷的底層訊號。"
+        },
+        "clark-2023": {
+          topic: "串起 predictive mind 的易讀入口",
+          description: "把 Seth、Solms、Barrett 等線索以更易讀的方式串起來，適合作為 predictive processing 群的中後段入口。",
+          implication: "這對產品敘事很有用：把複雜理論轉成可操作的語言，不是降智，而是幫使用者建立能持續校準的模型。",
+          reason: "以較易讀的方式，將 predictive processing 群串成可操作模型。"
+        },
+        "kk-2009": {
+          topic: "可信的直覺需要 regular environment 與 feedback",
+          description: "Kahneman 與 Klein 收斂出直覺專業的條件：環境要有可學習的規律，個體要有足夠 feedback 來校準判斷。",
+          implication: "AI 工具不該只問使用者要不要相信模型，而要提供可學習的 feedback environment。cognitive forcing function 可以被看成直覺校準的工程版。",
+          reason: "和 Sunday 2023 一起加深「直覺何時可信」。"
+        },
+        "noise-2021": {
+          topic: "偏誤之外，還有 within-person／between-person noise",
+          description: "指出人類判斷除了偏誤，還有大量不穩定的 noise。同一位專家在不同時間也可能給出不同判斷。",
+          implication: "這是 AI-assist-not-AI-first 的強力反論：在 noise reduction 這個 specific use case 上，algorithm 可能確實有壓倒性優勢，需要正面回應。",
+          reason: "帶入 judgment quality，知道偏誤之外還有 noise。"
+        },
+        "sunday-2023": {
+          topic: "直覺是一種可訓練的 skill",
+          description: "把 intuitive skill 視為需要條件、練習與環境支撐的能力，補足 K&K 對直覺品質的理論基礎。",
+          implication: "若直覺是 skill，AI 工具的任務不是取代 skill，而是讓使用者在每次使用中更能看見 feedback，形成可遷移的判斷能力。",
+          reason: "和 K&K 2009 配對讀，補足直覺 skill 的理論。"
+        },
+        "bansal-2021": {
+          topic: "human-AI team 是否真的形成互補表現",
+          description: "檢驗人與 AI 合作是否超過各自單獨表現，把 complementary performance 從願景拉回可測量的問題。",
+          implication: "不要把 human-in-the-loop 當成自動加分。若 UI 沒讓人類在自己強的地方介入，整體系統可能只是把兩邊的錯誤疊在一起。"
+        },
+        "bucinca-2021": {
+          topic: "以 cognitive forcing function 防止過度依賴",
+          description: "研究如何透過介面設計，迫使使用者先思考，而不是直接接受 AI prediction。",
+          implication: "這是 K&K 直覺校準的工程化版本。好的 friction 不是阻礙效率，而是保護使用者的 posterior 不被 AI 結論壓倒。",
+          reason: "配對 Chen，看 forcing function 如何工程化 pathway 1。"
+        },
+        "chen-2023": {
+          topic: "outcome／feature／reliability intuition 的三條 pathway",
+          description: "指出人類面對 AI explanation 時，會用 outcome、feature、AI reliability 三類直覺，判斷是否要推翻 AI prediction。",
+          implication: "Beacon 與其他 AI-assist 工具應優先提供 example-based evidence，讓使用者自行進行 inference。feature-based explanation 若太像結論，反而會增加 overreliance。",
+          reason: "從實證問題出發，先知道三條 pathway 是什麼。"
+        },
+        "vasconcelos-2023": {
+          topic: "explanations 何時能降低 overreliance",
+          description: "把 explanation 對 overreliance 的效果拉回實證層面，補上 AI explanation 不一定只會讓人過度依賴的另一面。",
+          implication: "設計問題不是要不要 explanation，而是 explanation 是否提供可檢查的 evidence。能降低 overreliance 的說明，通常讓使用者更能判斷 AI 何時出錯。"
+        }
+      },
       relations: {
         "chen-hohwy": {
           label: "Chen 2023 ↔ Hohwy 2013",
@@ -775,7 +870,7 @@ window.SHIORI_I18N = {
         eyebrow: "SILENT DIAGNOSIS",
         title: "送出你的 AI workflow，拿到一份书面边界诊断。",
         lede: "不需要 workshop。不需要上课。Shiori 先从低压的书面 review 开始:AI 哪里在帮忙、哪里可能正在取代判断，以及什么应该保留给人。",
-        cta: "通过 Bright Raven 联络",
+        cta: "通过邮件联系 Bright Raven",
         deliverablesLabel: "服务交付物",
         mapTitle: "AI use map",
         mapText: "你送来的 workflow 里，哪些是 AI-only、AI-assist 或 human-first。",
@@ -1154,7 +1249,7 @@ window.SHIORI_I18N = {
         eyebrow: "SILENT DIAGNOSIS",
         title: "AI workflow を送り、書面の境界診断を受け取る。",
         lede: "workshop も講義も不要です。Shiori は低圧の書面 review から始まります。AI が助けている場所、判断を置き換え始めている場所、人の側に残すべきものを見ます。",
-        cta: "Bright Raven から連絡する",
+        cta: "Shiori について Bright Raven にメールする",
         deliverablesLabel: "提供内容",
         mapTitle: "AI use map",
         mapText: "送られた workflow の中で、AI-only、AI-assist、human-first を分けます。",

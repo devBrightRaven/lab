@@ -88,3 +88,8 @@ Repository root is configured for:
 - Shiori path: `https://lab.brightraven.world/shiori/`
 
 After the clickability fix is pushed, verify the live URL again once Pages/CDN has updated.
+
+## 2026-07-11 Follow-up
+
+- Completed all locale keys for English, Japanese, Simplified Chinese, and Traditional Chinese, including paper detail content.
+- Replaced the root-site CTA with a direct email intake for Shiori Silent Diagnosis.

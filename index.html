@@ -122,7 +122,7 @@ body {
 .top-nav .back-link:hover {
   background: var(--bg-tinted);
   border-color: var(--primary);
-  color: var(--primary);
+  color: var(--primary-dark);
 }
 .top-nav .back-link:focus-visible {
   outline: 2px solid var(--primary);
@@ -136,6 +136,39 @@ body {
   color: var(--ink-faint);
 }
 .top-nav .breadcrumb strong { color: var(--ink); font-weight: 600; letter-spacing: 0.06em; }
+.top-nav .nav-right {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.language-switcher {
+  display: inline-flex;
+  gap: 4px;
+  padding: 3px;
+  border: 1px solid var(--border-soft);
+  border-radius: 6px;
+  background: var(--bg);
+}
+.language-button {
+  min-width: 34px;
+  min-height: 30px;
+  border: 0;
+  border-radius: 4px;
+  padding: 4px 7px;
+  background: transparent;
+  color: var(--ink-mute);
+  font: 600 11px/1 var(--mono);
+  cursor: pointer;
+}
+.language-button:hover,
+.language-button:focus-visible,
+.language-button.is-active {
+  background: var(--primary-bg);
+  color: var(--primary-dark);
+}
+.language-button:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; }
 
 @media (prefers-reduced-motion: reduce) {
   .top-nav { backdrop-filter: none; -webkit-backdrop-filter: none; background: var(--bg); }
@@ -163,7 +196,7 @@ body {
   font-size: 11px;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--primary);
+  color: var(--primary-dark);
   background: var(--primary-bg);
   padding: 6px 12px;
   border-radius: 4px;
@@ -429,6 +462,7 @@ footer a:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px;
 @media (max-width: 600px) {
   .wrap { padding: 40px 20px 56px; }
   .top-nav { padding: 12px 20px; }
+  .top-nav .nav-right { width: 100%; margin-left: 0; justify-content: space-between; }
   h1 { font-size: clamp(44px, 11vw, 64px); }
   h1 .lab-jp { display: block; margin: 8px 0 0 0; vertical-align: baseline; }
   .subtitle { font-size: 17px; }
@@ -440,30 +474,36 @@ footer a:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px;
 </head>
 <body>
 
-<a class="skip-link" href="#main-content">跳到主要內容</a>
+<a class="skip-link" href="#main-content" data-i18n="nav.skip">跳到主要內容</a>
 
-<nav class="top-nav" aria-label="Site navigation">
-  <a class="back-link" href="https://brightraven.world/" aria-label="返回 Bright Raven 主站">← brightraven.world</a>
-  <div class="breadcrumb"><strong>LAB</strong> · BRIGHT RAVEN</div>
+<nav class="top-nav" aria-label="Site navigation" data-i18n-aria-label="nav.label">
+  <a class="back-link" href="https://brightraven.world/" aria-label="返回 Bright Raven 主站" data-i18n-aria-label="nav.backLabel">← brightraven.world</a>
+  <div class="nav-right">
+    <div class="language-switcher" role="group" aria-label="切換語言" data-i18n-aria-label="nav.languageLabel">
+      <button type="button" class="language-button" data-locale="en" aria-pressed="false">EN</button>
+      <button type="button" class="language-button" data-locale="ja" aria-pressed="false">JA</button>
+      <button type="button" class="language-button" data-locale="zh-Hans" aria-pressed="false">简</button>
+      <button type="button" class="language-button is-active" data-locale="zh-Hant" aria-pressed="true">繁</button>
+    </div>
+    <div class="breadcrumb"><strong>LAB</strong> · BRIGHT RAVEN</div>
+  </div>
 </nav>
 
 <main id="main-content" class="wrap" tabindex="-1">
 
   <section class="hero" aria-labelledby="hero-title">
-    <div class="lab-tag" aria-label="實驗室狀態:運作中">RESEARCH LAB · ACTIVE</div>
+    <div class="lab-tag" aria-label="實驗室狀態:運作中" data-i18n="hero.tag" data-i18n-aria-label="hero.tagLabel">RESEARCH LAB · ACTIVE</div>
     <h1 id="hero-title">Lab<span class="lab-jp" lang="ja">工房 · ラボ</span></h1>
-    <p class="subtitle">Bright Raven Research Lab — 認知工具、思考視覺化、互動原型的孵化地。</p>
-    <p class="lede">
-      在這裡 ship 的是<em>還沒成熟</em>但值得被看見的東西。每件作品本身就是一種「思考的呈現」。視覺、互動、結構,從這裡開始,畢業後可能升級成自己的子網域。
-    </p>
+    <p class="subtitle" data-i18n="hero.subtitle">Bright Raven Research Lab — 認知工具、思考視覺化、互動原型的孵化地。</p>
+    <p class="lede" data-i18n="hero.lede">在這裡 ship 的是還沒成熟但值得被看見的東西。每件作品本身就是一種「思考的呈現」。視覺、互動、結構，從這裡開始，畢業後可能升級成自己的子網域。</p>
   </section>
 
   <h2 class="section-label">
-    <span>正在進行 / Active Experiments</span>
-    <span class="count">3 instruments</span>
+    <span data-i18n="sections.active">正在進行 / Active Experiments</span>
+    <span class="count" data-i18n="sections.activeCount">3 instruments</span>
   </h2>
   <div class="cards">
-    <a class="card primary" href="mandara/" aria-label="マンダラ Mandara 曼陀羅 — 23 個思考典範的互動式地圖" aria-describedby="mandara-desc">
+    <a class="card primary" href="mandara/" aria-label="マンダラ Mandara 曼陀羅 — 23 個思考典範的互動式地圖" data-i18n-aria-label="cards.mandaraLabel" aria-describedby="mandara-desc">
       <div class="card-main">
         <div class="card-id">INSTRUMENT 001 · マンダラ</div>
         <div class="card-title">
@@ -475,13 +515,11 @@ footer a:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px;
             <span class="ver">v0.4.0</span>
           </span>
         </div>
-        <div class="card-desc" id="mandara-desc">
-          23 個思考典範的互動式地圖,4 個 paradigm 已寫完整 deep-dive(Minerva HC / Cynefin / Munger Latticework / Wardley Mapping)。Kit/Session 兩層 selection、Combo Workbench 合成解讀、情境 filter、WCAG AA 估 90+。
-        </div>
+        <div class="card-desc" id="mandara-desc" data-i18n="cards.mandaraDesc">23 個思考典範的互動式地圖；四個 paradigm 已有完整 deep-dive。用 Kit／Session、Combo Workbench 與情境 filter 組合自己的閱讀路徑。</div>
       </div>
       <div class="card-arrow" aria-hidden="true">→</div>
     </a>
-    <a class="card primary" href="asagiri/" aria-label="Asagiri 朝霧 — 每日 startup 研究引擎,thin orchestrator over CLI agents" aria-describedby="asagiri-desc">
+    <a class="card primary" href="asagiri/" aria-label="Asagiri 朝霧 — 每日 startup 研究引擎,thin orchestrator over CLI agents" data-i18n-aria-label="cards.asagiriLabel" aria-describedby="asagiri-desc">
       <div class="card-main">
         <div class="card-id">INSTRUMENT 002 · 朝霧</div>
         <div class="card-title">
@@ -493,13 +531,11 @@ footer a:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px;
             <span class="ver">design</span>
           </span>
         </div>
-        <div class="card-desc" id="asagiri-desc">
-          每日 startup 研究引擎。Thin orchestrator over CLI agents、本地 SearXNG、檔案式 prompt。Engine 跑研究、Webapp 觀察與篩選 idea、Sasagani widget 嵌入第三方頁面。pre-dawn 鋼藍配 mist 漂浮、WCAG AA。
-        </div>
+        <div class="card-desc" id="asagiri-desc" data-i18n="cards.asagiriDesc">每日研究與機會觀察工具。以 CLI agents、本地搜尋與檔案式 prompts 組成，讓研究、篩選與判斷保持可見。</div>
       </div>
       <div class="card-arrow" aria-hidden="true">→</div>
     </a>
-    <a class="card primary" href="shiori/" aria-label="Shiori 栞 — human-AI decision making 的互動 reading map" aria-describedby="shiori-desc">
+    <a class="card primary" href="shiori/" aria-label="Shiori 栞 — human-AI decision making 的互動 reading map" data-i18n-aria-label="cards.shioriLabel" aria-describedby="shiori-desc">
       <div class="card-main">
         <div class="card-id">INSTRUMENT 003 · 栞</div>
         <div class="card-title">
@@ -511,28 +547,25 @@ footer a:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px;
             <span class="ver">v0.1.0</span>
           </span>
         </div>
-        <div class="card-desc" id="shiori-desc">
-          腦內迷宮式 reading map。17 份 paper / book 串起 predictive processing、judgment quality、human-AI decision making 三條主軸,理解節點後路徑亮起。
-        </div>
+        <div class="card-desc" id="shiori-desc" data-i18n="cards.shioriDesc">AI 時代的 self-check，協助辨認哪些判斷、聲音、審查、意義與責任仍該留在人手裡；閱讀地圖提供更深的理論脈絡。</div>
       </div>
       <div class="card-arrow" aria-hidden="true">→</div>
     </a>
   </div>
 
   <h2 class="section-label">
-    <span>規劃中 / Coming Soon</span>
-    <span class="count">incubation</span>
+    <span data-i18n="sections.coming">規劃中 / Coming Soon</span>
+    <span class="count" data-i18n="sections.comingCount">incubation</span>
   </h2>
-  <div class="placeholder">
-    更多 instruments 正在 incubate。畢業條件:架構穩定 + 文件完備 + 使用者測試過。畢業後升級成自己的子網域,例如 <code>mandara.brightraven.world</code>。
-  </div>
+  <div class="placeholder" data-i18n="coming.copy">更多 instruments 正在孵化。畢業條件：架構穩定、文件完備、經過使用者測試；之後才升級成自己的子網域。</div>
 
   <footer>
-    <span>Bright Raven Research Lab · 工房 / kōbō</span>
-    <span>part of <a href="https://brightraven.world">brightraven.world</a> · <a href="https://github.com/devBrightRaven/lab">source on github</a></span>
+    <span data-i18n="footer.brand">Bright Raven Research Lab · 工房 / kōbō</span>
+    <span><span data-i18n="footer.partOf">part of</span> <a href="https://brightraven.world">brightraven.world</a> · <a href="https://github.com/devBrightRaven/lab" data-i18n="footer.source">source on github</a></span>
   </footer>
 
 </main>
 
+<script src="lab-i18n.js"></script>
 </body>
 </html>
