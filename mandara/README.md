@@ -19,7 +19,7 @@ The project takes its name from 曼荼羅 (mandala) — the structural arrangeme
 
 ## Status
 
-`v0.3.1` (2026-05-05) — P0 a11y fixes + collapsible Workbench. Score 86/100. Active iteration.
+`v0.4.0` (2026-07-11) — four-language index (EN / JA / Simplified Chinese / Traditional Chinese), context-first atlas entry, and four completed paradigm deep dives. Active iteration; 19 deep dives remain.
 
 ## Stack
 
