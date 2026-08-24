@@ -20,6 +20,8 @@ URL: https://lab.brightraven.world/
 
 **Do not edit `mandara/` or `asagiri/` directly in this repo** — changes will be overwritten on the next sync. Edit in the source repo and the change flows here automatically.
 
+After mirroring, the Lab workflow adds the shared `/privacy-consent.js` loader to each mirrored HTML page. Keep this Lab-owned integration in the workflow rather than in the source repos.
+
 Files tracked by this repo directly: `index.html` (landing), `shiori/`, `CNAME`, `README.md`, `.gitignore`, `.nojekyll`, and `.github/workflows/`.
 
 ## Conventions

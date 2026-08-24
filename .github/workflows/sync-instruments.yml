@@ -68,6 +68,18 @@ jobs:
             --exclude="README.md" \
             _src/asagiri/design-site/ asagiri/
 
+      - name: Add shared privacy consent loader
+        shell: bash
+        run: |
+          find mandara asagiri -type f -name '*.html' -print0 |
+            while IFS= read -r -d '' file; do
+              perl -0pi -e 's{^[ \t]*<script src="/privacy-consent\.js(?:\?v=[^"]+)?" defer></script>\r?\n?}{}mg; s{</head>}{  <script src="/privacy-consent.js?v=20260825a" defer></script>\n</head>}i' "$file"
+              test "$(grep -c 'privacy-consent.js?v=20260825a' "$file")" -eq 1 || {
+                echo "::error file=$file::Expected exactly one shared privacy consent loader."
+                exit 1
+              }
+            done
+
       - name: Detect and commit changes
         run: |
           rm -rf _src
