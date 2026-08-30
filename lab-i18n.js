@@ -11,7 +11,9 @@
         asagiriLabel: "Asagiri — a daily research and opportunity observatory",
         asagiriDesc: "A daily research and opportunity observatory built from CLI agents, local search, and file-based prompts, keeping research, filtering, and judgment visible.",
         shioriLabel: "Shiori — an AI-era self-check with a deeper reading map",
-        shioriDesc: "An AI-era self-check for noticing which judgment, voice, review, meaning, and ownership should remain human-first. The reading map offers the deeper theory."
+        shioriDesc: "An AI-era self-check for noticing which judgment, voice, review, meaning, and ownership should remain human-first. The reading map offers the deeper theory.",
+        sakigarasuLabel: "Sakigarasu — a four-language daily digest of game policy and industry signals across seven regions",
+        sakigarasuDesc: "Hear the game world's wind before dawn: policy and industry signals across seven regions, digested daily in four languages. AI-produced, human-approved, sources always linked."
       },
       coming: { copy: "More instruments are incubating. They graduate only when their structure is stable, their documentation is complete, and people have used them." },
       footer: { brand: "Bright Raven Research Lab · Workshop", partOf: "part of", source: "source on GitHub" }
@@ -27,7 +29,9 @@
         asagiriLabel: "Asagiri — 日々のリサーチと機会観測所",
         asagiriDesc: "CLI agents、ローカル検索、ファイルベースの prompts で構成された、日々のリサーチと機会観測所。調査、選別、判断を見えるままに保ちます。",
         shioriLabel: "Shiori — AI 時代の自己点検と深い読書マップ",
-        shioriDesc: "判断、声、review、意味、ownership のどこを人の側に残すかを見つける AI 時代の自己点検。読書マップはその背景理論をたどれます。"
+        shioriDesc: "判断、声、review、意味、ownership のどこを人の側に残すかを見つける AI 時代の自己点検。読書マップはその背景理論をたどれます。",
+        sakigarasuLabel: "Sakigarasu 先鴉 — 7地域のゲーム政策と業界動向を4言語で毎日整理",
+        sakigarasuDesc: "夜明け前に、ゲーム世界の風の音を先に聴く。7地域の政策と業界の動きを4言語で毎日整理。AIが作成し、人間が承認し、出典は常にリンク。"
       },
       coming: { copy: "さらに多くの instruments を育成中です。構造が安定し、文書が整い、人に使われて初めて卒業します。" },
       footer: { brand: "Bright Raven Research Lab · 工房", partOf: "part of", source: "GitHub のソース" }
@@ -43,7 +47,9 @@
         asagiriLabel: "Asagiri — 每日研究与机会观察站",
         asagiriDesc: "由 CLI agents、本地搜索与文件式 prompts 组成的每日研究与机会观察工具，让研究、筛选与判断始终可见。",
         shioriLabel: "Shiori — AI 时代的自我检查与深入阅读地图",
-        shioriDesc: "用于辨认哪些判断、声音、审查、意义与责任仍该留在人手里的 AI 时代自我检查；阅读地图提供更深的理论脉络。"
+        shioriDesc: "用于辨认哪些判断、声音、审查、意义与责任仍该留在人手里的 AI 时代自我检查；阅读地图提供更深的理论脉络。",
+        sakigarasuLabel: "Sakigarasu 先鸦 — 跨七地区游戏政策与业界动态的四语每日整理",
+        sakigarasuDesc: "天未亮，先听见游戏世界的风声：跨七地区的游戏政策与业界动态，四语每日整理；AI 产制、人工核准、必附原文链接。"
       },
       coming: { copy: "更多 instruments 正在孵化。只有结构稳定、文档完整、经过真实使用后，它们才会毕业。" },
       footer: { brand: "Bright Raven Research Lab · 工坊", partOf: "part of", source: "GitHub 源码" }
@@ -59,7 +65,9 @@
         asagiriLabel: "Asagiri — 每日研究與機會觀察站",
         asagiriDesc: "由 CLI agents、本地搜尋與檔案式 prompts 組成的每日研究與機會觀察工具，讓研究、篩選與判斷始終可見。",
         shioriLabel: "Shiori — AI 時代的自我檢測與深入閱讀地圖",
-        shioriDesc: "用來辨認哪些判斷、聲音、審查、意義與責任仍該留在人手裡的 AI 時代自我檢測；閱讀地圖提供更深的理論脈絡。"
+        shioriDesc: "用來辨認哪些判斷、聲音、審查、意義與責任仍該留在人手裡的 AI 時代自我檢測；閱讀地圖提供更深的理論脈絡。",
+        sakigarasuLabel: "Sakigarasu 先鴉 — 跨七地區遊戲政策與業界動態的四語每日整理",
+        sakigarasuDesc: "天未亮，先聽見遊戲世界的風聲：跨七地區的遊戲政策與業界動態，四語每日整理；AI 產製、人工核准、必附原文連結。"
       },
       coming: { copy: "更多 instruments 正在孵化。只有結構穩定、文件完備、經過真實使用後，它們才會畢業。" },
       footer: { brand: "Bright Raven Research Lab · 工房", partOf: "part of", source: "GitHub 原始碼" }
