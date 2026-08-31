@@ -92,7 +92,15 @@ a:hover { text-decoration-thickness: .18em; }
   content: "先";
   font-weight: 900;
 }
-nav { border-bottom: 1px solid var(--gold); background: var(--lacquer); }
+.nav-row { border-bottom: 1px solid var(--gold); background: var(--lacquer); }
+.nav-row-inner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: .25rem clamp(.75rem, 3vw, 2rem);
+}
+.nav-row nav { border-bottom: 0; background: transparent; }
 nav ul {
   display: flex;
   flex-wrap: wrap;
