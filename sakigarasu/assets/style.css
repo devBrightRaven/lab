@@ -129,6 +129,13 @@ nav a {
   text-decoration: none;
 }
 nav a[aria-current="page"], nav a[aria-current="true"] { box-shadow: inset 0 -.18rem var(--gold-bright); color: var(--gold-bright); }
+.nav-row nav a {
+  border: 1px solid transparent;
+  border-radius: .2rem;
+  padding-inline: .45rem;
+}
+.nav-row nav a:hover { border-color: var(--gold-bright); background: var(--gold-glow-soft); color: var(--gold-bright); }
+.nav-row nav a:focus-visible { outline: .2rem solid var(--gold-bright); outline-offset: .15rem; }
 main { display: flow-root; padding-bottom: clamp(4rem, 7vw, 8rem); }
 .hero {
   position: relative;
