@@ -254,12 +254,13 @@ main { display: flow-root; padding-bottom: clamp(4rem, 7vw, 8rem); }
 .ai-disclosure { color: var(--muted); font-size: .9rem; }
 .detail-meta { display: flex; flex-wrap: wrap; gap: .5rem 1.25rem; align-items: center; color: var(--muted); }
 .detail-meta .category-mark { margin-bottom: 0; }
-.detail-illust-img, .source-illust { border: 1px solid var(--gold); border-radius: .25rem; max-height: 28rem; }
+.detail-illust-img { border: 1px solid var(--gold); border-radius: .25rem; max-height: 28rem; }
 .source-placeholder {
   display: flex;
   align-items: center;
   justify-content: center;
-  aspect-ratio: 16 / 9;
+  width: 100%;
+  height: clamp(6rem, 10vw, 8.75rem);
   border: 1px solid var(--gold);
   border-radius: .25rem;
   background: linear-gradient(148deg, var(--lacquer-raised), var(--ink));
@@ -269,7 +270,7 @@ main { display: flow-root; padding-bottom: clamp(4rem, 7vw, 8rem); }
 .source-placeholder span { color: var(--muted); font-weight: 700; }
 .source-card { border: 1px solid var(--gold-glow-soft); padding: clamp(1rem, 3vw, 1.5rem); }
 .source-figure { margin: 0 0 1rem; }
-.source-figure object, .source-figure img { display: block; width: 100%; height: auto; }
+.source-figure object { display: block; width: 100%; height: auto; max-height: 26.25rem; }
 .source-figure figcaption { margin-top: .5rem; color: var(--muted); font-size: .875rem; }
 .source-title { margin-bottom: .5rem; font-size: clamp(1.15rem, 1rem + .5vw, 1.5rem); }
 .original-link { font-size: .95rem; }
