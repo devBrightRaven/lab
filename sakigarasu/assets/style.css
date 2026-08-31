@@ -222,6 +222,14 @@ main { display: flow-root; padding-bottom: clamp(4rem, 7vw, 8rem); }
 .news-item h3 { position: relative; z-index: 1; margin: 1.2rem 0 .8rem; padding-inline-end: .75rem; text-wrap: wrap; font-size: clamp(1.35rem, 1.15rem + .7vw, 1.85rem); }
 .news-item p { position: relative; z-index: 1; }
 .source { color: var(--muted); font-size: .95rem; }
+.card-commentary {
+  margin-top: .75rem;
+  border-top: 1px dashed var(--gold-glow);
+  padding-top: .75rem;
+  color: var(--gold-bright);
+  font-style: italic;
+}
+.card-commentary strong { color: var(--vermillion); font-style: normal; }
 .brush-divider {
   display: block;
   width: min(80rem, calc(100% - 2rem));
@@ -247,6 +255,18 @@ main { display: flow-root; padding-bottom: clamp(4rem, 7vw, 8rem); }
 .detail-meta { display: flex; flex-wrap: wrap; gap: .5rem 1.25rem; align-items: center; color: var(--muted); }
 .detail-meta .category-mark { margin-bottom: 0; }
 .detail-illust-img, .source-illust { border: 1px solid var(--gold); border-radius: .25rem; max-height: 28rem; }
+.source-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  aspect-ratio: 16 / 9;
+  border: 1px solid var(--gold);
+  border-radius: .25rem;
+  background: linear-gradient(148deg, var(--lacquer-raised), var(--ink));
+  padding: 1rem;
+  text-align: center;
+}
+.source-placeholder span { color: var(--muted); font-weight: 700; }
 .source-card { border: 1px solid var(--gold-glow-soft); padding: clamp(1rem, 3vw, 1.5rem); }
 .source-figure { margin: 0 0 1rem; }
 .source-figure object, .source-figure img { display: block; width: 100%; height: auto; }
