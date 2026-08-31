@@ -101,6 +101,16 @@ a:hover { text-decoration-thickness: .18em; }
   gap: .25rem clamp(.75rem, 3vw, 2rem);
 }
 .nav-row nav { border-bottom: 0; background: transparent; }
+.lang-switch a {
+  min-width: 2.75rem;
+  justify-content: center;
+  border: 1px solid var(--gold);
+  border-radius: .2rem;
+  padding-inline: .55rem;
+}
+.lang-switch a:hover { border-color: var(--gold-bright); background: var(--gold-glow-soft); color: var(--gold-bright); }
+.lang-switch a:focus-visible { outline: .2rem solid var(--gold-bright); outline-offset: .15rem; }
+.lang-switch a[aria-current="page"] { border-color: var(--gold-bright); background: var(--gold-glow); box-shadow: none; }
 nav ul {
   display: flex;
   flex-wrap: wrap;
