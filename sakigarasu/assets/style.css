@@ -239,6 +239,9 @@ main { display: flow-root; padding-bottom: clamp(4rem, 7vw, 8rem); }
   z-index: 1;
   display: block;
   width: 100%;
+  /* height:auto is load-bearing: the img's height="450" attribute otherwise
+     wins over aspect-ratio and renders square (measured live 2026-09-01). */
+  height: auto;
   max-height: 24rem;
   aspect-ratio: 16 / 9;
   border-bottom: 1px solid var(--gold);
