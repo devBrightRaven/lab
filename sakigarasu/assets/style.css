@@ -55,6 +55,17 @@ a:hover { text-decoration-thickness: .18em; }
   outline-offset: .22rem;
   box-shadow: 0 0 0 .18rem var(--ink);
 }
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+  padding: 0;
+}
 .skip-link {
   position: absolute;
   top: 1rem;
@@ -268,7 +279,7 @@ main { display: flow-root; padding-bottom: clamp(4rem, 7vw, 8rem); }
 .brush-divider path { fill: none; stroke-linecap: round; }
 .brush-shadow { stroke: var(--vermillion); stroke-width: 16; opacity: .42; }
 .brush-gold { stroke: var(--gold-bright); stroke-width: 3; filter: drop-shadow(0 0 .4rem var(--gold-glow)); }
-.perspective, .prose-page, .ai-commentary, .source-preview, .corrections.content-section, .day-archive {
+.perspective, .prose-page, .ai-commentary, .source-preview, .day-archive {
   min-width: min(20rem, calc(100% - 2rem));
   border: 1px solid var(--gold);
   background: var(--lacquer);
@@ -278,6 +289,11 @@ main { display: flow-root; padding-bottom: clamp(4rem, 7vw, 8rem); }
   margin-bottom: 1rem;
   font-size: clamp(1.7rem, 3vw, 2.7rem);
 }
+/* .corrections.content-section (detail-page "更正記錄" section) deliberately
+   does NOT join the boxed-container rule above: its own content is already
+   a stack of individually-boxed .correction-card articles (see below), so a
+   second outer box would just double the framing for no benefit. */
+.corrections.content-section { min-width: min(20rem, calc(100% - 2rem)); }
 .perspective p:last-child, .prose-page p:last-child { margin-bottom: 0; }
 .ai-disclosure { color: var(--muted); font-size: .9rem; }
 .detail-meta { display: flex; flex-wrap: wrap; gap: .5rem 1.25rem; align-items: center; color: var(--muted); }
@@ -310,19 +326,89 @@ main { display: flow-root; padding-bottom: clamp(4rem, 7vw, 8rem); }
 .page-lead > p { margin-bottom: .5rem; }
 .page-lead h1 { max-width: 18ch; margin-bottom: 0; font-size: clamp(3rem, 8vw, 7.5rem); }
 .prose-page { width: min(48rem, calc(100% - 2rem)); }
-.correction-list { margin: 0; padding-inline-start: 1.4rem; }
-.correction-list li + li { margin-top: 1rem; }
-/* Day-archive nav is its own list, not .correction-list (hakuso HIGH-1,
-   2026-09-03): the generic `nav ul`/`nav a` rules above are flex-row pill
-   buttons meant for the top nav bar, and win the cascade over
-   .correction-list's own display/list-style. Restated here explicitly so
-   the archive renders as a vertical, underlined list of dated links
-   instead of a wrapped row of plain-coloured pills. This restated
-   `.day-archive a` does NOT outrank `nav a[aria-current="true"]` above for
-   the current-day entry - that attribute selector has one extra
-   specificity point - so its box-shadow underline still applies there;
-   nothing visibly breaks only because both rules declare the same
-   `color: var(--gold-bright)`. */
+/* Corrections page + detail-page "更正記錄" section (design.md ADHD/dyslexia
+   addendum, 2026-09-07): one record = one boxed .correction-card, never a
+   bare <li> in a flat list (the old .correction-list, removed the same
+   change) -- each card's own left border carries the type colour, its text
+   label carries the meaning (never colour alone). */
+/* 48rem, the same measure as .prose-page -- NOT .shell's 80rem (hakuso
+   audit commit bd8d014 MEDIUM-8): a narrower column suits reading a
+   sequence of records. Still carries the .shell class in markup (for its
+   margin-inline: auto centring); this rule's width wins over .shell's own
+   by source order at equal specificity. Deliberately does NOT join the
+   .prose-page box-border selector below -- this container already holds a
+   stack of individually-boxed .correction-card articles, so a second box
+   would just double the framing (same reasoning as .corrections.content-
+   section above). */
+.correction-records { width: min(48rem, calc(100% - 2rem)); margin-top: clamp(2rem, 5vw, 3.5rem); }
+.correction-records section + section { margin-top: clamp(2.25rem, 5vw, 3.5rem); }
+.correction-records h2 { margin-bottom: 1rem; font-size: clamp(1.5rem, 2.6vw, 2rem); }
+.corrections-lead { color: var(--muted); }
+/* The main border below is --gold, deliberately NOT the softer glow
+   variant most other boxed containers avoid too (hakuso audit commit
+   bd8d014 HIGH-3: the glow tone measured 1.23:1 against the card
+   background, invisible as a grouping boundary). The left border's own
+   colour (below, per record type) still carries the type meaning. */
+.correction-card {
+  min-width: min(20rem, calc(100% - 2rem));
+  border: 1px solid var(--gold);
+  border-left-width: .35rem;
+  border-left-style: solid;
+  border-radius: .2rem;
+  background: var(--lacquer);
+  padding: clamp(1.1rem, 3vw, 1.75rem);
+}
+.corrections.content-section .correction-card { margin-top: 1rem; }
+.correction-card + .correction-card { margin-top: 1.25rem; }
+/* Three type tokens, reused from the existing palette (each ≥3:1 against
+   --lacquer): withdrawal is the most severe, hence the warmest/vermillion. */
+.correction-card--withdrawn { border-left-color: var(--vermillion); }
+.correction-card--item { border-left-color: var(--gold-bright); }
+.correction-card--day { border-left-color: var(--gold); }
+.correction-heading {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: .35rem .75rem;
+  margin-bottom: .75rem;
+  font-size: 1.15rem;
+}
+.correction-type { font-weight: 800; letter-spacing: .03em; }
+.correction-card--withdrawn .correction-type { color: var(--vermillion); }
+.correction-card--item .correction-type { color: var(--gold-bright); }
+.correction-card--day .correction-type { color: var(--gold); }
+.correction-title-link { font-weight: 700; }
+.correction-date { color: var(--muted); font-size: .95rem; font-variant-numeric: lining-nums tabular-nums; }
+/* Body text on this page/section only (design.md addendum, constraint 3):
+   18px, 65ch measure, generous paragraph spacing, left-aligned, no italics,
+   slightly opened letter-spacing -- all scoped to .correction-note so
+   nothing else on the site changes size. */
+.correction-note {
+  max-width: 65ch;
+  font-size: 1.125rem;
+  line-height: 1.7;
+  text-align: left;
+  letter-spacing: .01em;
+  font-style: normal;
+}
+/* Two records of the same item on the same date share one card; the gap
+   between records must exceed the 1.7em paragraph gap inside a record
+   (hakuso 2026-09-07), and the rule carries a >=3:1 gold line. */
+.correction-note + .correction-note { margin-top: 2.4rem; padding-top: 1.4rem; border-top: 1px solid var(--gold); }
+.correction-note p, .correction-note li { margin: 0 0 1.7em; }
+.correction-note p:last-child, .correction-note li:last-child { margin-bottom: 0; }
+.correction-note ul { margin: 0 0 1.7em; padding-inline-start: 1.4rem; }
+.correction-note ul:last-child { margin-bottom: 0; }
+.correction-note details { margin-top: .25rem; }
+.correction-note summary {
+  cursor: pointer;
+  color: var(--gold-bright);
+  font-weight: 700;
+  text-decoration: underline;
+  text-decoration-color: var(--gold);
+}
+.correction-note summary:hover { color: var(--gold); }
+.correction-note details[open] summary { margin-bottom: 1em; }
 .day-archive ul { display: block; margin-block: 0; padding-inline-start: 0; list-style: none; }
 .day-archive li { display: block; }
 .day-archive li + li { margin-top: .5rem; }
@@ -334,6 +420,36 @@ main { display: flow-root; padding-bottom: clamp(4rem, 7vw, 8rem); }
   text-decoration: underline;
   text-decoration-color: var(--gold);
 }
+/* Prev/next day pager (task spec 2026-09-07): one row, prev left / next
+   right via space-between; a lone "next" gets pushed to the right edge
+   with margin-inline-start: auto (a lone "prev" already sits flex-start,
+   i.e. left, with no extra rule needed). */
+.day-pager ul {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: .75rem 1rem;
+  margin-block: 0;
+  padding-inline-start: 0;
+  list-style: none;
+}
+.day-pager li { display: flex; }
+.day-pager li.day-pager-next { margin-inline-start: auto; }
+.day-pager a {
+  display: inline-flex;
+  align-items: center;
+  gap: .35rem;
+  min-height: 2.75rem;
+  border: 1px solid transparent;
+  border-radius: .2rem;
+  padding: .5rem .75rem;
+  color: var(--gold-bright);
+  font-weight: 700;
+  text-decoration: underline;
+  text-decoration-color: var(--gold);
+}
+.day-pager a:hover { border-color: var(--gold-bright); background: var(--gold-glow-soft); color: var(--gold-bright); }
+.day-pager a:focus-visible { outline: .2rem solid var(--gold-bright); outline-offset: .15rem; }
 .empty { border: 1px solid var(--gold); background: var(--lacquer); padding: 1.25rem; }
 footer {
   border-top: 1px solid var(--gold);
@@ -346,7 +462,7 @@ footer p:last-child { margin-bottom: 0; }
   body { min-width: 0; }
   .shell, .brush-divider { width: calc(100% - 1rem); min-width: 0; }
   .hero-copy, .news-item, .section-heading, .latest-intro, .page-lead, .perspective, .prose-page,
-  .ai-commentary, .source-preview, .corrections.content-section, .day-archive { min-width: 0; }
+  .ai-commentary, .source-preview, .corrections.content-section, .day-archive, .correction-records { min-width: 0; }
   .hero-inner { gap: 2.25rem; padding-block: 3.5rem 3rem; }
   .hero h1 { font-size: clamp(2.45rem, 14vw, 3.4rem); }
   .news-item { padding: .8rem; }
