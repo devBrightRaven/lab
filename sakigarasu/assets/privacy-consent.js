@@ -205,7 +205,7 @@
         margin-inline: auto;
         padding: 1rem;
         border: 2px solid var(--brc-border);
-        border-radius: 6px;
+  border-radius: 0;
         background: var(--brc-bg);
         box-shadow: 0 0.5rem 1.5rem rgba(0, 0, 0, 0.24);
         overflow-wrap: anywhere;
@@ -249,7 +249,7 @@
       .br-consent-button, .br-consent-close {
         min-height: 2.75rem;
         border: 2px solid var(--brc-border);
-        border-radius: 4px;
+  border-radius: 0;
         color: var(--brc-text);
         background: var(--brc-surface);
         font: 700 1rem/1.2 Arial, "Helvetica Neue", "PingFang TC", "Noto Sans TC", "Hiragino Sans", "Noto Sans JP", "Yu Gothic UI", Meiryo, sans-serif;
