@@ -8,12 +8,16 @@ name: Sync instruments from source repos
 #   devBrightRaven/mandara         (main)                          ->  mandara/
 #   devBrightRaven/asagiri        (refactor/thin-orchestrator)    ->  asagiri/   (from /design-site)
 #
-# The action runs every 15 minutes and on manual dispatch. It commits and
+# The action runs every six hours and on manual dispatch. It commits and
 # pushes only if there is an actual content diff to avoid noisy history.
+# Six-hour polling caps scheduled starts at 4/day instead of 96/day: these are
+# website mirrors with no documented 15-minute freshness requirement. Minute 17
+# avoids the top-of-hour rush; GitHub may still delay runs. Dispatch manually
+# for urgent updates. Revisit if a shorter freshness requirement is established.
 
 on:
   schedule:
-    - cron: "*/15 * * * *"
+    - cron: "17 */6 * * *"
   workflow_dispatch:
   push:
     branches: [main]
